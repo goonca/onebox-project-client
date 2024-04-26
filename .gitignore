@@ -31,7 +31,7 @@ typings/
 .env
 .env.local
 .history/
-
+storybook-static/
 # System Files
 .DS_Store
 Thumbs.db
