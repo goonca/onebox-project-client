@@ -1,0 +1,28 @@
+@import '~/src/shared/style/variables.scss';
+
+.news-header {
+  h1 {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: $space-1;
+  }
+
+  address {
+    display: flex;
+    gap: $space-1;
+    font-size: smaller;
+
+    a {
+      font-weight: bold;
+      text-decoration: none;
+      color: $author-color;
+    }
+  }
+
+  time {
+    color: $light-gray;
+    font-size: small;
+  }
+}

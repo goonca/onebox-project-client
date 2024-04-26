@@ -1,0 +1,34 @@
+@import '~/src/shared/style/variables.scss';
+
+.news-horizontal {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid white;
+
+  &.divided {
+    border-bottom-color: lighten($light-gray, 30%);
+  }
+
+  .wrapper {
+    padding-left: $space-4;
+    width: 100%;
+
+    .content {
+      @include middle;
+    }
+  }
+
+  a {
+    font-size: small;
+    display: block;
+    font-weight: 500;
+  }
+
+  [data-component='badge'] {
+    font-size: xx-small;
+    position: relative;
+    top: -$space-2;
+  }
+}

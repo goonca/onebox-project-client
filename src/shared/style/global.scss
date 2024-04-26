@@ -1,0 +1,32 @@
+@import '~/src/shared/style/variables.scss';
+html,
+body,
+#__next {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  //letter-spacing: 0.025rem;
+}
+
+.MuiButton-root {
+  &.MuiButton-contained {
+    &[data-dark] {
+      background-color: $dark-blue;
+    }
+  }
+  &.MuiButton-outlined {
+    &[data-dark] {
+      color: $dark-blue;
+    }
+  }
+}
+
+.MuiLink-root {
+  &.MuiLink-underlineHover {
+    color: $dark-blue;
+  }
+}

@@ -1,0 +1,47 @@
+$light-gray: #999999;
+$dark-blue: #134b82;
+$author-color: #194dd9;
+
+$border-1: 1px;
+$border-2: 3px;
+
+$space-tiny: 3px;
+$space-1: 5px;
+$space-2: 10px;
+$space-3: 15px;
+$space-4: 20px;
+$space-5: 30px;
+$space-6: 40px;
+
+$radius-1: 0;
+$radius-2: 0;
+
+$badge-world: #ff0000;
+$badge-politics: #7b7b00;
+$badge-health: #1add00;
+$badge-sports: #008d9a;
+$badge-trend-beauty: #1d3be8;
+$badge-science: #7b69c7;
+$badge-travel: #8100b5;
+$badge-technology: #930036;
+$badge-economy: #6f6d4c;
+$badge-cucine: #007751;
+
+@mixin middle {
+  transform: translateY(-50%);
+  position: relative;
+  top: 50%;
+}
+
+@mixin center {
+  transform: translateX(-50%);
+  position: relative;
+  left: 50%;
+}
+
+@mixin middle-center {
+  transform: translate(-50%, -50%);
+  position: relative;
+  left: 50%;
+  top: 50%;
+}
