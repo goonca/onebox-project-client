@@ -1,0 +1,25 @@
+@import '~/src/shared/style/variables.scss';
+
+.news-vertical {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid white;
+
+  &.divided {
+    border-bottom-color: lighten($light-gray, 30%);
+  }
+
+  a {
+    font-size: small;
+    margin-top: $space-tiny;
+  }
+
+  [data-component='badge'] {
+    border-right: $border-2 solid white;
+    border-bottom: $border-2 solid white;
+    font-size: x-small;
+    position: absolute;
+  }
+}

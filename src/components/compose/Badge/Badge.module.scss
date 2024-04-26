@@ -1,0 +1,10 @@
+@import '~/src/shared/style/variables.scss';
+
+.badge {
+  padding: $space-tiny $space-4;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+  border-radius: $radius-1;
+  width: fit-content;
+}

@@ -1,0 +1,14 @@
+@import '~/src/shared/style/variables.scss';
+
+.figure {
+  margin: 0;
+
+  img {
+    border-radius: $radius-2;
+  }
+
+  figcaption {
+    font-size: x-small;
+    color: $light-gray;
+  }
+}

@@ -1,0 +1,62 @@
+@import '~/src/shared/style/variables.scss';
+
+.login-page {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  > * {
+    width: 50%;
+    height: 100%;
+  }
+
+  .left-side {
+    background-image: url('/static/login-background.svg');
+    background-size: cover;
+  }
+
+  .right-side {
+    > * {
+      @include middle-center;
+      display: inline-block;
+      text-align: center;
+      min-height: 200px;
+
+      p {
+        margin: $space-2;
+        color: $light-gray;
+        font-size: smaller;
+      }
+
+      form {
+        margin-top: $space-5;
+        display: flex;
+        flex-direction: column;
+        row-gap: $space-4;
+
+        input[type='text'] {
+          width: 400px;
+        }
+
+        .form-controls {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          column-gap: $space-4;
+          margin-top: $space-5;
+
+          button {
+            width: 200px;
+            align-self: center;
+          }
+          a {
+            align-self: center;
+            font-size: smaller;
+            cursor: pointer;
+            margin-top: $space-2;
+          }
+        }
+      }
+    }
+  }
+}
