@@ -1,0 +1,13 @@
+@import '~/src/shared/style/variables.scss';
+
+.logged {
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-3;
+
+  a {
+    margin-top: $space-5;
+    font-size: smaller;
+    cursor: pointer;
+  }
+}

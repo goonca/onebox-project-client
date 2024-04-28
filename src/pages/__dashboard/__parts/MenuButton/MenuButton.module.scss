@@ -1,0 +1,25 @@
+@import '~/src/shared/style/variables.scss';
+
+.menu-button {
+  background-color: $dashboard-bg-light;
+  height: 55px;
+  color: $dashboard-menu-color;
+  font-family: 'Source Sans Pro';
+  border-left: $space-1 solid $dashboard-bg-light;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: $space-2;
+  padding-left: $space-4;
+  width: 100%;
+  letter-spacing: 0.1rem;
+
+  &.selected {
+    border-left-color: $dashboard-bg-details;
+    background-color: $dashboard-bg-dark;
+
+    svg {
+      color: $dashboard-bg-details;
+    }
+  }
+}

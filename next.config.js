@@ -31,3 +31,21 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+module.exports = {
+  async redirects() {
+    return [
+      // Basic redirect
+      {
+        source: '/dashboard/:path',
+        destination: '/dashboard?path=:path',
+        permanent: true
+      },
+      {
+        source: '/dashboard/:path/:path',
+        destination: '/dashboard?path=:path/:path',
+        permanent: true
+      }
+    ];
+  }
+};
