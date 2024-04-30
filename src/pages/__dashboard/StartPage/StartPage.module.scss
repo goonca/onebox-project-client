@@ -1,3 +1,6 @@
+@import '~/src/shared/style/variables.scss';
+
 .start-page {
-  color: black;
+  background-color: $dashboard-background;
+  height: 100%;
 }

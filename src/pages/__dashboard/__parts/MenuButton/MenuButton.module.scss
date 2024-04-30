@@ -11,8 +11,13 @@
   align-items: center;
   column-gap: $space-2;
   padding-left: $space-4;
-  width: 100%;
   letter-spacing: 0.1rem;
+
+  label {
+    cursor: pointer;
+    margin-left: 0;
+    transition: margin-left 0.3s;
+  }
 
   &.selected {
     border-left-color: $dashboard-bg-details;

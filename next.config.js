@@ -42,8 +42,13 @@ module.exports = {
         permanent: true
       },
       {
-        source: '/dashboard/:path/:path',
-        destination: '/dashboard?path=:path/:path',
+        source: '/dashboard/:path/:path1',
+        destination: '/dashboard?path=:path/:path1',
+        permanent: true
+      },
+      {
+        source: '/dashboard/:path/:path1/:path2',
+        destination: '/dashboard?path=:path/:path1/:path2',
         permanent: true
       }
     ];

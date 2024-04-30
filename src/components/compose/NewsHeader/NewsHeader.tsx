@@ -1,11 +1,8 @@
-import { AuthorType } from 'shared/types';
 import style from './NewsHeader.module.scss';
+import { NewsModel } from 'shared/types/api-type';
 
-export type NewsHeaderProps = {
-  title: string;
-  headline?: string;
-  author?: AuthorType;
-  date?: Date;
+export type NewsHeaderProps = NewsModel & {
+  showAuthor?: false;
 };
 
 export const NewsHeader = (props: NewsHeaderProps) => {
@@ -19,7 +16,7 @@ export const NewsHeader = (props: NewsHeaderProps) => {
             <address>
               By
               <a rel="author" href={props.author.profileUrl}>
-                {props.author.fullname}
+                {props.author.name ?? props.author.username}
               </a>
             </address>
           )}

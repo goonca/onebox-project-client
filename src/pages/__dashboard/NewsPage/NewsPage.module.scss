@@ -1,0 +1,13 @@
+@import '~/src/shared/style/variables.scss';
+
+.news-page {
+  @include dashboard-section-header;
+
+  .search-input {
+    div[class*='MuiInputBase-root'] {
+      border-radius: 30px;
+      background-color: white;
+      width: 100%;
+    }
+  }
+}

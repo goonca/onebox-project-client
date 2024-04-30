@@ -13,6 +13,12 @@ body {
 }
 
 .MuiButton-root {
+  &[class*='MuiButton'] {
+    text-transform: initial;
+    letter-spacing: initial;
+    font-weight: initial;
+    white-space: nowrap;
+  }
   &.MuiButton-contained {
     &[data-dark] {
       background-color: $dark-blue;
