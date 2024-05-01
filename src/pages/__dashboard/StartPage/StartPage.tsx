@@ -8,6 +8,7 @@ import { NewsPage } from '../NewsPage/NewsPage';
 import { ProfilePage } from '../ProfilePage/ProfilePage';
 import { UserContext } from 'shared/context/UserContext';
 import { ComposeNews } from '../ComposeNews/ComposeNews';
+import { FilesPage } from '../FilesPage/FilesPage';
 
 export const StartPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   return (
@@ -22,6 +23,7 @@ export const StartPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
                 <Route path="news" element={<NewsPage />} />
                 <Route path="news/compose/" element={<ComposeNews />} />
                 <Route path="news/compose/:id" element={<ComposeNews />} />
+                <Route path="files" element={<FilesPage />} />
               </Route>
             </Routes>
           </BrowserRouter>

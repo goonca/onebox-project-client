@@ -11,6 +11,7 @@ export type ServicesType = {
   saveNews: (news: NewsModel) => any;
   getNewsById: (id: number) => any;
   getNews: () => any;
+  getFiles: () => any;
   logoff: () => any;
 };
 
@@ -19,6 +20,7 @@ enum uri {
   CREATE_USER = 'http://localhost:3002/user',
   SAVE_NEWS = 'http://localhost:3002/news',
   GET_NEWS = 'http://localhost:3002/news',
+  GET_FILES = 'http://localhost:3002/files',
   LOGOFF = 'http://localhost:3002/auth/logoff'
 }
 
@@ -69,6 +71,10 @@ export const useServices = (): ServicesType => {
     return await get(uri.GET_NEWS);
   };
 
+  const getFiles = async () => {
+    return await get(uri.GET_FILES);
+  };
+
   const logoff = async () => {
     return await post(uri.LOGOFF);
   };
@@ -79,6 +85,7 @@ export const useServices = (): ServicesType => {
     logoff,
     saveNews,
     getNewsById,
-    getNews
+    getNews,
+    getFiles
   };
 };

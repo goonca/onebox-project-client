@@ -1,0 +1,61 @@
+@import '~/src/shared/style/variables.scss';
+
+.drop-area {
+  min-height: 100px;
+  background-color: darken($color: $dashboard-background, $amount: 5);
+  border: 3px dashed darken($color: $dashboard-background, $amount: 15);
+  color: darken($color: $dashboard-background, $amount: 40);
+  position: relative;
+  padding: $space-2;
+  position: relative;
+
+  margin-bottom: $space-6;
+
+  > span {
+    pointer-events: none;
+    @include middle-center;
+  }
+
+  .file {
+    border: 1px solid darken($color: $dashboard-background, $amount: 10);
+    margin: $space-1;
+    display: inline-block;
+    padding: $space-2 $space-3;
+    border-radius: 20px;
+    background-color: darken($color: $dashboard-background, $amount: 10);
+    color: #444444;
+
+    .size {
+      font-weight: bold;
+      color: black;
+      margin-left: $space-1;
+    }
+
+    .invalid-message {
+      background-color: rgb(165, 87, 94);
+      color: white;
+      display: inline-block;
+      padding: 1px $space-3;
+      border-radius: 10px;
+      font-size: smaller;
+      margin-left: $space-2;
+    }
+  }
+
+  &.dragging {
+    border: 3px dashed darken($color: $dashboard-background, $amount: 30);
+    background-color: darken($color: $dashboard-background, $amount: 10);
+  }
+
+  .footer {
+    position: absolute;
+    right: $space-2;
+    bottom: $space-2;
+    button {
+      margin-left: $space-1;
+    }
+  }
+
+  .uploaded-files {
+  }
+}

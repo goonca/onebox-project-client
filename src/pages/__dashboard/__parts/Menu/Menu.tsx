@@ -1,8 +1,8 @@
 import style from './Menu.module.scss';
 import { MenuButton } from '../MenuButton/MenuButton';
 import {
+  faHardDrive,
   faHouse,
-  faImages,
   faNewspaper,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +22,7 @@ export const Menu = () => {
           selected={true}
         />
         <MenuButton label="News" icon={faNewspaper} path="news" />
-        <MenuButton label="Files" icon={faImages} path="news" />
+        <MenuButton label="Files" icon={faHardDrive} path="files" />
       </div>
     </>
   );

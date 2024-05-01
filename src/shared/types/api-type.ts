@@ -23,16 +23,17 @@ export type NewsModel = {
 };
 
 export type FileModel = {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  destination: string;
-  filename: string;
-  path: string;
-  size: number;
-  userId: number;
+  fieldname?: string;
+  originalname?: string;
+  encoding?: string;
+  mimetype?: string;
+  destination?: string;
+  filename?: string;
+  path?: string;
+  size?: number;
+  userId?: number;
   user?: UserModel;
+  createdAt?: Date;
 };
 
 export enum AccountType {

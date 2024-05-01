@@ -54,7 +54,7 @@ $editor-color: #dcdced;
 
 @mixin middle-center {
   transform: translate(-50%, -50%);
-  position: relative;
+  position: absolute;
   left: 50%;
   top: 50%;
 }
