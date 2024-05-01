@@ -1,38 +1,93 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import style from './ComposeNews.module.scss';
 import {
   Button,
-  FilledInput,
-  FormControl,
   FormControlLabel,
   FormGroup,
-  Input,
-  InputLabel,
-  OutlinedInput,
   Switch,
   TextField
 } from '@mui/material';
-import { NewsHeader } from 'components/compose/NewsHeader';
-import { useContext, useRef, useState } from 'react';
+import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { UserContext } from 'shared/context/UserContext';
+import { useServices, ResponseType } from 'shared/hooks/useServices';
 import { NewsModel } from 'shared/types/api-type';
 
 export const ComposeNews = () => {
   const { id } = useParams();
+  const currentUser = useContext(UserContext);
   const titleRef = useRef<HTMLInputElement>();
+  const headlineRef = useRef<HTMLInputElement>();
+  const showAuthorRef = useRef<HTMLInputElement>();
+  const showDaterRef = useRef<HTMLInputElement>();
+  const showBadgeRef = useRef<HTMLInputElement>();
+  const { saveNews, getNewsById } = useServices();
 
-  let [news, setNews] = useState<NewsModel>({
-    title: 'Title',
-    headline: 'Headline'
+  let currentNews: ResponseType = {};
+
+  const [news, setNews] = useState<NewsHeaderProps>({
+    title: '',
+    headline: '',
+    showAuthor: true,
+    showDate: true
   });
+
+  const getCurrentNews = (id: number) => {
+    getNewsById(id).then((r: any) => {
+      setNews(
+        r?.data ?? {
+          id,
+          title: 'Title',
+          headline: 'Headline',
+          user: currentUser,
+          userId: currentUser?.id,
+          createdAt: new Date(),
+          showAuthor: true,
+          showDate: true
+        }
+      );
+    });
+  };
+
+  const updateHeader = () => {
+    setNews({
+      ...news,
+      title: titleRef.current?.value,
+      headline: headlineRef.current?.value,
+      //user: currentUser,
+      //date: new Date(),
+      showAuthor: showAuthorRef.current?.checked,
+      showDate: showDaterRef.current?.checked
+    });
+  };
+
+  const createNews = (news: NewsModel) => {
+    const response = saveNews(news);
+    response.then((r: any) => {
+      setNews({ ...news, ...r.data[0] });
+      console.log(r);
+    });
+  };
+
+  useEffect(() => {
+    return getCurrentNews(id as unknown as number);
+  }, []);
   return (
     <>
       <div className={style['compose-news']}>
         <div className={style['header']}>
           <div>
-            <h2>Compose News</h2>
+            <h2>
+              <Link to="../news">News</Link> / Compose News
+            </h2>
           </div>
           <div>
-            <Button variant="contained">Save draft</Button>
+            <Button
+              variant="contained"
+              onClick={() => news && createNews(news)}
+            >
+              Save draft
+            </Button>
             <Button variant="contained">View</Button>
             <Button variant="contained" data-dark>
               Publish
@@ -41,23 +96,61 @@ export const ComposeNews = () => {
         </div>
         <div className={style['wrapper']}>
           <div className={style['left-side']}>
-            <TextField label="Title" multiline maxRows={4} />
+            <div className={style['content']}>
+              <TextField
+                inputRef={titleRef}
+                label="Title"
+                value={news?.title}
+                multiline
+                maxRows={4}
+                onChange={() => updateHeader()}
+              />
 
-            <TextField label="Headline" multiline maxRows={4} />
-            <FormGroup className={style['switchers']}>
-              <FormControlLabel
-                control={<Switch defaultChecked size="small" />}
-                label="Show author"
+              <TextField
+                inputRef={headlineRef}
+                label="Headline"
+                value={news?.headline}
+                multiline
+                maxRows={4}
+                onChange={() => updateHeader()}
               />
-              <FormControlLabel
-                control={<Switch defaultChecked size="small" />}
-                label="Show date"
-              />
-              <FormControlLabel
-                control={<Switch defaultChecked size="small" />}
-                label="Show badge"
-              />
-            </FormGroup>
+              <FormGroup className={style['switchers']}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      inputRef={showAuthorRef}
+                      checked={news?.showAuthor}
+                      size="small"
+                      onChange={() => updateHeader()}
+                    />
+                  }
+                  label="Show author"
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      inputRef={showDaterRef}
+                      checked={news?.showDate}
+                      size="small"
+                      onChange={() => updateHeader()}
+                    />
+                  }
+                  label="Show date"
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      disabled
+                      inputRef={showBadgeRef}
+                      checked={news?.showBadge}
+                      size="small"
+                      onChange={() => updateHeader()}
+                    />
+                  }
+                  label="Show badge"
+                />
+              </FormGroup>
+            </div>
           </div>
           <div className={style['right-side']}>
             <div>editor</div>

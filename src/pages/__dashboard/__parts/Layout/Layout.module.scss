@@ -21,12 +21,11 @@
       height: 30px;
       background-color: $dashboard-bg-dark;
       border-radius: 15px;
-      position: absolute;
+      position: fixed;
       left: 235px;
       transition: left 0.3s;
       top: 20px;
       box-shadow: $shadow-tiny;
-      position: relative;
       cursor: pointer;
 
       &:hover {
@@ -63,7 +62,7 @@
       }
       div[class*='_top_'] {
         label {
-          display: none;
+          opacity: 0;
         }
       }
       div[class*='_menu_'],

@@ -1,4 +1,5 @@
 export type UserModel = {
+  id?: number;
   name?: string;
   username?: string;
   password?: string;
@@ -6,14 +7,32 @@ export type UserModel = {
   accountType?: AccountType;
   lastLoginDate?: string;
   authToken?: string;
-  profileUrl: string;
+  profileUrl?: string;
 };
 
 export type NewsModel = {
-  title: string;
+  id?: number | string;
+  title?: string;
   headline?: string;
-  author?: UserModel;
-  date?: Date;
+  user?: UserModel;
+  createdAt?: Date;
+  showAuthor?: boolean;
+  showBadge?: boolean;
+  showDate?: boolean;
+  userId?: number;
+};
+
+export type FileModel = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
+  userId: number;
+  user?: UserModel;
 };
 
 export enum AccountType {

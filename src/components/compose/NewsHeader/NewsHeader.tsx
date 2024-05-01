@@ -1,9 +1,7 @@
 import style from './NewsHeader.module.scss';
 import { NewsModel } from 'shared/types/api-type';
 
-export type NewsHeaderProps = NewsModel & {
-  showAuthor?: false;
-};
+export type NewsHeaderProps = NewsModel;
 
 export const NewsHeader = (props: NewsHeaderProps) => {
   return (
@@ -12,20 +10,20 @@ export const NewsHeader = (props: NewsHeaderProps) => {
         <h1 className={style.bagde}>{props.title}</h1>
         {props.headline && <p>{props.headline}</p>}
         <div>
-          {props.author && (
+          {props.showAuthor && props.user && (
             <address>
               By
-              <a rel="author" href={props.author.profileUrl}>
-                {props.author.name ?? props.author.username}
+              <a rel="author" href={props.user?.profileUrl}>
+                {props.user?.name ?? props.user?.username}
               </a>
             </address>
           )}
-          {props.date && (
+          {props.showDate && props.createdAt && (
             <time
-              dateTime={props.date.toLocaleDateString()}
-              title={props.date.toDateString()}
+              dateTime={new Date(props.createdAt).toLocaleDateString()}
+              title={new Date(props.createdAt).toDateString()}
             >
-              {props.date.toLocaleString()}
+              {new Date(props.createdAt).toLocaleString()}
             </time>
           )}
         </div>

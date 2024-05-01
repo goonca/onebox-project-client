@@ -68,6 +68,9 @@ $editor-color: #dcdced;
       font-weight: lighter;
       color: #43425d;
       margin: 0;
+      a {
+        text-decoration: none;
+      }
     }
 
     > div:first-of-type {
