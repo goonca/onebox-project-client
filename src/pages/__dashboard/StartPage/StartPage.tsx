@@ -11,6 +11,8 @@ import { ComposeNews } from '../ComposeNews/ComposeNews';
 import { FilesPage } from '../FilesPage/FilesPage';
 
 export const StartPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
+  //fix this
+  document.body.style.backgroundColor = '#f0f0f7';
   return (
     <>
       <div className={style['start-page']} data-component="start-page">

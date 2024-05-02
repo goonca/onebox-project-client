@@ -4,15 +4,19 @@
   @include dashboard-section-header;
 
   .content {
+    display: flex;
+    flex-wrap: wrap;
+
     .tile {
       background-color: white;
       box-shadow: $shadow-tiny;
       border-radius: $space-tiny;
-      float: left;
       padding: $space-3;
       overflow: hidden;
       width: 25%;
       margin: $space-3;
+      display: flex;
+      flex-direction: column;
 
       p {
         margin: $space-1 0;
@@ -42,6 +46,10 @@
         font-size: smaller;
         color: $dark-gray;
         margin-bottom: $space-3;
+      }
+
+      .fix-height {
+        height: 100%;
       }
 
       a {

@@ -16,7 +16,7 @@ export default function Test() {
     }
 
     console.log(formData);
-    fetch('http://localhost:3002/file/upload', {
+    fetch('http://localhost:3002/files/upload', {
       method: 'POST',
       body: formData,
       credentials: 'include'

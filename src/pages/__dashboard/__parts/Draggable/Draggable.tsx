@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, CircularProgress, Link } from '@mui/material';
 import style from './Draggable.module.scss';
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -18,31 +18,43 @@ export const Draggable: React.FC<DraggableProps> = props => {
   const [uploading, setUploading] = useState<boolean>(false);
   const { readableSize } = useFile();
 
-  const submitForm = () => {
+  const openSelector = () => {
+    (
+      document.querySelector(
+        '#droppable input[type="file"]'
+      ) as HTMLInputElement
+    ).click();
+  };
+
+  const submitForm = async (files?: CustomFile[]) => {
     setUploading(true);
     const formData = new FormData();
 
-    blobFiles
-      ?.filter(file => !file.invalidMessage)
-      .forEach(file => {
-        formData.append('files', file);
-      });
+    files = files ?? blobFiles ?? [];
 
-    fetch('http://localhost:3002/files/upload', {
+    for (let i = 0; i < files.length; i++) {
+      //if (!files[i].invalidMessage) {
+      console.log(!files[i].invalidMessage?.length);
+      !files[i].invalidMessage?.length && formData.append('files', files[i]);
+      //};
+    }
+    await fetch('http://localhost:3002/files/upload', {
       method: 'POST',
       body: formData,
       credentials: 'include'
     }).then(res => {
-      props.onUpload && props.onUpload();
-      setBlobFiles(undefined);
-      setUploading(false);
+      setTimeout(() => {
+        props.onUpload && props.onUpload();
+        setBlobFiles(undefined);
+        setUploading(false);
+      }, 1000);
     });
   };
 
   const onDrop = useCallback((allFiles: CustomFile[]) => {
     allFiles = allFiles.slice(0, 5);
     const acceptedFiles: CustomFile[] = [];
-    console.log(allFiles);
+    //console.log(allFiles);
     //submitForm(acceptedFiles);
     //setBlobFiles(allFiles);
     allFiles.map(file => {
@@ -65,11 +77,10 @@ export const Draggable: React.FC<DraggableProps> = props => {
         /*const binaryStr = reader.result;
         console.log('binaryStr', binaryStr);*/
       };
-      const rFile = reader.readAsArrayBuffer(file);
+      //const rFile = reader.readAsArrayBuffer(file);
       acceptedFiles.push(file);
-      console.log(file);
     });
-    setBlobFiles(acceptedFiles);
+    setBlobFiles(allFiles);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -101,18 +112,31 @@ export const Draggable: React.FC<DraggableProps> = props => {
     setBlobFiles(undefined);
   };
 
-  const uploadAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const uploadAll = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    submitForm();
+    await submitForm();
   };
 
   return (
     <>
       <div className={style['content']}>
-        <div id="droppable" className={style['drop-area']} {...getRootProps()}>
+        <div
+          id="droppable"
+          className={style['drop-area']}
+          {...getRootProps()}
+          onClick={e => {
+            e.preventDefault();
+          }}
+        >
           <input {...getInputProps()} />
           {!blobFiles && (
-            <span>Drop some files here, or click to select them</span>
+            <div className={style['desc']}>
+              <p>
+                Drop some files here, or{' '}
+                <Link onClick={() => openSelector()}>click here to select</Link>
+              </p>
+              <small>Max 5 files at time / 5Mb each</small>
+            </div>
           )}
           <div className={style['uploaded-files']}>
             {blobFiles?.map((file: CustomFile) => {
@@ -141,15 +165,17 @@ export const Draggable: React.FC<DraggableProps> = props => {
                 >
                   Cancel
                 </Button>
-                <LoadingButton
-                  loading={uploading}
-                  data-dark
-                  size="small"
-                  variant="contained"
-                  onClick={e => uploadAll(e)}
-                >
-                  Upload
-                </LoadingButton>
+                {blobFiles.find(file => !file.invalidMessage?.length) && (
+                  <LoadingButton
+                    loading={uploading}
+                    data-dark
+                    size="small"
+                    variant="contained"
+                    onClick={async e => await uploadAll(e)}
+                  >
+                    Upload
+                  </LoadingButton>
+                )}
               </div>
             )}
           </div>

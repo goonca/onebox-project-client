@@ -8,12 +8,18 @@
   position: relative;
   padding: $space-2;
   position: relative;
-
+  z-index: 0;
   margin-bottom: $space-6;
 
-  > span {
-    pointer-events: none;
+  .desc {
+    text-align: center;
     @include middle-center;
+    p {
+      margin: 0;
+    }
+    a {
+      cursor: pointer;
+    }
   }
 
   .file {
@@ -24,6 +30,7 @@
     border-radius: 20px;
     background-color: darken($color: $dashboard-background, $amount: 10);
     color: #444444;
+    pointer-events: none;
 
     .size {
       font-weight: bold;
@@ -45,6 +52,11 @@
   &.dragging {
     border: 3px dashed darken($color: $dashboard-background, $amount: 30);
     background-color: darken($color: $dashboard-background, $amount: 10);
+
+    .desc,
+    .file {
+      pointer-events: none;
+    }
   }
 
   .footer {

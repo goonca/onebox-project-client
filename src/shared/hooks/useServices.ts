@@ -13,6 +13,7 @@ export type ServicesType = {
   getNews: () => any;
   getFiles: () => any;
   logoff: () => any;
+  deleteFile: (id: number) => any;
 };
 
 enum uri {
@@ -20,7 +21,7 @@ enum uri {
   CREATE_USER = 'http://localhost:3002/user',
   SAVE_NEWS = 'http://localhost:3002/news',
   GET_NEWS = 'http://localhost:3002/news',
-  GET_FILES = 'http://localhost:3002/files',
+  FILES = 'http://localhost:3002/files',
   LOGOFF = 'http://localhost:3002/auth/logoff'
 }
 
@@ -52,6 +53,19 @@ export const useServices = (): ServicesType => {
     return content;
   };
 
+  const remove = async (url: string) => {
+    const rawResponse = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    const content = await rawResponse.json();
+    return content;
+  };
+
   const authenticate = async (user: UserModel) => {
     return await post(uri.AUTH, user);
   };
@@ -72,7 +86,11 @@ export const useServices = (): ServicesType => {
   };
 
   const getFiles = async () => {
-    return await get(uri.GET_FILES);
+    return await get(uri.FILES);
+  };
+
+  const deleteFile = async (id: number) => {
+    return await remove(`${uri.FILES}/${id}`);
   };
 
   const logoff = async () => {
@@ -86,6 +104,7 @@ export const useServices = (): ServicesType => {
     saveNews,
     getNewsById,
     getNews,
-    getFiles
+    getFiles,
+    deleteFile
   };
 };

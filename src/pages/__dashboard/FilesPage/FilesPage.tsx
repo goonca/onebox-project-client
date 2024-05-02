@@ -1,15 +1,14 @@
-import { Link } from '@mui/material';
+import { Button, Link } from '@mui/material';
 import style from './FilesPage.module.scss';
 import { FileModel } from 'shared/types/api-type';
 import { useServices } from 'shared/hooks/useServices';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMoment } from 'shared/hooks/useMoment';
 import { Draggable } from '../__parts/Draggable/Draggable';
 import { useFile } from 'shared/hooks/useFile';
 
 export const FilesPage = () => {
-  const dragAreRef = useRef<HTMLDivElement>(null);
-  const { getFiles } = useServices();
+  const { getFiles, deleteFile } = useServices();
   const [files, setFiles] = useState<FileModel[]>();
   const { toDateTimeString } = useMoment();
   const { readableSize } = useFile();
@@ -19,9 +18,19 @@ export const FilesPage = () => {
     setFiles(files.data);
   };
 
+  const removeFile = async (id: number) => {
+    await deleteFile(id).then((r: any) => {
+      listFiles();
+    });
+  };
+
   useEffect(() => {
     listFiles();
   }, []);
+
+  const onUpload = () => {
+    listFiles();
+  };
 
   return (
     <>
@@ -31,24 +40,32 @@ export const FilesPage = () => {
             <h2>Files</h2>
           </div>
         </div>
-        <Draggable />
+        <Draggable onUpload={() => onUpload()} />
         <div className={style['content']}>
           {files &&
             files.map(file => {
               return (
-                <div className={style['tile']}>
+                <div className={style['tile']} key={file.id}>
                   <img
                     width={200}
                     src={`http://localhost:3002/files/${file.originalname}`}
                   />
                   <p className={style['name']}>{file.originalname}</p>
-                  <p className={style['size']}>
-                    {readableSize(file.size as number)}
-                  </p>
+                  <div>
+                    <p className={style['size']}>
+                      {readableSize(file.size as number)}
+                    </p>
+                  </div>
                   <p className={style['date']}>
                     {toDateTimeString(file.createdAt)}
                   </p>
-                  <Link>Delete</Link>
+                  <div className={style['fix-height']}></div>
+                  <Button
+                    variant="outlined"
+                    onClick={async () => await removeFile(file.id as number)}
+                  >
+                    Delete
+                  </Button>
                 </div>
               );
             })}

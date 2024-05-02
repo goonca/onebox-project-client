@@ -23,6 +23,7 @@ export type NewsModel = {
 };
 
 export type FileModel = {
+  id?: number;
   fieldname?: string;
   originalname?: string;
   encoding?: string;
