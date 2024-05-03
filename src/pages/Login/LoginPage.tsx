@@ -1,7 +1,7 @@
 import style from './LoginPage.module.scss';
 import { PageProps } from 'shared/types/PagePropsType';
-import { NotLogged } from './parts/NotLogged';
-import { Logged } from './parts/Logged';
+import { NotLogged } from './__parts/NotLogged';
+import { Logged } from './__parts/Logged';
 import { useState } from 'react';
 
 const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {

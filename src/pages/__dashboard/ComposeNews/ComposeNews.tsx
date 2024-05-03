@@ -12,6 +12,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useServices, ResponseType } from 'shared/hooks/useServices';
 import { NewsModel } from 'shared/types/api-type';
+import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -84,12 +85,15 @@ export const ComposeNews = () => {
           <div>
             <Button
               variant="contained"
+              size="small"
               onClick={() => news && createNews(news)}
             >
               Save draft
             </Button>
-            <Button variant="contained">View</Button>
-            <Button variant="contained" data-dark>
+            <Button variant="contained" size="small">
+              View
+            </Button>
+            <Button variant="contained" size="small" data-dark>
               Publish
             </Button>
           </div>
@@ -156,6 +160,7 @@ export const ComposeNews = () => {
             <div>editor</div>
             <div className={style['content']}>
               <NewsHeader {...news}></NewsHeader>
+              <FreeEditor></FreeEditor>
             </div>
           </div>
         </div>

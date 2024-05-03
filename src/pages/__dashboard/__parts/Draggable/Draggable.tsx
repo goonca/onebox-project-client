@@ -28,8 +28,6 @@ export const Draggable = forwardRef(function Draggable(
   props: DraggableProps,
   ref
 ) {
-  const inputRef = useRef(null);
-
   useImperativeHandle(
     ref,
     () => {
@@ -72,8 +70,8 @@ export const Draggable = forwardRef(function Draggable(
       !files[i].invalidMessage?.length && formData.append('files', files[i]);
       //};
     }
-    console.log('formData', formData);
-    await fetch('http://localhost:3002/files/upload', {
+
+    await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + '/files/upload', {
       method: 'POST',
       body: formData,
       credentials: 'include'
@@ -190,7 +188,7 @@ export const Draggable = forwardRef(function Draggable(
             <>
               <img
                 className={style['preview']}
-                src={`http://localhost:3002/files/${previewFile.filename}`}
+                src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${previewFile.filename}`}
               />
             </>
           )}

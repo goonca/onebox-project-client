@@ -21,13 +21,13 @@ const nextConfig = {
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
-  },
+  } /*,
   serverRuntimeConfig: {
-    REACT_APP_BASE_URL: process.env
+    APP_BASE_URL: process.env.APP_BASE_URL
   },
   publicRuntimeConfig: {
-    REACT_APP_BASE_URL: process.env.REACT_APP_BASE_URL
-  }
+    APP_BASE_URL: process.env.APP_BASE_URL
+  }*/
 };
 
 module.exports = nextConfig;

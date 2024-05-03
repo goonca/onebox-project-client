@@ -48,7 +48,7 @@ export const FilesPage = () => {
                 <div className={style['tile']} key={file.id}>
                   <img
                     width={200}
-                    src={`http://localhost:3002/files/${file.originalname}`}
+                    src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${file.originalname}`}
                   />
                   <p className={style['name']}>{file.originalname}</p>
                   <div>

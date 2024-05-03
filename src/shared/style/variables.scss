@@ -69,7 +69,9 @@ $editor-color: #dcdced;
       color: #43425d;
       margin: 0;
       a {
-        text-decoration: none;
+        //text-decoration: none;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
       }
     }
 
@@ -80,6 +82,10 @@ $editor-color: #dcdced;
       display: flex;
       gap: $space-1;
       line-break: nowrap;
+
+      button {
+        min-width: 90px;
+      }
     }
   }
 }

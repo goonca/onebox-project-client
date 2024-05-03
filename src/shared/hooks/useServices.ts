@@ -16,54 +16,38 @@ export type ServicesType = {
   deleteFile: (id: number) => any;
 };
 
-enum uri {
-  AUTH = 'http://localhost:3002/auth',
-  CREATE_USER = 'http://localhost:3002/user',
-  SAVE_NEWS = 'http://localhost:3002/news',
-  GET_NEWS = 'http://localhost:3002/news',
-  FILES = 'http://localhost:3002/files',
-  LOGOFF = 'http://localhost:3002/auth/logoff'
-}
-
 export const useServices = (): ServicesType => {
-  const post = async (url: string, data?: unknown) => {
+  const uri = {
+    AUTH: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth`,
+    USER: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/user`,
+    NEWS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news`,
+    FILES: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files`
+  };
+
+  const _fetch = async (method: string, url: string, data?: unknown) => {
     const rawResponse = await fetch(url, {
-      method: 'POST',
+      method: method,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       credentials: 'include',
-      body: JSON.stringify(data)
+      ...(data ? { body: JSON.stringify(data) } : {})
     });
     const content = await rawResponse.json();
     return content;
+  };
+
+  const post = async (url: string, data?: unknown) => {
+    return await _fetch('POST', url, data);
   };
 
   const get = async (url: string) => {
-    const rawResponse = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-    const content = await rawResponse.json();
-    return content;
+    return await _fetch('GET', url);
   };
 
   const remove = async (url: string) => {
-    const rawResponse = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    });
-    const content = await rawResponse.json();
-    return content;
+    return await _fetch('DELETE', url);
   };
 
   const authenticate = async (user: UserModel) => {
@@ -71,18 +55,18 @@ export const useServices = (): ServicesType => {
   };
 
   const saveUser = async (user: UserModel) => {
-    return await post(uri.CREATE_USER, user);
+    return await post(uri.USER, user);
   };
   const saveNews = async (news: NewsModel) => {
-    return await post(uri.SAVE_NEWS, news);
+    return await post(uri.NEWS, news);
   };
 
   const getNewsById = async (id: number) => {
-    return await get(`${uri.GET_NEWS}/${id}`);
+    return await get(`${uri.NEWS}/${id}`);
   };
 
   const getNews = async () => {
-    return await get(uri.GET_NEWS);
+    return await get(uri.NEWS);
   };
 
   const getFiles = async () => {
@@ -94,7 +78,7 @@ export const useServices = (): ServicesType => {
   };
 
   const logoff = async () => {
-    return await post(uri.LOGOFF);
+    return await post(`${uri.AUTH}/logoff`);
   };
 
   return {
