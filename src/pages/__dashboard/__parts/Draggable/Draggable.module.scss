@@ -5,11 +5,16 @@
   background-color: darken($color: $dashboard-background, $amount: 5);
   border: 3px dashed darken($color: $dashboard-background, $amount: 15);
   color: darken($color: $dashboard-background, $amount: 40);
-  position: relative;
   padding: $space-2;
   position: relative;
   z-index: 0;
   margin-bottom: $space-6;
+  text-align: center;
+
+  .preview {
+    max-height: 300px;
+    max-width: 40vw;
+  }
 
   .desc {
     text-align: center;
@@ -31,6 +36,13 @@
     background-color: darken($color: $dashboard-background, $amount: 10);
     color: #444444;
     pointer-events: none;
+
+    > p {
+      text-overflow: ellipsis;
+      max-width: 50vw;
+      overflow: hidden;
+      margin: 0;
+    }
 
     .size {
       font-weight: bold;
@@ -63,6 +75,11 @@
     position: absolute;
     right: $space-2;
     bottom: $space-2;
+
+    .loadingIndicator {
+      color: white;
+    }
+
     button {
       margin-left: $space-1;
     }

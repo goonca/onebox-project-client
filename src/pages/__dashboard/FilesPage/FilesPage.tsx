@@ -40,7 +40,7 @@ export const FilesPage = () => {
             <h2>Files</h2>
           </div>
         </div>
-        <Draggable onUpload={() => onUpload()} />
+        <Draggable onUpload={() => onUpload()} showPreview={false} />
         <div className={style['content']}>
           {files &&
             files.map(file => {
