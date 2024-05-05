@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Quote } from './Quote';
+import { Text } from './Text';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Components/Quote',
-  component: Quote,
+  title: 'Components/Text',
+  component: Text,
   parameters: {
     layout: 'centered'
   },
@@ -16,7 +16,7 @@ const meta = {
       name: 'Text'
     }
   }
-} satisfies Meta<typeof Quote>;
+} satisfies Meta<typeof Text>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

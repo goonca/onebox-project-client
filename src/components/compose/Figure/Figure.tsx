@@ -1,14 +1,16 @@
 import { FigureFitType } from 'shared/types';
 import style from './Figure.module.scss';
+import React from 'react';
 
 export type FigureProps = {
-  src: string;
+  src?: string;
   caption?: string;
   fitType?: FigureFitType;
   width?: string;
+  height?: string;
 };
 
-export const Figure = (props: FigureProps) => {
+export const Figure: React.FC<FigureProps> = (props: FigureProps) => {
   return (
     <>
       <figure
@@ -17,8 +19,9 @@ export const Figure = (props: FigureProps) => {
         style={{ width: props.width }}
       >
         <img
-          src={props.src}
+          src={props.src ?? '/static/default-picture.svg'}
           width="100%"
+          height={props.height}
           style={{ objectFit: props.fitType }}
         ></img>
         {props.caption && <figcaption>{props.caption}</figcaption>}

@@ -3,34 +3,55 @@
 .compose-news {
   @include dashboard-section-header;
 
+  .draft-message {
+    border: 1px solid darken($color: $warning-color, $amount: 40);
+    background-color: $warning-color;
+    border-radius: 3px;
+    margin-bottom: $space-4;
+    padding: $space-1 $space-3;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    column-gap: $space-2;
+    align-items: center;
+
+    button {
+      color: black;
+      margin: 0;
+      padding: 5px;
+      min-width: unset;
+    }
+
+    p {
+      margin: 0;
+      color: darken($color: $warning-color, $amount: 70);
+      width: 100%;
+    }
+
+    a {
+      cursor: pointer;
+    }
+
+    span {
+      white-space: nowrap;
+    }
+  }
+
   .wrapper {
     display: flex;
     gap: $space-2;
 
     .left-side {
+      display: flex;
+      flex-direction: column;
+      row-gap: $space-4;
+
       > .content {
-        width: 200px;
+        width: 220px;
         background-color: white;
         box-shadow: $shadow-tiny;
         border-radius: $space-tiny;
-        display: flex;
-        flex-direction: column;
-        gap: $space-4;
-        padding: $space-5 $space-2;
         color: #666666;
-
-        .switchers {
-          display: flex;
-          row-gap: $space-1;
-          padding-left: $space-2;
-        }
-
-        * {
-          font-size: 14px;
-          legend span {
-            padding: 0;
-          }
-        }
       }
     }
 
@@ -40,6 +61,27 @@
       background-color: white;
       box-shadow: $shadow-tiny;
       border-radius: $space-tiny;
+      min-height: 70vh;
+
+      position: relative;
+
+      .overlay {
+        position: absolute;
+        top: 16px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        background-color: black;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        z-index: 10;
+
+        &.visible {
+          opacity: 0.35;
+          pointer-events: unset;
+        }
+      }
 
       > div:first-of-type {
         background-color: $editor-color;
@@ -50,7 +92,10 @@
       }
 
       > .content {
-        padding: $space-3;
+        padding: $space-3 $space-1;
+        .header {
+          padding: 0 $space-2;
+        }
       }
     }
   }

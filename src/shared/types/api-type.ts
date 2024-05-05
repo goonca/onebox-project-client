@@ -1,3 +1,5 @@
+import { EditorComponentType } from 'src/pages/__dashboard/ComposeNews/__parts/FreeEditor/FreeEditor';
+
 export type UserModel = {
   id?: number;
   name?: string;
@@ -20,6 +22,7 @@ export type NewsModel = {
   showBadge?: boolean;
   showDate?: boolean;
   userId?: number;
+  components?: EditorComponentType[];
 };
 
 export type FileModel = {
