@@ -37,7 +37,6 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
       props: {}
     };
     components?.splice(position, 0, { type, position });
-    console.log('components', components);
     props.onChange && props.onChange(components);
 
     //console.log(position, name);

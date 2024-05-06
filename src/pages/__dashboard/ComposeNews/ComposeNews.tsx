@@ -2,10 +2,10 @@ import { Link, useParams } from 'react-router-dom';
 import style from './ComposeNews.module.scss';
 import { Button, Link as UILink } from '@mui/material';
 import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useServices } from 'shared/hooks/useServices';
-import { NewsModel, UserModel } from 'shared/types/api-type';
+import { NewsModel } from 'shared/types/api-type';
 import {
   EditorComponentType,
   FreeEditor
@@ -14,38 +14,27 @@ import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { debounce } from 'shared/utils/debounceUtils';
+import { getEmptyNews } from 'shared/utils/newsUtils';
 
 export const ComposeNews = () => {
   const { id } = useParams();
   const currentUser = useContext(UserContext);
   const { saveNews, getNewsById } = useServices();
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
-  const [initialComponents, setInitialComponents] =
-    useState<EditorComponentType[]>();
+  const [isDiscarding, setIsDiscaring] = useState<boolean>(true);
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
-  const [news, setNews] = useState<NewsHeaderProps>({
-    title: '',
-    headline: '',
-    showAuthor: true,
-    showDate: true
-  });
+  const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
 
-  const { setLocalStorage, getLocalStorage, removeLocalStorage } =
+  const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
 
-  const emptyNews: NewsModel = {
-    id,
-    title: 'Title',
-    headline: 'Headline',
-    user: currentUser,
-    userId: currentUser?.id,
-    createdAt: new Date(),
-    showAuthor: true,
-    showDate: true,
-    components: []
-  };
+  const saveDraft = debounce(
+    (n: NewsModel | undefined) => setLocalStorage(n),
+    1000
+  );
 
-  const getCurrentNews = (id: number) => {
+  const getCurrentNews = useCallback((id: number) => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
 
     getNewsById(id).then((r: any) => {
@@ -54,10 +43,7 @@ export const ComposeNews = () => {
             ...r?.data.news,
             components: r?.data.components
           }
-        : emptyNews;
-
-      //console.log(r?.data.components);
-      setInitialComponents(r?.data.components);
+        : getEmptyNews(currentUser, id);
 
       if (draft) {
         setNews(draft);
@@ -66,38 +52,48 @@ export const ComposeNews = () => {
         setNews(news);
       }
     });
-  };
+  }, []);
 
   const updateHeader = (header?: NewsHeaderProps) => {
-    setNews({
+    const _news = {
       ...news,
       ...header
-    });
+    };
+    setNews(_news);
+    saveDraft(_news);
   };
 
-  const createNews = (news: NewsModel) => {
+  const createNews = useCallback((news: NewsModel) => {
     const response = saveNews(news);
     response.then((r: any) => {
-      setNews({ ...news, ...r.data[0] });
+      const resNews = r.data[0];
+      setIsDiscaring(true);
+      setNews({ ...news, ...resNews });
+      initialise(resNews.id?.toString() ?? 'undefined');
       removeLocalStorage();
       hideDraftMessage();
-      //console.log(r);
+      history.replaceState(
+        {},
+        '',
+        document.location.pathname + '/' + resNews.id
+      );
     });
-  };
+  }, []);
 
   const onComponentsOpen = (opened: boolean) => {
     setComponentsOpened(opened);
   };
 
   const onComponentsChange = (components?: EditorComponentType[]) => {
-    news.components = components ?? [];
-    components && setLocalStorage(news);
+    const _news = { ...news, components: [...(components ?? [])] };
+    setNews(_news);
+    saveDraft(_news);
   };
 
   const discardDraft = () => {
+    setIsDiscaring(true);
     removeLocalStorage();
     hideDraftMessage();
-    news.components = initialComponents;
     getCurrentNews(id as unknown as number);
   };
 
@@ -108,6 +104,16 @@ export const ComposeNews = () => {
   useEffect(() => {
     return getCurrentNews(id as unknown as number);
   }, []);
+
+  /*useEffect(() => {
+    console.log('change news', news);
+    if (isDiscarding) {
+      setIsDiscaring(!isDiscarding);
+      return;
+    }
+    console.log('saved');
+    saveDraft();
+  }, [news]);*/
 
   return (
     <>

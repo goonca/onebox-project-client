@@ -14,16 +14,23 @@ export const NewsPage = () => {
   const searchRef = useRef<HTMLInputElement>();
   const { getNews } = useServices();
   const navigate = useNavigate();
-  const { toDateTimeString } = useMoment();
+  const { twoLinesDate } = useMoment();
 
   const [news, setNews] = useState<NewsModel[]>();
+
+  const localStorageKeys = Object.keys(localStorage);
+
+  const getUnsavedNewDraft = () => {
+    const draft = localStorage.getItem('draft-undefined');
+    return draft && JSON.parse(draft);
+  };
 
   const composeNews = () => {
     navigate('/dashboard/news/compose');
   };
 
   const editNews = (id: number) => {
-    navigate('/dashboard/news/compose/' + id);
+    navigate('/dashboard/news/compose' + (id ? '/' + id : ''));
   };
 
   const listNews = async () => {
@@ -34,6 +41,9 @@ export const NewsPage = () => {
   useEffect(() => {
     listNews();
   }, []);
+
+  const unsavedDraft = getUnsavedNewDraft();
+  unsavedDraft && news?.unshift(unsavedDraft);
 
   return (
     <>
@@ -62,9 +72,9 @@ export const NewsPage = () => {
         </div>
 
         <div className={style['wrapper']}>
-          <div className={style['left-side']}>
+          {/*<div className={style['left-side']}>
             <div className={style['content']}>.</div>
-          </div>
+          </div>*/}
           <div className={style['right-side']}>
             <div className={style['content']}>
               <table cellSpacing={0}>
@@ -78,15 +88,36 @@ export const NewsPage = () => {
                 <tbody>
                   {news &&
                     news?.map(n => {
+                      const dateInLines = n.createdAt
+                        ? twoLinesDate(n.createdAt)
+                        : [];
+                      const draftBadge = localStorageKeys.includes(
+                        'draft-' + n.id
+                      );
+                      const hasBadges = !!draftBadge;
                       return (
                         <tr key={n.id} onClick={() => editNews(n.id as number)}>
                           <td></td>
                           <td width="100%">
+                            {hasBadges && (
+                              <div className={style['badges']}>
+                                {draftBadge && (
+                                  <span className={style['draft-badge']}>
+                                    unsaved changes
+                                  </span>
+                                )}
+                              </div>
+                            )}
                             <h1>{n.title}</h1>
                             <p>{n.headline}</p>
                           </td>
                           <td className={style['date']}>
-                            {toDateTimeString(n.createdAt)}
+                            {dateInLines.length && (
+                              <>
+                                <div>{dateInLines[0]}</div>
+                                <div>{dateInLines[1]}</div>
+                              </>
+                            )}
                           </td>
                         </tr>
                       );

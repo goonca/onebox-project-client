@@ -4,6 +4,7 @@ export type UseLocalStorageResponse<T> = {
   setLocalStorage: (value: T) => void;
   getLocalStorage: () => T | string | undefined | null;
   removeLocalStorage: () => void;
+  initialise: (key: string) => void;
 };
 
 export const useLocalStorage = <T>(
@@ -40,7 +41,6 @@ export const useLocalStorage = <T>(
 
   const getLocalStorage = () => {
     const item = localStorage.getItem(key);
-    console.log(item);
     return item ? JSON.parse(item) : item;
   };
   const setLocalStorage = (value: T) => {
@@ -50,5 +50,5 @@ export const useLocalStorage = <T>(
     localStorage.removeItem(key);
   };
 
-  return { setLocalStorage, getLocalStorage, removeLocalStorage };
+  return { setLocalStorage, getLocalStorage, removeLocalStorage, initialise };
 };

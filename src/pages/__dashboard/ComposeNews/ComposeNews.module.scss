@@ -92,7 +92,12 @@
       }
 
       > .content {
+        margin: auto;
         padding: $space-3 $space-1;
+        width: 90%;
+        max-width: 750px;
+        min-width: unset;
+
         .header {
           padding: 0 $space-2;
         }
