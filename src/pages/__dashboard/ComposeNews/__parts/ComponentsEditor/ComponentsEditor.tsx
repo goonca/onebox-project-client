@@ -1,8 +1,8 @@
 import style from './ComponentsEditor.module.scss';
-import { ComponentName } from '../FreeEditor/FreeEditor';
+import { ComponentType } from '../FreeEditor/FreeEditor';
 
 type ComponentsEditorProps = {
-  onAddComponent: (componentName: ComponentName) => void;
+  onAddComponent: (componentType: ComponentType) => void;
 };
 
 const selectComponent = () => {};

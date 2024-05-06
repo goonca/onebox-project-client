@@ -5,7 +5,7 @@ import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useServices } from 'shared/hooks/useServices';
-import { NewsModel } from 'shared/types/api-type';
+import { NewsModel, UserModel } from 'shared/types/api-type';
 import {
   EditorComponentType,
   FreeEditor
@@ -20,6 +20,8 @@ export const ComposeNews = () => {
   const currentUser = useContext(UserContext);
   const { saveNews, getNewsById } = useServices();
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
+  const [initialComponents, setInitialComponents] =
+    useState<EditorComponentType[]>();
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
   const [news, setNews] = useState<NewsHeaderProps>({
     title: '',
@@ -28,8 +30,8 @@ export const ComposeNews = () => {
     showDate: true
   });
 
-  const { storedValue, setInLocalStorage, removeFromLocalStorage } =
-    useLocalStorage<NewsModel>('draft-' + id);
+  const { setLocalStorage, getLocalStorage, removeLocalStorage } =
+    useLocalStorage<NewsModel | undefined>('draft-' + id);
 
   const emptyNews: NewsModel = {
     id,
@@ -39,20 +41,31 @@ export const ComposeNews = () => {
     userId: currentUser?.id,
     createdAt: new Date(),
     showAuthor: true,
-    showDate: true
+    showDate: true,
+    components: []
   };
 
   const getCurrentNews = (id: number) => {
-    const draft: NewsModel = storedValue as NewsModel;
+    const draft: NewsModel = getLocalStorage() as NewsModel;
 
-    if (draft) {
-      setNews(draft);
-      setShowDraftMessage(true);
-    } else {
-      getNewsById(id).then((r: any) => {
-        setNews(r?.data ?? emptyNews);
-      });
-    }
+    getNewsById(id).then((r: any) => {
+      const news: NewsModel = id
+        ? {
+            ...r?.data.news,
+            components: r?.data.components
+          }
+        : emptyNews;
+
+      //console.log(r?.data.components);
+      setInitialComponents(r?.data.components);
+
+      if (draft) {
+        setNews(draft);
+        setShowDraftMessage(true);
+      } else {
+        setNews(news);
+      }
+    });
   };
 
   const updateHeader = (header?: NewsHeaderProps) => {
@@ -66,7 +79,9 @@ export const ComposeNews = () => {
     const response = saveNews(news);
     response.then((r: any) => {
       setNews({ ...news, ...r.data[0] });
-      console.log(r);
+      removeLocalStorage();
+      hideDraftMessage();
+      //console.log(r);
     });
   };
 
@@ -76,14 +91,14 @@ export const ComposeNews = () => {
 
   const onComponentsChange = (components?: EditorComponentType[]) => {
     news.components = components ?? [];
-    components && setInLocalStorage(news);
+    components && setLocalStorage(news);
   };
 
   const discardDraft = () => {
-    removeFromLocalStorage();
-    news.components = [];
-    getCurrentNews(id as unknown as number);
+    removeLocalStorage();
     hideDraftMessage();
+    news.components = initialComponents;
+    getCurrentNews(id as unknown as number);
   };
 
   const hideDraftMessage = () => {
@@ -126,11 +141,11 @@ export const ComposeNews = () => {
                 <FontAwesomeIcon icon={faClose} />
               </Button>
             </span>
-            <p>This is an unsaved draft for this news</p>
+            <p>There are unsaved changes for this draft</p>
             <span>
-              <UILink onClick={hideDraftMessage}>Keep draft</UILink>
+              <UILink onClick={hideDraftMessage}>Keep changes</UILink>
               &nbsp;&nbsp;|&nbsp;&nbsp;
-              <UILink onClick={discardDraft}>Discard draft</UILink>
+              <UILink onClick={discardDraft}>Discard changes</UILink>
             </span>
           </div>
         )}

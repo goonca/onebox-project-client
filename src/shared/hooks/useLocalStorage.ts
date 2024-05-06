@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 
 export type UseLocalStorageResponse<T> = {
-  storedValue: T | string | undefined;
-  setInLocalStorage: (value: T) => void;
-  removeFromLocalStorage: () => void;
+  setLocalStorage: (value: T) => void;
+  getLocalStorage: () => T | string | undefined | null;
+  removeLocalStorage: () => void;
 };
 
 export const useLocalStorage = <T>(
@@ -36,35 +36,19 @@ export const useLocalStorage = <T>(
     }
   };
 
-  const [storedValue, setStoredValue] = useState<T | string | undefined>(
-    initialise(key)
-  );
+  initialise(key);
 
-  const setInLocalStorage = useCallback(
-    (value: T) => {
-      try {
-        const valueToStore =
-          typeof value === 'object' ? JSON.stringify(value) : String(value);
+  const getLocalStorage = () => {
+    const item = localStorage.getItem(key);
+    console.log(item);
+    return item ? JSON.parse(item) : item;
+  };
+  const setLocalStorage = (value: T) => {
+    localStorage.setItem(key, JSON.stringify(value));
+  };
+  const removeLocalStorage = () => {
+    localStorage.removeItem(key);
+  };
 
-        if (valueToStore !== 'undefined') {
-          localStorage.setItem(key, valueToStore);
-          setStoredValue(value);
-        }
-      } catch (error) {
-        // For security get all errors. Do not need to do anything
-      }
-    },
-    [key]
-  );
-
-  const removeFromLocalStorage = useCallback(() => {
-    try {
-      localStorage.removeItem(key);
-      setStoredValue(undefined);
-    } catch (error) {
-      // For security get all errors. Do not need to do anything
-    }
-  }, [key]);
-
-  return { storedValue, setInLocalStorage, removeFromLocalStorage };
+  return { setLocalStorage, getLocalStorage, removeLocalStorage };
 };

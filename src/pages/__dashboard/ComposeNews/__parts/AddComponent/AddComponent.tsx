@@ -3,11 +3,11 @@ import style from './AddComponent.module.scss';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { ComponentsEditor } from '../ComponentsEditor/ComponentsEditor';
-import { ComponentName, EditorComponentType } from '../FreeEditor/FreeEditor';
+import { ComponentType } from '../FreeEditor/FreeEditor';
 
 type AddComponentProps = {
   onOpen?: (opened: boolean) => void;
-  onAddComponent: (position: number, name: ComponentName) => void;
+  onAddComponent: (position: number, type: ComponentType) => void;
   position: number;
 };
 
@@ -20,9 +20,9 @@ export const AddComponent: React.FC<AddComponentProps> = (
     props?.onOpen && props.onOpen(!opened);
   };
 
-  const addComponent = (name: ComponentName) => {
+  const addComponent = (type: ComponentType) => {
     toggleOpened();
-    props?.onAddComponent(props?.position, name);
+    props?.onAddComponent(props?.position, type);
   };
 
   return (

@@ -1,6 +1,5 @@
-// @ts-nocheck.s
-import { Figure, FigureProps } from 'components/compose/Figure';
-import { Quote, QuoteProps } from 'components/compose/Quote';
+import { FigureProps } from 'components/compose/Figure';
+import { QuoteProps } from 'components/compose/Quote';
 import style from './FreeEditor.module.scss';
 import React, { useEffect, useState } from 'react';
 import { AddComponent } from '../AddComponent/AddComponent';
@@ -8,9 +7,10 @@ import { TextProps } from 'components/compose/Text';
 import { useComponent } from 'shared/hooks/useComponent';
 
 export type ComponentProps = FigureProps | QuoteProps | TextProps;
-export type ComponentName = 'Figure' | 'Quote' | 'Text';
+export type ComponentType = 'Figure' | 'Quote' | 'Text';
 export type EditorComponentType = {
-  name: ComponentName;
+  type: ComponentType;
+  position?: number;
   props?: ComponentProps;
 };
 
@@ -25,18 +25,19 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   props: ComponentEditProps
 ) => {
   const [components, setCompoenents] = useState<EditorComponentType[]>();
-  const { getComponentByName } = useComponent();
+  const { getComponentByType } = useComponent();
 
   const onOpen = (opened: boolean) => {
     props.onComponentsOpen && props.onComponentsOpen(opened);
   };
 
-  const onAddComponent = (position: number, name: ComponentName) => {
+  const onAddComponent = (position: number, type: ComponentType) => {
     const component = {
-      name,
+      type,
       props: {}
     };
-    components?.splice(position, 0, { name });
+    components?.splice(position, 0, { type, position });
+    console.log('components', components);
     props.onChange && props.onChange(components);
 
     //console.log(position, name);
@@ -56,8 +57,8 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
             onAddComponent={onAddComponent}
           />
           {components?.map((c, index) => {
-            let node = getComponentByName(c.name);
-            //@ts-ignores
+            let node = getComponentByType(c.type);
+            //@ts-ignore
             const element = React.createElement(node, c.props);
             return (
               <div key={index}>

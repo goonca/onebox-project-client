@@ -2,19 +2,19 @@ import { Figure } from 'components/compose/Figure';
 import { Quote } from 'components/compose/Quote';
 import { Text } from 'components/compose/Text';
 import {
-  ComponentName,
+  ComponentType,
   EditorComponentType
 } from 'src/pages/__dashboard/ComposeNews/__parts/FreeEditor/FreeEditor';
 
-export type ComponentType = {
-  getComponentByName: (name: ComponentName) => EditorComponentType;
+export type UseComponentType = {
+  getComponentByType: (type: ComponentType) => EditorComponentType;
 };
 
-export const useComponent = (): ComponentType => {
-  const getComponentByName = (name: ComponentName): any => {
+export const useComponent = () => {
+  const getComponentByType = (type: ComponentType): any => {
     let node: any;
 
-    switch (name) {
+    switch (type) {
       case 'Figure':
         node = Figure;
 
@@ -32,5 +32,5 @@ export const useComponent = (): ComponentType => {
     return node;
   };
 
-  return { getComponentByName };
+  return { getComponentByType };
 };

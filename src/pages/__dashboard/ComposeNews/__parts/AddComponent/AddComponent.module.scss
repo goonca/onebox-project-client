@@ -1,11 +1,12 @@
 @import '~/src/shared/style/variables.scss';
 
 $border-color: #efefef;
-$border-color-hover: lightgray;
+$border-color-hover: rgb(189, 189, 189);
 
 .add-component {
   position: relative;
-  height: 0px;
+  height: 13px;
+  padding-top: 6px;
 
   &.opened {
     z-index: 20;
@@ -24,15 +25,18 @@ $border-color-hover: lightgray;
     }
   }
 
-  /*&:hover {
-    .wrapper {
-      border: 1px solid $border-color-hover;
+  &:hover {
+    .half-circle {
+      border-color: $border-color-hover;
     }
-  }*/
+    .wrapper {
+      border-color: $border-color-hover;
+    }
+  }
 
   .open-button {
-    position: relative;
-    top: -26px;
+    position: absolute;
+    top: 0;
     left: calc(50% - 7px);
     cursor: pointer;
     z-index: 2;
@@ -70,7 +74,7 @@ $border-color-hover: lightgray;
     background-color: white;
     right: 0;
     left: 0;
-    top: 0;
+    top: 6px;
     overflow: hidden;
 
     hr {
