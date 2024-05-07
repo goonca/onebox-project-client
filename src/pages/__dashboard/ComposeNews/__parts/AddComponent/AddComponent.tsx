@@ -3,8 +3,9 @@ import style from './AddComponent.module.scss';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { ComponentsEditor } from '../ComponentsEditor/ComponentsEditor';
-import { ComponentType } from '../FreeEditor/FreeEditor';
+
 import { Tooltip } from '@mui/material';
+import { ComponentType } from 'shared/types/api-type';
 
 type AddComponentProps = {
   onOpen?: (opened: boolean) => void;

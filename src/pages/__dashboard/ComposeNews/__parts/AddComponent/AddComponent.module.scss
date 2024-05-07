@@ -7,6 +7,7 @@ $border-color-hover: rgb(189, 189, 189);
   position: relative;
   height: 13px;
   padding-top: 6px;
+  z-index: 0;
 
   &.opened {
     z-index: 20;

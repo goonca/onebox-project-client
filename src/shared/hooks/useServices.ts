@@ -14,6 +14,7 @@ export type ServicesType = {
   getFiles: () => any;
   logoff: () => any;
   deleteFile: (id: number) => any;
+  //deleteComponent: (component?: ComponentModel) => any;
 };
 
 export const useServices = (): ServicesType => {
@@ -21,10 +22,11 @@ export const useServices = (): ServicesType => {
     AUTH: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth`,
     USER: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/user`,
     NEWS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news`,
+    COMPONENT: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news/components`,
     FILES: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files`
   };
 
-  const _fetch = async (method: string, url: string, data?: unknown) => {
+  const _fetch = async (method: string, url: string, data?: any) => {
     const rawResponse = await fetch(url, {
       method: method,
       headers: {
@@ -46,8 +48,8 @@ export const useServices = (): ServicesType => {
     return await _fetch('GET', url);
   };
 
-  const remove = async (url: string) => {
-    return await _fetch('DELETE', url);
+  const remove = async (url: string, data?: any) => {
+    return await _fetch('DELETE', url, data);
   };
 
   const authenticate = async (user: UserModel) => {
@@ -77,6 +79,10 @@ export const useServices = (): ServicesType => {
     return await remove(`${uri.FILES}/${id}`);
   };
 
+  /*const deleteComponent = async (component?: ComponentModel) => {
+    return await remove(uri.COMPONENT, component);
+  };*/
+
   const logoff = async () => {
     return await post(`${uri.AUTH}/logoff`);
   };
@@ -90,5 +96,6 @@ export const useServices = (): ServicesType => {
     getNews,
     getFiles,
     deleteFile
+    //deleteComponent
   };
 };

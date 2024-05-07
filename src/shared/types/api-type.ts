@@ -1,5 +1,3 @@
-import { EditorComponentType } from 'src/pages/__dashboard/ComposeNews/__parts/FreeEditor/FreeEditor';
-
 export type UserModel = {
   id?: number;
   name?: string;
@@ -12,6 +10,8 @@ export type UserModel = {
   profileUrl?: string;
 };
 
+export type ComponentType = 'Figure' | 'Quote' | 'Text';
+
 export type NewsModel = {
   id?: number | string;
   title?: string;
@@ -22,7 +22,20 @@ export type NewsModel = {
   showBadge?: boolean;
   showDate?: boolean;
   userId?: number;
-  components?: EditorComponentType[];
+  components?: ComponentModel[];
+};
+
+export type ComponentModel = {
+  id?: number;
+  newsId?: number;
+  position?: number;
+  type?: ComponentType;
+  src?: string;
+  longText?: string;
+  marginTop?: string;
+  marginBottom?: string;
+  width?: string;
+  height?: string;
 };
 
 export type FileModel = {

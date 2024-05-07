@@ -5,11 +5,8 @@ import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useServices } from 'shared/hooks/useServices';
-import { NewsModel } from 'shared/types/api-type';
-import {
-  EditorComponentType,
-  FreeEditor
-} from './__parts/FreeEditor/FreeEditor';
+import { ComponentModel, NewsModel } from 'shared/types/api-type';
+import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
@@ -70,11 +67,12 @@ export const ComposeNews = () => {
       initialise(resNews.id?.toString() ?? 'undefined');
       removeLocalStorage();
       hideDraftMessage();
-      history.replaceState(
-        {},
-        '',
-        document.location.pathname + '/' + resNews.id
-      );
+      !news.id &&
+        history.replaceState(
+          {},
+          '',
+          document.location.pathname + '/' + resNews.id
+        );
     });
   }, []);
 
@@ -82,7 +80,7 @@ export const ComposeNews = () => {
     setComponentsOpened(opened);
   };
 
-  const onComponentsChange = (components?: EditorComponentType[]) => {
+  const onComponentsChange = (components?: ComponentModel[]) => {
     const _news = { ...news, components: [...(components ?? [])] };
     setNews(_news);
     saveDraft(_news);

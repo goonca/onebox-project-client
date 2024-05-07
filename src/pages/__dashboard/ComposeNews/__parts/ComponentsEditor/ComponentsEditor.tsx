@@ -1,5 +1,5 @@
+import { ComponentType } from 'shared/types/api-type';
 import style from './ComponentsEditor.module.scss';
-import { ComponentType } from '../FreeEditor/FreeEditor';
 
 type ComponentsEditorProps = {
   onAddComponent: (componentType: ComponentType) => void;

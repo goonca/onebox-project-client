@@ -10,7 +10,8 @@
     "lint:fix": "yarn lint -- --fix",
     "lint": "eslint --config config/eslint/.eslintrc.json --ignore-path config/eslint/.eslintignore .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "push": "git add --all && git commit -m $1"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.29.1",

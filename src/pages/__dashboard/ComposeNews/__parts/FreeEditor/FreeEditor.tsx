@@ -5,47 +5,68 @@ import React, { useEffect, useState } from 'react';
 import { AddComponent } from '../AddComponent/AddComponent';
 import { TextProps } from 'components/compose/Text';
 import { useComponent } from 'shared/hooks/useComponent';
-import { Tooltip } from '@mui/material';
 import { Frame } from 'components/compose/Frame/Frame';
+import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
+import {
+  ComponentModel,
+  ComponentType,
+  RequestStatus
+} from 'shared/types/api-type';
+import { useServices } from 'shared/hooks/useServices';
 
 export type ComponentProps = FigureProps | QuoteProps | TextProps;
-export type ComponentType = 'Figure' | 'Quote' | 'Text';
-export type EditorComponentType = {
-  type: ComponentType;
-  position?: number;
-  props?: ComponentProps;
-};
 
 export type ComponentEditProps = {
   onComponentsOpen?: (opened: boolean) => void;
-  onChange?: (components?: EditorComponentType[]) => void;
-  components?: EditorComponentType[];
+  onChange?: (components?: ComponentModel[]) => void;
+  components?: ComponentModel[];
   newsId?: number;
 };
 
 export const FreeEditor: React.FC<ComponentEditProps> = (
   props: ComponentEditProps
 ) => {
-  const [components, setCompoenents] = useState<EditorComponentType[]>();
+  const [components, setCompoenents] = useState<ComponentModel[]>();
+  const [dialogOpened, setDialogOpened] = useState<boolean>(false);
+  const [deletingComponent, setDeletingComponent] = useState<ComponentModel>();
   const { getComponentByType } = useComponent();
+  //const { deleteComponent } = useServices();
 
   const onOpen = (opened: boolean) => {
     props.onComponentsOpen && props.onComponentsOpen(opened);
   };
 
   const onAddComponent = (position: number, type: ComponentType) => {
-    const component = {
-      type,
-      props: {}
-    };
     components?.splice(position, 0, { type, position });
-    props.onChange && props.onChange(components);
 
-    //console.log(position, name);
+    props.onChange && props.onChange(components);
+  };
+
+  const onDelete = (component: ComponentModel) => {
+    setDeletingComponent(component);
+    setDialogOpened(true);
+  };
+
+  const confirmDelete = async () => {
+    setDialogOpened(false);
+
+    deletingComponent &&
+      deletingComponent.position !== undefined &&
+      components?.splice(deletingComponent.position, 1);
+
+    props.onChange && props.onChange(components);
+  };
+
+  const onCancel = () => {
+    setDialogOpened(false);
   };
 
   useEffect(() => {
-    setCompoenents(props.components);
+    const comps = props.components?.map((component, position) => {
+      return { ...component, position };
+    });
+    console.log(comps);
+    setCompoenents(comps);
   }, [props.components]);
 
   return (
@@ -60,11 +81,13 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
           />
           {components?.map((comp, index) => {
             let node = getComponentByType(comp.type);
-            //@ts-ignore
-            const element = React.createElement(node, comp.props);
+            const element = React.createElement(node, comp);
+
             return (
               <div key={index}>
-                <Frame component={comp}>{element}</Frame>
+                <Frame component={comp} onDelete={onDelete}>
+                  {element}
+                </Frame>
 
                 <AddComponent
                   onOpen={onOpen}
@@ -76,6 +99,18 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
           })}
         </div>
       </div>
+      <ConfirmDialog
+        headerText="Delete component"
+        bodyText={
+          <span>
+            Confirm deleting this <b>{deletingComponent?.type}</b>?
+          </span>
+        }
+        confirmText="Delete it!"
+        open={dialogOpened}
+        onCornfirm={confirmDelete}
+        onCancel={onCancel}
+      />
     </>
   );
 };

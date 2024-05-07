@@ -1,17 +1,26 @@
-import { Button } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import style from './Frame.module.scss';
-import { EditorComponentType } from 'pages/__dashboard/ComposeNews/__parts/FreeEditor/FreeEditor';
 import { ReactNode, useEffect, useState } from 'react';
-import { faGear, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronDown,
+  faChevronUp,
+  faGear,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ComponentModel } from 'shared/types/api-type';
 
 export type FrameProps = {
-  component?: EditorComponentType;
+  component: ComponentModel;
   children?: ReactNode;
+  onDelete?: (component: ComponentModel) => void;
 };
 
-export const Frame = ({ component, children }: FrameProps) => {
+export const Frame = ({ component, children, onDelete }: FrameProps) => {
   const [selected, setSelected] = useState<boolean>(false);
+  const deleteComponent = () => {
+    onDelete && onDelete(component);
+  };
 
   return (
     <>
@@ -20,19 +29,34 @@ export const Frame = ({ component, children }: FrameProps) => {
         onMouseEnter={() => setSelected(true)}
         onMouseLeave={() => setSelected(false)}
       >
-        <span>{component?.type}</span>
-        <div className={style['wrapper']}>
-          <div className={style['menu']}>
-            <div>
-              <Button variant="outlined">
+        <div className={style['controls']}>
+          <div>
+            <label>{component?.type}</label>
+            <hr />
+            <Tooltip title="Edit" arrow>
+              <Button>
                 <FontAwesomeIcon icon={faGear} />
               </Button>
-              <div className={style['divider']}>&nbsp;</div>
-              <Button variant="outlined">
+            </Tooltip>
+            <Tooltip title="Delete" arrow>
+              <Button onClick={() => deleteComponent()}>
                 <FontAwesomeIcon icon={faTrash} />
               </Button>
-            </div>
+            </Tooltip>
+            <hr />
+            <Tooltip title="Move Up" arrow>
+              <Button>
+                <FontAwesomeIcon icon={faChevronUp} />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Move Down" arrow>
+              <Button>
+                <FontAwesomeIcon icon={faChevronDown} />
+              </Button>
+            </Tooltip>
           </div>
+        </div>
+        <div className={style['wrapper']}>
           <div>{children}</div>
         </div>
       </div>
