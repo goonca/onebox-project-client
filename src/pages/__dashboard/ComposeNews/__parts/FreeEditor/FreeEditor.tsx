@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { AddComponent } from '../AddComponent/AddComponent';
 import { TextProps } from 'components/compose/Text';
 import { useComponent } from 'shared/hooks/useComponent';
+import { Tooltip } from '@mui/material';
+import { Frame } from 'components/compose/Frame/Frame';
 
 export type ComponentProps = FigureProps | QuoteProps | TextProps;
 export type ComponentType = 'Figure' | 'Quote' | 'Text';
@@ -54,14 +56,16 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
             onOpen={onOpen}
             position={0}
             onAddComponent={onAddComponent}
+            showTooltip={components?.length == 0}
           />
-          {components?.map((c, index) => {
-            let node = getComponentByType(c.type);
+          {components?.map((comp, index) => {
+            let node = getComponentByType(comp.type);
             //@ts-ignore
-            const element = React.createElement(node, c.props);
+            const element = React.createElement(node, comp.props);
             return (
               <div key={index}>
-                {element}
+                <Frame component={comp}>{element}</Frame>
+
                 <AddComponent
                   onOpen={onOpen}
                   position={index + 1}

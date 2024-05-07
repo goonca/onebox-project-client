@@ -22,7 +22,6 @@ export const ComposeNews = () => {
   const currentUser = useContext(UserContext);
   const { saveNews, getNewsById } = useServices();
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
-  const [isDiscarding, setIsDiscaring] = useState<boolean>(true);
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
 
@@ -67,7 +66,6 @@ export const ComposeNews = () => {
     const response = saveNews(news);
     response.then((r: any) => {
       const resNews = r.data[0];
-      setIsDiscaring(true);
       setNews({ ...news, ...resNews });
       initialise(resNews.id?.toString() ?? 'undefined');
       removeLocalStorage();
@@ -91,7 +89,6 @@ export const ComposeNews = () => {
   };
 
   const discardDraft = () => {
-    setIsDiscaring(true);
     removeLocalStorage();
     hideDraftMessage();
     getCurrentNews(id as unknown as number);
@@ -108,7 +105,6 @@ export const ComposeNews = () => {
   /*useEffect(() => {
     console.log('change news', news);
     if (isDiscarding) {
-      setIsDiscaring(!isDiscarding);
       return;
     }
     console.log('saved');

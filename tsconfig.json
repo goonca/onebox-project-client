@@ -22,6 +22,7 @@
     "rootDir": ".",
     "paths": {
       "components/*": ["src/components/*"],
+      "pages/*": ["src/pages/*"],
       "shared/*": ["src/shared/*"]
     }
   },
