@@ -62,14 +62,6 @@
       box-shadow: $shadow;
       border-radius: $space-tiny;
       min-height: 70vh;
-
-      /*background-color: white; //#f6f6f6;
-      background-image: radial-gradient(#efefef 2%, transparent 11%),
-        radial-gradient(#dbdbdb 1%, transparent 11%);
-      background-size: 60px 60px;
-      background-position: 0 0, 30px 30px;
-      background-repeat: repeat;*/
-
       position: relative;
 
       .overlay {
@@ -82,7 +74,7 @@
         background-color: black;
         pointer-events: none;
         transition: opacity 0.3s;
-        z-index: 10;
+        z-index: 50;
 
         &.visible {
           opacity: 0.5;
@@ -90,13 +82,32 @@
         }
       }
 
-      > div:first-of-type {
+      .editor-header {
         background-color: darken($editor-color, 0);
         font-size: x-small;
         text-transform: uppercase;
         padding: 2px 2px 5px 4px;
         color: darken($color: $editor-color, $amount: 15);
         letter-spacing: 1px;
+        position: relative;
+
+        .editor-switcher {
+          background-color: darken($editor-color, 0);
+          position: absolute;
+          height: 30px;
+          bottom: -20px;
+          right: 0;
+          //width: 150px;
+          border-bottom-left-radius: 15px;
+          padding-left: $space-5;
+          color: $blue;
+          z-index: 75;
+
+          span {
+            font-size: x-small;
+            letter-spacing: 1px;
+          }
+        }
       }
 
       > .content {

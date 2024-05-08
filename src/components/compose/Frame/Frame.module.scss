@@ -2,7 +2,7 @@
 
 $border-color: #3b86ff;
 $bg-color: #eaf2ff;
-$transition-delay: 0.8s;
+$transition-delay: 0s;
 
 .frame {
   position: relative;
@@ -28,6 +28,23 @@ $transition-delay: 0.8s;
       > .menu {
         opacity: 1;
         transition-delay: $transition-delay;
+      }
+    }
+  }
+  &.n-selected {
+    .controls {
+      transition: unset;
+
+      > div {
+        transition: unset;
+      }
+    }
+
+    .wrapper {
+      transition: unset;
+
+      > .menu {
+        transition: unset;
       }
     }
   }
@@ -74,6 +91,9 @@ $transition-delay: 0.8s;
         min-width: 25px;
         width: 25px;
         color: white;
+        &:disabled {
+          color: darken($color: $bg-color, $amount: 20);
+        }
       }
     }
   }

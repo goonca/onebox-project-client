@@ -1,6 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
 import style from './ComposeNews.module.scss';
-import { Button, Link as UILink } from '@mui/material';
+import {
+  Button,
+  FormControlLabel,
+  Switch,
+  Link as UILink,
+  debounce
+} from '@mui/material';
 import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
@@ -11,7 +17,6 @@ import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { debounce } from 'shared/utils/debounceUtils';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 
 export const ComposeNews = () => {
@@ -20,14 +25,17 @@ export const ComposeNews = () => {
   const { saveNews, getNewsById } = useServices();
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(true);
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
 
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
 
-  const saveDraft = debounce(
-    (n: NewsModel | undefined) => setLocalStorage(n),
-    1000
+  const saveDraft = useCallback(
+    debounce((n: NewsModel | undefined) => {
+      setLocalStorage(n);
+    }, 1000),
+    []
   );
 
   const getCurrentNews = useCallback((id: number) => {
@@ -100,15 +108,6 @@ export const ComposeNews = () => {
     return getCurrentNews(id as unknown as number);
   }, []);
 
-  /*useEffect(() => {
-    console.log('change news', news);
-    if (isDiscarding) {
-      return;
-    }
-    console.log('saved');
-    saveDraft();
-  }, [news]);*/
-
   return (
     <>
       <div className={style['compose-news']}>
@@ -156,10 +155,27 @@ export const ComposeNews = () => {
             </div>
           </div>
           <div className={style['right-side']}>
-            <div>editor</div>
+            <div className={style['editor-header']}>
+              <label>editor</label>
+              <div className={style['editor-switcher']}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size="small"
+                      checked={editMode}
+                      onChange={() => {
+                        !editMode && setComponentsOpened(false);
+                        setEditMode(!editMode);
+                      }}
+                    />
+                  }
+                  label="Edit mode"
+                />
+              </div>
+            </div>
             <div
               className={`${style['overlay']} ${
-                componentsOpened ? style['visible'] : ''
+                componentsOpened && editMode && style['visible']
               }`}
             ></div>
             <div className={style['content']}>
@@ -171,6 +187,7 @@ export const ComposeNews = () => {
                 components={news.components ?? []}
                 newsId={id as unknown as number}
                 onChange={onComponentsChange}
+                editMode={editMode}
               ></FreeEditor>
             </div>
           </div>

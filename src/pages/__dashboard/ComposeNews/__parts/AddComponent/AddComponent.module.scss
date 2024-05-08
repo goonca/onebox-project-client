@@ -10,7 +10,7 @@ $border-color-hover: rgb(189, 189, 189);
   z-index: 0;
 
   &.opened {
-    z-index: 20;
+    z-index: 100;
     .wrapper {
       height: 200px;
     }

@@ -1,23 +1,20 @@
 import { FigureProps } from 'components/compose/Figure';
 import { QuoteProps } from 'components/compose/Quote';
 import style from './FreeEditor.module.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AddComponent } from '../AddComponent/AddComponent';
 import { TextProps } from 'components/compose/Text';
 import { useComponent } from 'shared/hooks/useComponent';
 import { Frame } from 'components/compose/Frame/Frame';
 import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
-import {
-  ComponentModel,
-  ComponentType,
-  RequestStatus
-} from 'shared/types/api-type';
-import { useServices } from 'shared/hooks/useServices';
+import { ComponentModel, ComponentType } from 'shared/types/api-type';
+import { debounce } from '@mui/material';
 
 export type ComponentProps = FigureProps | QuoteProps | TextProps;
 
 export type ComponentEditProps = {
   onComponentsOpen?: (opened: boolean) => void;
+  editMode?: boolean;
   onChange?: (components?: ComponentModel[]) => void;
   components?: ComponentModel[];
   newsId?: number;
@@ -27,9 +24,15 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   props: ComponentEditProps
 ) => {
   const [components, setCompoenents] = useState<ComponentModel[]>();
+  const [selectedPosition, setSelectedPosition] = useState<number>();
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(!!props.editMode);
   const [deletingComponent, setDeletingComponent] = useState<ComponentModel>();
   const { getComponentByType } = useComponent();
+  let __debouce = useCallback(
+    debounce(() => setSelectedPosition(undefined), 1000),
+    []
+  );
   //const { deleteComponent } = useServices();
 
   const onOpen = (opened: boolean) => {
@@ -45,6 +48,26 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   const onDelete = (component: ComponentModel) => {
     setDeletingComponent(component);
     setDialogOpened(true);
+  };
+
+  const onMoveUp = (component: ComponentModel) => {
+    moveComponent(component, false);
+  };
+
+  const onMoveDown = (component: ComponentModel) => {
+    moveComponent(component, true);
+  };
+
+  const moveComponent = (component: ComponentModel, moveDown: boolean) => {
+    if (component.position !== undefined) {
+      const newPosition = component.position + (moveDown ? 1 : -1);
+      components?.splice(component.position, 1);
+      components?.splice(newPosition, 0, component);
+
+      setSelectedPosition(newPosition);
+      __debouce();
+      props.onChange && props.onChange(components);
+    }
   };
 
   const confirmDelete = async () => {
@@ -65,35 +88,51 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     const comps = props.components?.map((component, position) => {
       return { ...component, position };
     });
-    console.log(comps);
     setCompoenents(comps);
   }, [props.components]);
+
+  useEffect(() => {
+    setEditMode(!!props.editMode);
+  }, [props.editMode]);
 
   return (
     <>
       <div className={style['free-editor']}>
         <div className={style['wrapper']}>
-          <AddComponent
-            onOpen={onOpen}
-            position={0}
-            onAddComponent={onAddComponent}
-            showTooltip={components?.length == 0}
-          />
+          {editMode && (
+            <AddComponent
+              onOpen={onOpen}
+              position={0}
+              onAddComponent={onAddComponent}
+              showTooltip={components?.length == 0}
+            />
+          )}
           {components?.map((comp, index) => {
             let node = getComponentByType(comp.type);
             const element = React.createElement(node, comp);
 
             return (
-              <div key={index}>
-                <Frame component={comp} onDelete={onDelete}>
+              <div key={comp.position}>
+                <Frame
+                  component={comp}
+                  onDelete={onDelete}
+                  onMoveUp={onMoveUp}
+                  onMoveDown={onMoveDown}
+                  isFirst={index == 0}
+                  isLast={index == components.length - 1}
+                  selectedPosition={selectedPosition}
+                  editMode={editMode}
+                >
                   {element}
                 </Frame>
 
-                <AddComponent
-                  onOpen={onOpen}
-                  position={index + 1}
-                  onAddComponent={onAddComponent}
-                />
+                {editMode && (
+                  <AddComponent
+                    onOpen={onOpen}
+                    position={index + 1}
+                    onAddComponent={onAddComponent}
+                  />
+                )}
               </div>
             );
           })}
