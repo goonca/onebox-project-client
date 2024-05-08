@@ -9,7 +9,7 @@ const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   return (
     <>
       <div className={style['login-page']}>
-        <div className={style['left-side']}></div>
+        <div className={style['left-side']}>&nbsp;</div>
         <div className={style['right-side']}>
           <div>
             <img src="/static/onebox-logo.svg" height={30} />

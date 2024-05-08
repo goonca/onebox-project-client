@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="213.5" height="50" viewBox="0 0 213.5 50">
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="50" viewBox="0 0 220 50">
   <g id="Group_10634" data-name="Group 10634" transform="translate(-1078.5 -242)">
-    <text id="Logo" transform="translate(1125 278)" fill="#43425d" font-size="35" font-family="SourceSansPro-Bold, Source Sans Pro" font-weight="700" letter-spacing="0.2em"><tspan x="0" y="0">ONEBOX</tspan></text>
+    <text id="Logo" transform="translate(1125 278)" fill="#43425d" font-size="35" font-family="SourceSansPro-Bold, Source Sans Pro, sans-serif" font-weight="700" letter-spacing="0.2em"><tspan x="0" y="0">ONEBOX</tspan></text>
     <path id="_3d-box-svgrepo-com" data-name="3d-box-svgrepo-com" d="M16.688,36.6l-7.5-4.471C7.135,30.9,6.108,30.29,5.554,29.391S5,27.439,5,25.333v-8.1c0-.671,0-1.234.018-1.72L20,24.443V38.458C19.108,38.04,18.068,37.419,16.688,36.6ZM25,38.458c.892-.418,1.932-1.039,3.313-1.861l7.5-4.471c2.053-1.224,3.079-1.836,3.633-2.735S40,27.439,40,25.333v-8.1c0-.671,0-1.234-.018-1.72L25,24.443ZM37.819,11.672,22.5,20.8,7.181,11.672c.528-.351,1.185-.743,2.007-1.233l7.5-4.471c2.807-1.673,4.21-2.51,5.812-2.51s3.006.837,5.813,2.51l7.5,4.471C36.634,10.929,37.291,11.32,37.819,11.672Z" transform="translate(1073.5 244.685)" fill="#464646" fill-rule="evenodd"/>
   </g>
 </svg>
