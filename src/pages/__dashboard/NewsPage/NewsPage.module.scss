@@ -104,10 +104,12 @@ $hovered-border: lighten(
                   > div {
                     white-space: nowrap;
                     font-size: small;
+                    font-size: smaller;
+                    color: darken($color: lightgray, $amount: 15);
 
-                    &:last-of-type {
-                      font-size: smaller;
-                      color: darken($color: lightgray, $amount: 15);
+                    &:first-of-type {
+                      font-size: small;
+                      color: unset;
                     }
                   }
                 }

@@ -1,8 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 import style from './ComposeNews.module.scss';
 import {
+  Box,
   Button,
   FormControlLabel,
+  Skeleton,
   Switch,
   Link as UILink,
   debounce
@@ -24,6 +26,7 @@ export const ComposeNews = () => {
   const currentUser = useContext(UserContext);
   const { saveNews, getNewsById } = useServices();
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(true);
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
@@ -40,8 +43,10 @@ export const ComposeNews = () => {
 
   const getCurrentNews = useCallback((id: number) => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
+    setLoading(true);
 
     getNewsById(id).then((r: any) => {
+      setLoading(false);
       const news: NewsModel = id
         ? {
             ...r?.data.news,
@@ -182,13 +187,16 @@ export const ComposeNews = () => {
               <div className={style['header']}>
                 <NewsHeader {...news}></NewsHeader>
               </div>
-              <FreeEditor
-                onComponentsOpen={onComponentsOpen}
-                components={news.components ?? []}
-                newsId={id as unknown as number}
-                onChange={onComponentsChange}
-                editMode={editMode}
-              ></FreeEditor>
+
+              {!loading && (
+                <FreeEditor
+                  onComponentsOpen={onComponentsOpen}
+                  components={news.components ?? []}
+                  newsId={id as unknown as number}
+                  onChange={onComponentsChange}
+                  editMode={editMode}
+                ></FreeEditor>
+              )}
             </div>
           </div>
         </div>

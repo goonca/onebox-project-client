@@ -114,8 +114,8 @@ export const NewsPage = () => {
                           <td className={style['date']}>
                             {dateInLines.length && (
                               <>
-                                <div>{dateInLines[0]}</div>
-                                <div>{dateInLines[1]}</div>
+                                {dateInLines[0] && <div>{dateInLines[0]}</div>}
+                                {dateInLines[1] && <div>{dateInLines[1]}</div>}
                               </>
                             )}
                           </td>

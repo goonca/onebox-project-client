@@ -10,6 +10,9 @@
   z-index: 0;
   margin-bottom: $space-6;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .preview {
     max-height: 300px;
@@ -17,8 +20,6 @@
   }
 
   .desc {
-    text-align: center;
-    @include middle-center;
     p {
       margin: 0;
     }
