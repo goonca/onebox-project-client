@@ -1,7 +1,8 @@
-import { Badge, BadgeProps } from 'components/compose/Badge';
-import { Figure, FigureProps } from 'components/compose/Figure';
-import style from './NewsHorizontal.module.scss';
+import { Badge } from 'components/compose/Badge';
+import { Figure } from 'components/compose/Figure';
 import { NewsCoverType } from 'shared/types';
+
+import style from './NewsHorizontal.module.scss';
 
 const NewsHorizontal = (props: NewsCoverType) => {
   const titleStyle =
@@ -27,7 +28,9 @@ const NewsHorizontal = (props: NewsCoverType) => {
             {props.badge && props.badgeType !== 'titled' && (
               <Badge {...props.badge}></Badge>
             )}
-            <a style={titleStyle}>{props.title}</a>
+            <a href="#" style={titleStyle}>
+              {props.title}
+            </a>
           </div>
         </div>
       </article>

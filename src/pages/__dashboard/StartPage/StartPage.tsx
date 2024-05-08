@@ -1,14 +1,15 @@
 'use client';
 
-import style from './StartPage.module.scss';
-import { PageProps } from 'shared/types/PagePropsType';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from '../__parts/Layout/Layout';
-import { NewsPage } from '../NewsPage/NewsPage';
-import { ProfilePage } from '../ProfilePage/ProfilePage';
+import { BrowserRouter, Route,Routes } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
+import { PageProps } from 'shared/types/PagePropsType';
+
+import Layout from '../__parts/Layout/Layout';
 import { ComposeNews } from '../ComposeNews/ComposeNews';
 import { FilesPage } from '../FilesPage/FilesPage';
+import { NewsPage } from '../NewsPage/NewsPage';
+import { ProfilePage } from '../ProfilePage/ProfilePage';
+import style from './StartPage.module.scss';
 
 export const StartPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   //fix this

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import style from './Quote.module.scss';
 
 export type QuoteProps = {

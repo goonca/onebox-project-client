@@ -1,6 +1,7 @@
 import React from 'react';
-import style from './Text.module.scss';
 import Markdown from 'react-markdown';
+
+import style from './Text.module.scss';
 
 export type TextProps = {
   text?: string;

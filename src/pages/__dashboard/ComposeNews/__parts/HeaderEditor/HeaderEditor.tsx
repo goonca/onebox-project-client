@@ -1,7 +1,8 @@
 import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
-import style from './HeaderEditor.module.scss';
 import { NewsHeaderProps } from 'components/compose/NewsHeader';
 import { useRef } from 'react';
+
+import style from './HeaderEditor.module.scss';
 
 type HeaderEditorProps = {
   updateHeader?: (header?: NewsHeaderProps) => void;
@@ -17,7 +18,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
   const showAuthorRef = useRef<HTMLInputElement>();
   const showDaterRef = useRef<HTMLInputElement>();
 
-  const _updateHeader = (header?: NewsHeaderProps) => {
+  const _updateHeader = () => {
     updateHeader &&
       updateHeader({
         title: titleRef.current?.value,

@@ -1,8 +1,9 @@
-import style from './LoginPage.module.scss';
-import { PageProps } from 'shared/types/PagePropsType';
-import { NotLogged } from './__parts/NotLogged';
-import { Logged } from './__parts/Logged';
 import { useState } from 'react';
+import { PageProps } from 'shared/types/PagePropsType';
+
+import { Logged } from './__parts/Logged';
+import { NotLogged } from './__parts/NotLogged';
+import style from './LoginPage.module.scss';
 
 const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   const [user, setUser] = useState(currentUser);

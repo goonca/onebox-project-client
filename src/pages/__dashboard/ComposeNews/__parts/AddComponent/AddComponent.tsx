@@ -1,11 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import style from './AddComponent.module.scss';
 import { faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
-import { ComponentsEditor } from '../ComponentsEditor/ComponentsEditor';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tooltip } from '@mui/material';
+import { useState } from 'react';
 import { ComponentType } from 'shared/types/api-type';
+
+import { ComponentsEditor } from '../ComponentsEditor/ComponentsEditor';
+import style from './AddComponent.module.scss';
 
 type AddComponentProps = {
   onOpen?: (opened: boolean) => void;

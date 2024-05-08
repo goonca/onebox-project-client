@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { ReactElement } from 'react';
 
 export type MomentType = {
   toDateTimeString: (date: any) => string;

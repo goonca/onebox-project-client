@@ -1,25 +1,23 @@
-import { Link, useParams } from 'react-router-dom';
-import style from './ComposeNews.module.scss';
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Skeleton,
-  Switch,
-  Link as UILink,
-  debounce
-} from '@mui/material';
-import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { UserContext } from 'shared/context/UserContext';
-import { useServices } from 'shared/hooks/useServices';
-import { ComponentModel, NewsModel } from 'shared/types/api-type';
-import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
-import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
-import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  Button,
+  debounce,
+  FormControlLabel,
+  Link as UILink,
+  Switch} from '@mui/material';
+import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { UserContext } from 'shared/context/UserContext';
+import { useLocalStorage } from 'shared/hooks/useLocalStorage';
+import { useServices } from 'shared/hooks/useServices';
+import { ComponentModel, NewsModel } from 'shared/types/api-type';
 import { getEmptyNews } from 'shared/utils/newsUtils';
+
+import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
+import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
+import style from './ComposeNews.module.scss';
 
 export const ComposeNews = () => {
   const { id } = useParams();

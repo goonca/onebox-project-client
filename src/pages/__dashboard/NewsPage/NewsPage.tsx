@@ -1,16 +1,15 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import style from './NewsPage.module.scss';
-import { UserContext } from 'shared/context/UserContext';
-import { Button, OutlinedInput } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, OutlinedInput } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMoment } from 'shared/hooks/useMoment';
 import { useServices } from 'shared/hooks/useServices';
 import { NewsModel } from 'shared/types/api-type';
-import { useMoment } from 'shared/hooks/useMoment';
+
+import style from './NewsPage.module.scss';
 
 export const NewsPage = () => {
-  const currentUser = useContext(UserContext);
   const searchRef = useRef<HTMLInputElement>();
   const { getNews } = useServices();
   const navigate = useNavigate();

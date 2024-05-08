@@ -1,8 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import style from './MenuButton.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+
+import style from './MenuButton.module.scss';
 
 export type MenuButtonProps = {
   label: string;

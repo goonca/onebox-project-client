@@ -1,7 +1,7 @@
+import { getCookie } from 'cookies-next';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
 import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
-import { getCookie } from 'cookies-next';
 import LoginPage from 'src/pages/Login/LoginPage';
 
 export const getServerSideProps = (async ({ req, res }) => {

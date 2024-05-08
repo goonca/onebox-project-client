@@ -1,17 +1,18 @@
+import type { GetServerSideProps } from 'next';
+
 import style from './HomePage.module.scss';
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 
 export type HomePageProps = {
   text: string;
 };
 
-export const getServerSideProps = (async ({ req, res }) => {
+export const getServerSideProps = (async () => {
   return { props: { text: '' } };
 }) satisfies GetServerSideProps<HomePageProps>;
 
-function HomePage({
+function HomePage(/*{
   text
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetServerSidePropsType<typeof getServerSideProps>*/) {
   return (
     <>
       <div className={style['homepage']}></div>

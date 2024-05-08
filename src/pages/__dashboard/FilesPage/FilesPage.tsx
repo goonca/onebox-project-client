@@ -1,11 +1,12 @@
-import { Button, Link } from '@mui/material';
-import style from './FilesPage.module.scss';
-import { FileModel } from 'shared/types/api-type';
-import { useServices } from 'shared/hooks/useServices';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useMoment } from 'shared/hooks/useMoment';
-import { Draggable } from '../__parts/Draggable/Draggable';
 import { useFile } from 'shared/hooks/useFile';
+import { useMoment } from 'shared/hooks/useMoment';
+import { useServices } from 'shared/hooks/useServices';
+import { FileModel } from 'shared/types/api-type';
+
+import { Draggable } from '../__parts/Draggable/Draggable';
+import style from './FilesPage.module.scss';
 
 export const FilesPage = () => {
   const { getFiles, deleteFile } = useServices();
@@ -19,7 +20,7 @@ export const FilesPage = () => {
   };
 
   const removeFile = async (id: number) => {
-    await deleteFile(id).then((r: any) => {
+    await deleteFile(id).then(() => {
       listFiles();
     });
   };

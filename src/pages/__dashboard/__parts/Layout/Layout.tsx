@@ -1,8 +1,8 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Navigate,Outlet } from 'react-router-dom';
+
+import { Header } from '../Header/Header';
 import { Menu } from '../Menu/Menu';
 import style from './Layout.module.scss';
-import { Header } from '../Header/Header';
-import { useRef, useState } from 'react';
 
 const Layout = () => {
   const path = new URLSearchParams(window.location.search).get('path');

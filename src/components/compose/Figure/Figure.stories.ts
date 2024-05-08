@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Figure } from './Figure';
 import { mock_figure } from 'shared/mocks/mocks';
+
+import { Figure } from './Figure';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

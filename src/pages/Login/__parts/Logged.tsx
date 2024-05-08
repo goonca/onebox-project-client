@@ -1,10 +1,11 @@
 import { Button, Link } from '@mui/material';
-import { PageProps } from 'shared/types/PagePropsType';
-import style from './Logged.module.scss';
 import { useRouter } from 'next/navigation';
-import { useServices } from 'shared/hooks/useServices';
 import { Dispatch, SetStateAction } from 'react';
+import { useServices } from 'shared/hooks/useServices';
 import { UserModel } from 'shared/types/api-type';
+import { PageProps } from 'shared/types/PagePropsType';
+
+import style from './Logged.module.scss';
 
 type LoogedPageType = PageProps & {
   setUser: Dispatch<SetStateAction<UserModel | undefined>>;

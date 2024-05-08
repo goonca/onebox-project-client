@@ -1,9 +1,10 @@
 import { Button, Link, TextField } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { ResponseType, useServices } from 'shared/hooks/useServices';
 import { RequestStatus, UserModel } from 'shared/types/api-type';
+
 import style from './NotLogged.module.scss';
-import { useRouter } from 'next/router';
 
 export const NotLogged = () => {
   const [firstTime, setFirstTime] = useState(false);

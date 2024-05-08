@@ -1,5 +1,6 @@
-import style from './NewsHeader.module.scss';
 import { NewsModel } from 'shared/types/api-type';
+
+import style from './NewsHeader.module.scss';
 
 export type NewsHeaderProps = NewsModel;
 

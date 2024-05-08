@@ -1,6 +1,3 @@
-import { Button, Tooltip } from '@mui/material';
-import style from './Frame.module.scss';
-import { ReactNode, useEffect, useState } from 'react';
 import {
   faChevronDown,
   faChevronUp,
@@ -8,7 +5,11 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Tooltip } from '@mui/material';
+import { ReactNode, useEffect, useState } from 'react';
 import { ComponentModel } from 'shared/types/api-type';
+
+import style from './Frame.module.scss';
 
 export type FrameProps = {
   component: ComponentModel;

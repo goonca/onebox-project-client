@@ -1,5 +1,6 @@
-import style from './Badge.module.scss';
 import tinycolor from 'tinycolor2';
+
+import style from './Badge.module.scss';
 
 export type BadgeProps = {
   color?: string;

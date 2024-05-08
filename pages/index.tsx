@@ -1,10 +1,9 @@
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import {
-  HomePageProps,
-  getServerSideProps as fetchHomePageServerSideProps
-} from 'src/pages/Home/HomePage';
 import { InferGetServerSidePropsType } from 'next';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import {
+  getServerSideProps as fetchHomePageServerSideProps,
+  HomePageProps} from 'src/pages/Home/HomePage';
 
 const Homepage = dynamic(import('src/pages/Home/HomePage'));
 

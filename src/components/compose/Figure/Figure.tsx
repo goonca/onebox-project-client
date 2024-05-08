@@ -1,6 +1,7 @@
-import { FigureFitType } from 'shared/types';
-import style from './Figure.module.scss';
 import React from 'react';
+import { FigureFitType } from 'shared/types';
+
+import style from './Figure.module.scss';
 
 export type FigureProps = {
   src?: string;

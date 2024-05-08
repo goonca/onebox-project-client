@@ -1,18 +1,18 @@
+import { LoadingButton } from '@mui/lab';
 import { Button, CircularProgress, Link } from '@mui/material';
-import style from './Draggable.module.scss';
 import {
   forwardRef,
   useCallback,
   useEffect,
   useImperativeHandle,
-  useRef,
   useState
 } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useFile } from 'shared/hooks/useFile';
-import { LoadingButton } from '@mui/lab';
 import { ResponseType } from 'shared/hooks/useServices';
 import { FileModel } from 'shared/types/api-type';
+
+import style from './Draggable.module.scss';
 
 export type DraggableProps = {
   onUpload: (files?: FileModel[]) => void;
@@ -94,7 +94,6 @@ export const Draggable = forwardRef(function Draggable(
   const onDrop = useCallback((allFiles: CustomFile[]) => {
     setInvalidFile(false);
     allFiles = allFiles.slice(0, props.showPreview ? 1 : 5);
-    const acceptedFiles: CustomFile[] = [];
     //submitForm(acceptedFiles);
     allFiles.map(file => {
       file.invalidMessage = [];

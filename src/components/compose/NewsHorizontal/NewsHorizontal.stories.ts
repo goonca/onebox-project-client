@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import NewsHorizontal from './NewsHorizontal';
 import { mock_figure } from 'shared/mocks/mocks';
+
+import NewsHorizontal from './NewsHorizontal';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

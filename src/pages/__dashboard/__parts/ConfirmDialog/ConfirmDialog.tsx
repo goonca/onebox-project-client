@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import style from './ConfirmDialog.module.scss';
-
 import {
+  Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Button
+  DialogTitle
 } from '@mui/material';
+import { useEffect, useState } from 'react';
+
+import style from './ConfirmDialog.module.scss';
 
 export type ConfirmDialogProps = {
   open?: boolean;
@@ -65,12 +65,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <Button variant="outlined" size="small" onClick={handleCancel}>
           {cancelText ?? 'Cancel'}
         </Button>
-        <Button
-          variant="contained"
-          size="small"
-          onClick={handleConfirm}
-          autoFocus
-        >
+        <Button variant="contained" size="small" onClick={handleConfirm}>
           {confirmText ?? 'Confirm'}
         </Button>
       </DialogActions>

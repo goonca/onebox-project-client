@@ -1,14 +1,15 @@
-import { FigureProps } from 'components/compose/Figure';
-import { QuoteProps } from 'components/compose/Quote';
-import style from './FreeEditor.module.scss';
-import React, { useCallback, useEffect, useState } from 'react';
-import { AddComponent } from '../AddComponent/AddComponent';
-import { TextProps } from 'components/compose/Text';
-import { useComponent } from 'shared/hooks/useComponent';
-import { Frame } from 'components/compose/Frame/Frame';
-import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
-import { ComponentModel, ComponentType } from 'shared/types/api-type';
 import { debounce } from '@mui/material';
+import { FigureProps } from 'components/compose/Figure';
+import { Frame } from 'components/compose/Frame/Frame';
+import { QuoteProps } from 'components/compose/Quote';
+import { TextProps } from 'components/compose/Text';
+import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useComponent } from 'shared/hooks/useComponent';
+import { ComponentModel, ComponentType } from 'shared/types/api-type';
+
+import { AddComponent } from '../AddComponent/AddComponent';
+import style from './FreeEditor.module.scss';
 
 export type ComponentProps = FigureProps | QuoteProps | TextProps;
 
@@ -29,7 +30,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   const [editMode, setEditMode] = useState<boolean>(!!props.editMode);
   const [deletingComponent, setDeletingComponent] = useState<ComponentModel>();
   const { getComponentByType } = useComponent();
-  let __debouce = useCallback(
+  const __debouce = useCallback(
     debounce(() => setSelectedPosition(undefined), 1000),
     []
   );
@@ -108,7 +109,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
             />
           )}
           {components?.map((comp, index) => {
-            let node = getComponentByType(comp.type);
+            const node = getComponentByType(comp.type);
             const element = React.createElement(node, comp);
 
             return (

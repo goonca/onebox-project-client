@@ -1,4 +1,3 @@
-import { useCallback, useState } from 'react';
 
 export type UseLocalStorageResponse<T> = {
   setLocalStorage: (value: T) => void;

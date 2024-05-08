@@ -1,11 +1,12 @@
-import style from './Menu.module.scss';
-import { MenuButton } from '../MenuButton/MenuButton';
 import {
   faHardDrive,
   faHouse,
   faNewspaper,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
+
+import { MenuButton } from '../MenuButton/MenuButton';
+import style from './Menu.module.scss';
 
 export const Menu = () => {
   return (

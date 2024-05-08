@@ -1,11 +1,10 @@
 import { ComponentType } from 'shared/types/api-type';
+
 import style from './ComponentsEditor.module.scss';
 
 type ComponentsEditorProps = {
   onAddComponent: (componentType: ComponentType) => void;
 };
-
-const selectComponent = () => {};
 
 export const ComponentsEditor: React.FC<ComponentsEditorProps> = (
   props: ComponentsEditorProps

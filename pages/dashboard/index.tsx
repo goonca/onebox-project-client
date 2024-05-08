@@ -1,10 +1,9 @@
+import { getCookie } from 'cookies-next';
+//import { StartPage } from 'src/pages/__dashboard/StartPage/StartPage';
+import dynamic from 'next/dynamic';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
 import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
-import { getCookie } from 'cookies-next';
-//import { StartPage } from 'src/pages/__dashboard/StartPage/StartPage';
-
-import dynamic from 'next/dynamic';
 
 const StartPage = dynamic<PageProps>(
   () =>
