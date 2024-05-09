@@ -26,12 +26,16 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
 ) => {
   const [components, setCompoenents] = useState<ComponentModel[]>();
   const [selectedPosition, setSelectedPosition] = useState<number>();
+  const [draggingPosition, setDraggingPosition] = useState<number>();
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(!!props.editMode);
   const [deletingComponent, setDeletingComponent] = useState<ComponentModel>();
   const { getComponentByType } = useComponent();
   const __debouce = useCallback(
-    debounce(() => setSelectedPosition(undefined), 1000),
+    debounce(() => {
+      setDraggingPosition(undefined);
+      setSelectedPosition(undefined);
+    }, 1000),
     []
   );
   //const { deleteComponent } = useServices();
@@ -51,23 +55,40 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     setDialogOpened(true);
   };
 
-  const onMoveUp = (component: ComponentModel) => {
+  const onMoveUp = (component: ComponentModel, dontUpdate?: boolean) => {
     moveComponent(component, false);
   };
 
-  const onMoveDown = (component: ComponentModel) => {
+  const onMoveDown = (component: ComponentModel, dontUpdate?: boolean) => {
     moveComponent(component, true);
   };
 
-  const moveComponent = (component: ComponentModel, moveDown: boolean) => {
+  const onDragStart = (component: ComponentModel) => {
+    if (component.position !== undefined) {
+      setSelectedPosition(component.position);
+      setDraggingPosition(component.position);
+    }
+  };
+
+  const onDragEnd = () => {
+    __debouce();
+  };
+
+  const moveComponent = (
+    component: ComponentModel,
+    moveDown: boolean,
+    dontUpdate?: boolean
+  ) => {
     if (component.position !== undefined) {
       const newPosition = component.position + (moveDown ? 1 : -1);
       components?.splice(component.position, 1);
       components?.splice(newPosition, 0, component);
 
-      setSelectedPosition(newPosition);
-      __debouce();
-      props.onChange && props.onChange(components);
+      if (!dontUpdate) {
+        setSelectedPosition(newPosition);
+        __debouce();
+        props.onChange && props.onChange(components);
+      }
     }
   };
 
@@ -113,12 +134,20 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
             const element = React.createElement(node, comp);
 
             return (
-              <div key={comp.position}>
+              <div
+                key={comp.position}
+                id={`comp-${comp.position}`}
+                className={
+                  draggingPosition == comp.position ? style['dragging'] : ''
+                }
+              >
                 <Frame
                   component={comp}
                   onDelete={onDelete}
                   onMoveUp={onMoveUp}
                   onMoveDown={onMoveDown}
+                  onDragStart={onDragStart}
+                  onDragEnd={onDragEnd}
                   isFirst={index == 0}
                   isLast={index == components.length - 1}
                   selectedPosition={selectedPosition}

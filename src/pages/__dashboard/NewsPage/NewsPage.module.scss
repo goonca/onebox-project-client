@@ -47,9 +47,78 @@ $hovered-border: lighten(
       background-color: white;
       box-shadow: $shadow-tiny;
       border-radius: $space-tiny;
+      margin-bottom: $space-5;
 
       > .content {
         padding: $space-3;
+
+        .table {
+          display: flex;
+          flex-direction: column;
+          column-gap: $space-1;
+
+          .item {
+            display: flex;
+            flex-direction: row;
+            row-gap: $space-1;
+            border: 1px solid white;
+            border-radius: $space-1;
+            padding: $space-2 $space-4;
+            transition: border 0.3s;
+            cursor: pointer;
+
+            &:hover {
+              border: 1px solid $hovered-border;
+            }
+
+            .title {
+              flex-grow: 10;
+
+              .badges {
+                margin-bottom: $space-2;
+
+                .draft-badge {
+                  background-color: darken($color: $warning-color, $amount: 40);
+                  border: 1px solid darken($color: $warning-color, $amount: 60);
+                  color: darken($color: $warning-color, $amount: 75);
+                  font-size: x-small;
+                  letter-spacing: 1px;
+                  padding: 2px $space-2;
+                  border-radius: 10px;
+                  text-transform: uppercase;
+                }
+              }
+
+              p {
+                margin: 3px;
+                color: #666666;
+                font-size: 12px;
+              }
+
+              h1 {
+                font-size: 20px;
+                font-weight: normal;
+                margin: 0;
+              }
+            }
+
+            .date {
+              > div {
+                white-space: nowrap;
+                font-size: small;
+                font-size: smaller;
+                color: darken($color: lightgray, $amount: 15);
+
+                &:first-of-type {
+                  font-size: small;
+                  color: unset;
+                }
+              }
+            }
+          }
+        }
+
+        //------
         table {
           width: 100%;
           thead {

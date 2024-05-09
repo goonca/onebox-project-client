@@ -3,7 +3,7 @@
 .menu-button {
   background-color: $dashboard-bg-light;
   height: 55px;
-  color: $dashboard-menu-color;
+  color: rgba($dashboard-menu-color, 0.7);
   font-family: 'Source Sans Pro' sans-serif;
   border-left: $space-1 solid $dashboard-bg-light;
   display: flex;
@@ -12,6 +12,7 @@
   column-gap: $space-2;
   padding-left: $space-4;
   letter-spacing: 0.1rem;
+  transition: background-color 0.3s;
 
   label {
     cursor: pointer;
@@ -19,9 +20,16 @@
     transition: margin-left 0.3s;
   }
 
+  &:hover {
+    background-color: lighten($color: $dashboard-bg-dark, $amount: 7);
+    border-left-color: lighten($color: $dashboard-bg-dark, $amount: 11);
+    color: rgba($dashboard-menu-color, 1);
+  }
+
   &.selected {
     border-left-color: $dashboard-bg-details;
     background-color: $dashboard-bg-dark;
+    color: rgba($dashboard-menu-color, 1);
 
     svg {
       color: $dashboard-bg-details;

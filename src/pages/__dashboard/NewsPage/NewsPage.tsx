@@ -76,53 +76,47 @@ export const NewsPage = () => {
           </div>*/}
           <div className={style['right-side']}>
             <div className={style['content']}>
-              <table cellSpacing={0}>
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Title</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {news &&
-                    news?.map(n => {
-                      const dateInLines = n.createdAt
-                        ? twoLinesDate(n.createdAt)
-                        : [];
-                      const draftBadge = localStorageKeys.includes(
-                        'draft-' + n.id
-                      );
-                      const hasBadges = !!draftBadge;
-                      return (
-                        <tr key={n.id} onClick={() => editNews(n.id as number)}>
-                          <td></td>
-                          <td width="100%">
-                            {hasBadges && (
-                              <div className={style['badges']}>
-                                {draftBadge && (
-                                  <span className={style['draft-badge']}>
-                                    unsaved changes
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                            <h1>{n.title}</h1>
-                            <p>{n.headline}</p>
-                          </td>
-                          <td className={style['date']}>
-                            {dateInLines.length && (
-                              <>
-                                {dateInLines[0] && <div>{dateInLines[0]}</div>}
-                                {dateInLines[1] && <div>{dateInLines[1]}</div>}
-                              </>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
+              <div className={style['table']}>
+                {news &&
+                  news?.map(n => {
+                    const dateInLines = n.createdAt
+                      ? twoLinesDate(n.createdAt)
+                      : [];
+                    const draftBadge = localStorageKeys.includes(
+                      'draft-' + n.id
+                    );
+                    const hasBadges = !!draftBadge;
+                    return (
+                      <div
+                        key={n.id}
+                        className={style['item']}
+                        onClick={() => editNews(n.id as number)}
+                      >
+                        <div className={style['title']}>
+                          {hasBadges && (
+                            <div className={style['badges']}>
+                              {draftBadge && (
+                                <span className={style['draft-badge']}>
+                                  unsaved changes
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          <h1>{n.title}</h1>
+                          <p>{n.headline}</p>
+                        </div>
+                        <div className={style['date']}>
+                          {dateInLines.length && (
+                            <>
+                              {dateInLines[0] && <div>{dateInLines[0]}</div>}
+                              {dateInLines[1] && <div>{dateInLines[1]}</div>}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         </div>
