@@ -5,7 +5,8 @@ import {
   debounce,
   FormControlLabel,
   Link as UILink,
-  Switch} from '@mui/material';
+  Switch
+} from '@mui/material';
 import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -53,6 +54,7 @@ export const ComposeNews = () => {
         : getEmptyNews(currentUser, id);
 
       if (draft) {
+        console.log('draft', draft.components);
         setNews(draft);
         setShowDraftMessage(true);
       } else {
@@ -92,7 +94,12 @@ export const ComposeNews = () => {
   };
 
   const onComponentsChange = (components?: ComponentModel[]) => {
-    const _news = { ...news, components: [...(components ?? [])] };
+    console.log('before ordered', components);
+    const orderedComp = components?.map((component, position) => {
+      return { ...component, position };
+    });
+    console.log('ordered', orderedComp);
+    const _news = { ...news, components: [...(orderedComp ?? [])] };
     setNews(_news);
     saveDraft(_news);
   };

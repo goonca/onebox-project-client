@@ -20,7 +20,7 @@ export type FrameProps = {
   onMoveUp?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onMoveDown?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onDragStart?: (component: ComponentModel) => void;
-  onDragEnd?: (positions: any) => void;
+  onDragEnd?: (/*component: ComponentModel*/) => void;
   isFirst?: boolean;
   editMode?: boolean;
   isLast?: boolean;
@@ -55,8 +55,7 @@ export const Frame = ({
     compCur: {},
     afterCompMiddlePoint: 0,
     beforeCompMiddlePoint: 0,
-    clone: {},
-    lastPosition: 0
+    clone: {}
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -71,12 +70,6 @@ export const Frame = ({
   };
 
   useEffect(() => {
-    /*console.log(
-      'selectedPosition',
-      selectedPosition,
-      'position',
-      component.position
-    );*/
     if (
       selectedPosition !== undefined &&
       selectedPosition !== component.position
@@ -87,7 +80,6 @@ export const Frame = ({
       selectedPosition !== undefined &&
       selectedPosition === component.position
     ) {
-      console.log('selected', component.position);
       setSelected(true);
     }
   }, [selectedPosition]);
@@ -134,7 +126,7 @@ export const Frame = ({
 
   const dragStart = (e: React.MouseEvent<HTMLInputElement>, reset: boolean) => {
     //const $ = document.querySelector;
-    //const current = wrapperRef.current;
+    const current = wrapperRef.current;
     const after = document.querySelector(
       '#comp-' + Number(component.position + 1)
     );
@@ -142,15 +134,12 @@ export const Frame = ({
       '#comp-' + Number(component.position - 1)
     );
 
-    p.lastPosition = document.querySelectorAll('[id^="comp-"]').length - 1;
+    //const current = document.querySelector('#frame-' + component.position);
 
-    const current = document.querySelector('#frame-' + component.position);
-
-    !!current &&
-      (p.compCur = {
-        c: current,
-        b: current.getBoundingClientRect()
-      });
+    p.compCur = {
+      c: current,
+      b: current.getBoundingClientRect()
+    };
     !!after &&
       (p.compAfter = {
         c: after,
@@ -162,7 +151,7 @@ export const Frame = ({
         b: before.getBoundingClientRect()
       });
 
-    console.log('component.position', component.position);
+    console.log('dragStart', component.position);
     p.initTop = p.compCur.b.top;
     p.initY = e.pageY;
 
@@ -176,23 +165,19 @@ export const Frame = ({
       p.clone.c.style.top = p.initTop + 'px';
       p.clone.c.style.left = p.compCur.b.left + 'px';
       document.getElementById('__next').appendChild(p.clone.c);
-      p.compCur.c.style.opacity = 0;
-      p.dragging = true;
-      setDragging(true);
-
-      document.body.removeEventListener('mousemove', dragMove);
-      document.body.removeEventListener('mouseup', dragEnd);
-      document.body.addEventListener('mousemove', dragMove);
-      document.body.addEventListener('mouseup', dragEnd);
-      onDragStart && onDragStart(component);
     }
-  };
+    console.log('**', p.compCur.c.offsetLeft, p.compCur.b.top);
 
-  const refreshComponents = () => {
-    document.querySelectorAll('[id^="comp-"]').forEach((c, i) => {
-      c.id = 'comp-' + i;
-      c.querySelector('[id^="frame-"]').id = 'frame-' + i;
-    });
+    p.compCur.c.style.opacity = 0;
+
+    p.dragging = true;
+    setDragging(true);
+
+    document.body.removeEventListener('mousemove', dragMove);
+    document.body.removeEventListener('mouseup', dragEnd);
+    document.body.addEventListener('mousemove', dragMove);
+    document.body.addEventListener('mouseup', dragEnd);
+    onDragStart && onDragStart(component);
   };
 
   const dragMove = (e: MouseEvent) => {
@@ -204,65 +189,54 @@ export const Frame = ({
       p.clone.c.style.top = Number(p.initTop + diff) + 'px';
 
       p.clone.middle = p.clone.b.top + Math.round(p.clone.b.height / 2);
+      p.compAfter.middle =
+        p.compAfter.b.top + Math.round(p.compAfter.b.height / 2);
 
-      !!p.compAfter.c &&
-        (p.compAfter.middle =
-          p.compAfter.b.top + Math.round(p.compAfter.b.height / 2));
-
-      !!p.compBefore.c &&
-        (p.compBefore.middle =
-          p.compBefore.b.top + Math.round(p.compBefore.b.height / 2));
-
-      //console.log(diff, p.clone.middle, p.compBefore.middle);
+      /*console.log(
+        diff,
+        p.clone.b.bottom,
+        p.compAfter.b.bottom - p.compAfter.b.height / 5
+      );*/
 
       //if de the middle point passes or the bottom passes the other bottom minus 20% if it
       if (
-        component.position < p.lastPosition &&
-        (p.clone.middle > p.compAfter.middle ||
-          p.clone.b.bottom > p.compAfter.b.bottom - p.compAfter.b.height / 5)
+        p.clone.middle > p.compAfter.middle ||
+        p.clone.b.bottom > p.compAfter.b.bottom - p.compAfter.b.height / 5
       ) {
         p.compAfter.c.parentNode.insertBefore(
           p.compAfter.c,
           p.compCur.c.parentNode
         );
 
-        refreshComponents();
-        component.position++;
-        dragStart(e, true);
-        //--
-      } else if (
-        component.position > 0 &&
-        p.clone.middle < p.compBefore.middle
-      ) {
-        p.compBefore.c.parentNode.insertBefore(
-          p.compCur.c.parentNode,
-          p.compBefore.c
-        );
+        onMoveDown(component);
 
-        refreshComponents();
-        component.position--;
-        dragStart(e, true);
+        dragEnd();
+
+        //current.style.top = '-120px';
+        //dragStart(e);
+      } else if (false) {
       }
     }
   };
 
-  const dragEnd = () => {
-    refreshComponents();
+  const dragEnd = e => {
     document.body.removeEventListener('mousemove', dragMove);
     document.body.removeEventListener('mouseup', dragEnd);
     document.getElementById('__next').removeChild(p.clone.c);
     p.compCur.c.style.opacity = 1;
     setDragging(false);
-    const positions = [];
-    document.querySelectorAll('[id^="comp-"]').forEach((c, i) => {
-      positions.push({
-        id: c.querySelector('input[name="componentId"]').value,
-        position: i
-      });
-    });
-    console.log('frame', positions);
-    onDragEnd && onDragEnd(positions);
+    onDragEnd && onDragEnd();
   };
+
+  /*useEffect(() => {
+    console.log('CHANGE COMPONENT', component.position);
+    if (dragging) {
+      //component.position++;
+      //dragEnd();
+      dragStart(lastMouseEvent, true);
+      //document.body.addEventListener('mousemove', dragMove);
+    }
+  }, [component]);*/
 
   return (
     <>
@@ -273,8 +247,6 @@ export const Frame = ({
         onMouseMove={() => __setSelected(true)}
         onMouseLeave={() => __setSelected(false)}
       >
-        {component.id} :: {component.position}
-        <input type="hidden" value={component.id} name="componentId" />
         <div className={style['controls']}>
           <div>
             <label>{component?.type}</label>
@@ -298,17 +270,17 @@ export const Frame = ({
                 <Tooltip title="Move Down" arrow>
                   {moveDownButton}
                 </Tooltip>
-                <hr />
+                {/*<hr />
                 <Tooltip title="Drag component" arrow>
                   {dragButton}
-                </Tooltip>
+            </Tooltip>*/}
               </>
             ) : (
               <>
                 {moveUpButton}
                 {moveDownButton}
-                <hr />
-                {dragButton}
+                {/*<hr />
+                {dragButton}*/}
               </>
             )}
           </div>
