@@ -20,11 +20,12 @@ export type FrameProps = {
   onMoveUp?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onMoveDown?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onDragStart?: (component: ComponentModel) => void;
-  onDragEnd?: (positions: any) => void;
+  onDragEnd?: (positions: any, lastPosition?: number) => void;
   isFirst?: boolean;
   editMode?: boolean;
   isLast?: boolean;
   selectedPosition?: number;
+  draggingPosition?: number;
 };
 
 export const Frame = ({
@@ -38,11 +39,11 @@ export const Frame = ({
   isFirst,
   editMode,
   isLast,
-  selectedPosition
+  selectedPosition,
+  draggingPosition
 }: FrameProps) => {
   const [selected, setSelected] = useState<boolean>(false);
   const [dragging, setDragging] = useState<boolean>(false);
-  const [lastMouseEvent, setLastMouseEvent] = useState();
   const [p, setP] = useState({
     initTop: 0,
     initY: 0,
@@ -56,7 +57,8 @@ export const Frame = ({
     afterCompMiddlePoint: 0,
     beforeCompMiddlePoint: 0,
     clone: {},
-    lastPosition: 0
+    lastPosition: 0,
+    ignoreDragPosition: false
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -70,47 +72,31 @@ export const Frame = ({
     onMoveDown && onMoveDown(component);
   };
 
-  useEffect(() => {
-    /*console.log(
-      'selectedPosition',
-      selectedPosition,
-      'position',
-      component.position
-    );*/
-    if (
-      selectedPosition !== undefined &&
-      selectedPosition !== component.position
-    ) {
-      setSelected(false);
-    }
-    if (
-      selectedPosition !== undefined &&
-      selectedPosition === component.position
-    ) {
-      console.log('selected', component.position);
-      setSelected(true);
-    }
-  }, [selectedPosition]);
-
   const classnames = `${style['frame']} ${
-    (selected || selectedPosition == component.position) && style['selected']
-  } ${selectedPosition !== undefined && style['n-selected']}`;
+    (selected ||
+      selectedPosition == component.position ||
+      draggingPosition == component.position) &&
+    style['selected']
+  } ${
+    (selectedPosition !== undefined || draggingPosition !== undefined) &&
+    style['n-selected']
+  }`;
 
   const showTooltip = !(
     selectedPosition !== undefined && selectedPosition !== component.position
   );
 
   const __setSelected = (__selected: boolean) => {
-    if (selectedPosition !== undefined || !editMode) {
+    if (
+      selectedPosition !== undefined ||
+      draggingPosition !== undefined ||
+      !editMode
+    ) {
       return;
     }
     setSelected(__selected);
     //setSelected(true);
   };
-
-  useEffect(() => {
-    selectedPosition === undefined && setSelected(false);
-  }, [selectedPosition]);
 
   const moveUpButton = (
     <Button disabled={isFirst} onClick={() => onMoveUpComponent()}>
@@ -178,7 +164,6 @@ export const Frame = ({
       document.getElementById('__next').appendChild(p.clone.c);
       p.compCur.c.style.opacity = 0;
       p.dragging = true;
-      setDragging(true);
 
       document.body.removeEventListener('mousemove', dragMove);
       document.body.removeEventListener('mouseup', dragEnd);
@@ -212,8 +197,6 @@ export const Frame = ({
       !!p.compBefore.c &&
         (p.compBefore.middle =
           p.compBefore.b.top + Math.round(p.compBefore.b.height / 2));
-
-      //console.log(diff, p.clone.middle, p.compBefore.middle);
 
       //if de the middle point passes or the bottom passes the other bottom minus 20% if it
       if (
@@ -252,7 +235,7 @@ export const Frame = ({
     document.body.removeEventListener('mouseup', dragEnd);
     document.getElementById('__next').removeChild(p.clone.c);
     p.compCur.c.style.opacity = 1;
-    setDragging(false);
+
     const positions = [];
     document.querySelectorAll('[id^="comp-"]').forEach((c, i) => {
       positions.push({
@@ -260,9 +243,45 @@ export const Frame = ({
         position: i
       });
     });
-    console.log('frame', positions);
-    onDragEnd && onDragEnd(positions);
+    //console.log('frame', positions);
+    onDragEnd && onDragEnd(positions, component.position);
   };
+
+  useEffect(() => {
+    if (
+      selectedPosition !== undefined &&
+      selectedPosition !== component.position
+    ) {
+      setSelected(false);
+    }
+    if (
+      selectedPosition !== undefined &&
+      selectedPosition === component.position
+    ) {
+      console.log('selected', component.position);
+      setSelected(true);
+    }
+  }, [selectedPosition]);
+
+  useEffect(() => {
+    if (
+      draggingPosition !== undefined &&
+      draggingPosition !== component.position
+    ) {
+      setDragging(false);
+    }
+    if (
+      draggingPosition !== undefined &&
+      draggingPosition === component.position
+    ) {
+      console.log('dragging', component.position);
+      setDragging(true);
+    }
+  }, [draggingPosition]);
+
+  useEffect(() => {
+    selectedPosition === undefined && setSelected(false);
+  }, [selectedPosition]);
 
   return (
     <>
@@ -273,7 +292,6 @@ export const Frame = ({
         onMouseMove={() => __setSelected(true)}
         onMouseLeave={() => __setSelected(false)}
       >
-        {component.id} :: {component.position}
         <input type="hidden" value={component.id} name="componentId" />
         <div className={style['controls']}>
           <div>

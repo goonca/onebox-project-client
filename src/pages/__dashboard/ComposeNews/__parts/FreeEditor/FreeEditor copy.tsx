@@ -25,7 +25,6 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   props: ComponentEditProps
 ) => {
   const [components, setCompoenents] = useState<ComponentModel[]>();
-  const [componentsBuf, setCompoenentsBuf] = useState<ComponentModel[]>();
   const [selectedPosition, setSelectedPosition] = useState<number>();
   const [draggingPosition, setDraggingPosition] = useState<number>();
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -39,6 +38,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     }, 1000),
     []
   );
+  //const { deleteComponent } = useServices();
 
   const onOpen = (opened: boolean) => {
     props.onComponentsOpen && props.onComponentsOpen(opened);
@@ -56,39 +56,21 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   };
 
   const onMoveUp = (component: ComponentModel, dontUpdate?: boolean) => {
-    moveComponent(component, false, dontUpdate);
+    moveComponent(component, false);
   };
 
   const onMoveDown = (component: ComponentModel, dontUpdate?: boolean) => {
-    moveComponent(component, true, dontUpdate);
+    moveComponent(component, true);
   };
 
   const onDragStart = (component: ComponentModel) => {
     if (component.position !== undefined) {
-      //setSelectedPosition(component.position);
+      setSelectedPosition(component.position);
       setDraggingPosition(component.position);
     }
   };
 
-  const onDragEnd = (positions: any, lastPosition?: number) => {
-    //console.log('lastPosition', lastPosition);
-
-    const comps = positions
-      .map((comp: any) => {
-        return {
-          ...components?.find(c => c.id == comp.id),
-          position: comp.position
-        };
-      })
-      .sort((a: any, b: any) => a.position - b.position);
-
-    //console.log('comps', comps);
-
-    //setCompoenents(comps);
-    props.onChange && props.onChange(positions);
-
-    setSelectedPosition(lastPosition);
-    setDraggingPosition(undefined);
+  const onDragEnd = () => {
     __debouce();
   };
 
@@ -97,18 +79,16 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     moveDown: boolean,
     dontUpdate?: boolean
   ) => {
-    console.log('moveComponent');
     if (component.position !== undefined) {
       const newPosition = component.position + (moveDown ? 1 : -1);
-
-      console.log(component, newPosition);
-
       components?.splice(component.position, 1);
       components?.splice(newPosition, 0, component);
 
-      setSelectedPosition(newPosition);
-      __debouce();
-      props.onChange && props.onChange(components);
+      if (!dontUpdate) {
+        setSelectedPosition(newPosition);
+        __debouce();
+        props.onChange && props.onChange(components);
+      }
     }
   };
 
@@ -125,19 +105,17 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   const onCancel = () => {
     setDialogOpened(false);
   };
-  //here ********************************************
+
   useEffect(() => {
-    /*const comps = props.components?.map((component, position) => {
+    const comps = props.components?.map((component, position) => {
       return { ...component, position };
-    });*/
-    setCompoenents(props.components);
+    });
+    setCompoenents(comps);
   }, [props.components]);
 
   useEffect(() => {
     setEditMode(!!props.editMode);
   }, [props.editMode]);
-
-  //console.log(components);
 
   return (
     <>
@@ -157,7 +135,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
 
             return (
               <div
-                key={(comp.position ?? 0) + '_' + (comp.id ?? 0)}
+                key={comp.position}
                 id={`comp-${comp.position}`}
                 className={
                   draggingPosition == comp.position ? style['dragging'] : ''
@@ -173,7 +151,6 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
                   isFirst={index == 0}
                   isLast={index == components.length - 1}
                   selectedPosition={selectedPosition}
-                  draggingPosition={draggingPosition}
                   editMode={editMode}
                 >
                   {element}

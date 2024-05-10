@@ -94,14 +94,32 @@ export const ComposeNews = () => {
   };
 
   const onComponentsChange = (components?: ComponentModel[]) => {
-    console.log('before ordered', components);
-    const orderedComp = components?.map((component, position) => {
+    //console.log('before ordered', components);
+    /*const orderedComp = components?.map((component, position) => {
       return { ...component, position };
-    });
+    });*/
+    const orderedComp = normalizeComponents(components);
     console.log('ordered', orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
     setNews(_news);
     saveDraft(_news);
+  };
+
+  const normalizeComponents = (comps?: ComponentModel[]) => {
+    if (comps && news.components) {
+      return comps
+        .map((comp, i) => {
+          return !!comp.type
+            ? { ...comp, position: i }
+            : {
+                ...news.components?.find(c => c.id == comp.id),
+                position: comp.position
+              };
+        })
+        .sort((a: any, b: any) => a.position - b.position);
+    }
+
+    return comps;
   };
 
   const discardDraft = () => {
