@@ -63,6 +63,7 @@
       border-radius: $space-tiny;
       min-height: 70vh;
       position: relative;
+      margin-bottom: 100px;
 
       .overlay {
         position: absolute;
@@ -125,5 +126,12 @@
         }
       }
     }
+  }
+
+  .edit-properties {
+    position: fixed;
+    bottom: 0;
+    height: 200px;
+    left: 0;
   }
 }

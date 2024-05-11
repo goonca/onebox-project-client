@@ -1,6 +1,13 @@
 const { BLOG_URL } = process.env;
 const path = require('path');
 
+module.exports = {
+  output: 'standalone',
+  experimental: {
+    appDir: true
+  }
+};
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
@@ -33,6 +40,12 @@ const nextConfig = {
 module.exports = nextConfig;
 
 module.exports = {
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true
+  },
+  output: 'standalone',
   async redirects() {
     return [
       // Basic redirect

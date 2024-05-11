@@ -12,7 +12,7 @@ const meta = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    author: { name: 'Author' }
+    user: { name: 'Author' }
   }
 } satisfies Meta<typeof NewsHeader>;
 
@@ -23,10 +23,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     title: 'Etiam sed est a leo vehicula pretium ac vitae tellus',
-    author: mock_author,
+    user: mock_author,
     headline:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend' +
       'sit amet tortor sed condimentum. Mauris lobortis auctor tellus et ornare',
-    date: new Date()
+    createdAt: new Date()
   }
 };

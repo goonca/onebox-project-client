@@ -8,7 +8,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Tooltip } from '@mui/material';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle
+} from 'react';
 import { ComponentModel } from 'shared/types/api-type';
 
 import style from './Frame.module.scss';
@@ -28,24 +35,43 @@ export type FrameProps = {
   draggingPosition?: number;
 };
 
-export const Frame = ({
-  component,
-  children,
-  onDelete,
-  onMoveUp,
-  onMoveDown,
-  onDragStart,
-  onDragEnd,
-  isFirst,
-  editMode,
-  isLast,
-  selectedPosition,
-  draggingPosition
-}: FrameProps) => {
+export const Frame = forwardRef(function Frame(
+  {
+    component,
+    children,
+    onDelete,
+    onMoveUp,
+    onMoveDown,
+    onDragStart,
+    onDragEnd,
+    isFirst,
+    editMode,
+    isLast,
+    selectedPosition,
+    draggingPosition
+  }: FrameProps,
+  ref
+) {
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        setSelectedPosition(pos: number) {
+          selectedPosition = pos;
+        },
+        setDraggingPosition(pos: number) {
+          draggingPosition = pos;
+        }
+      };
+    },
+    []
+  );
+
   const [selected, setSelected] = useState<boolean>(false);
   const [dragging, setDragging] = useState<boolean>(false);
   const [p, setP] = useState({
     initTop: 0,
+    initScrollTop: 0,
     initY: 0,
     curY: 0,
     dragging: false,
@@ -58,7 +84,8 @@ export const Frame = ({
     beforeCompMiddlePoint: 0,
     clone: {},
     lastPosition: 0,
-    ignoreDragPosition: false
+    ignoreDragPosition: false,
+    bodyHeight: document.body.scrollHeight
   });
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -86,12 +113,14 @@ export const Frame = ({
     selectedPosition !== undefined && selectedPosition !== component.position
   );
 
-  const __setSelected = (__selected: boolean) => {
+  const __setSelected = (__selected: boolean, force: boolean) => {
     if (
-      selectedPosition !== undefined ||
-      draggingPosition !== undefined ||
-      !editMode
+      (selectedPosition !== undefined ||
+        draggingPosition !== undefined ||
+        !editMode) &&
+      force != true
     ) {
+      //console.log('returned', draggingPosition, selectedPosition);
       return;
     }
     setSelected(__selected);
@@ -115,8 +144,6 @@ export const Frame = ({
       <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
     </Button>
   );
-
-  const resetDrag = () => {};
 
   const dragStart = (e: React.MouseEvent<HTMLInputElement>, reset: boolean) => {
     //const $ = document.querySelector;
@@ -148,8 +175,9 @@ export const Frame = ({
         b: before.getBoundingClientRect()
       });
 
-    console.log('component.position', component.position);
+    //console.log('component.position', component.position);
     p.initTop = p.compCur.b.top;
+    p.initScrollTop = window.scrollY;
     p.initY = e.pageY;
 
     if (!reset) {
@@ -159,11 +187,13 @@ export const Frame = ({
       p.clone.c.id = 'cloned';
       p.clone.c.style.position = 'absolute';
       p.clone.c.style.width = p.compCur.b.width + 'px';
-      p.clone.c.style.top = p.initTop + 'px';
+      p.clone.c.style.top = p.initTop + p.initScrollTop + 'px';
       p.clone.c.style.left = p.compCur.b.left + 'px';
       document.getElementById('__next').appendChild(p.clone.c);
       p.compCur.c.style.opacity = 0;
       p.dragging = true;
+
+      p.bodyHeight = document.body.scrollHeight;
 
       document.body.removeEventListener('mousemove', dragMove);
       document.body.removeEventListener('mouseup', dragEnd);
@@ -182,11 +212,23 @@ export const Frame = ({
 
   const dragMove = (e: MouseEvent) => {
     if (p.dragging) {
-      p.clone.b = p.clone.c.getBoundingClientRect();
+      e.preventDefault();
 
       p.curY = e.pageY;
-      const diff = (p.initY - p.curY) * -1;
-      p.clone.c.style.top = Number(p.initTop + diff) + 'px';
+      if (
+        window.innerHeight + window.scrollY - p.curY < 100 &&
+        p.curY < p.bodyHeight - 50
+      ) {
+        window.scrollTo(0, window.scrollY + 5);
+      }
+
+      if (p.curY - window.scrollY < 130 && p.curY > 200) {
+        window.scrollTo(0, window.scrollY - 5);
+      }
+
+      p.clone.b = p.clone.c.getBoundingClientRect();
+
+      p.clone.c.style.top = Number(e.pageY + 17) + 'px';
 
       p.clone.middle = p.clone.b.top + Math.round(p.clone.b.height / 2);
 
@@ -240,10 +282,14 @@ export const Frame = ({
     document.querySelectorAll('[id^="comp-"]').forEach((c, i) => {
       positions.push({
         id: c.querySelector('input[name="componentId"]').value,
+        tempId: c.querySelector('input[name="componentTempId"]').value,
         position: i
       });
     });
     //console.log('frame', positions);
+    selectedPosition = undefined;
+    draggingPosition = undefined;
+    setSelected(false);
     onDragEnd && onDragEnd(positions, component.position);
   };
 
@@ -258,7 +304,7 @@ export const Frame = ({
       selectedPosition !== undefined &&
       selectedPosition === component.position
     ) {
-      console.log('selected', component.position);
+      //console.log('selected', component.position);
       setSelected(true);
     }
   }, [selectedPosition]);
@@ -274,7 +320,7 @@ export const Frame = ({
       draggingPosition !== undefined &&
       draggingPosition === component.position
     ) {
-      console.log('dragging', component.position);
+      //console.log('dragging', component.position);
       setDragging(true);
     }
   }, [draggingPosition]);
@@ -293,6 +339,7 @@ export const Frame = ({
         onMouseLeave={() => __setSelected(false)}
       >
         <input type="hidden" value={component.id} name="componentId" />
+        <input type="hidden" value={component.tempId} name="componentTempId" />
         <div className={style['controls']}>
           <div>
             <label>{component?.type}</label>
@@ -337,4 +384,4 @@ export const Frame = ({
       </div>
     </>
   );
-};
+});

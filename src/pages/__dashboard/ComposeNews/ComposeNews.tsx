@@ -19,6 +19,7 @@ import { getEmptyNews } from 'shared/utils/newsUtils';
 import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import style from './ComposeNews.module.scss';
+import { useComponent } from 'shared/hooks/useComponent';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -32,6 +33,8 @@ export const ComposeNews = () => {
 
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
+
+  const { getValidComponents } = useComponent();
 
   const saveDraft = useCallback(
     debounce((n: NewsModel | undefined) => {
@@ -54,7 +57,7 @@ export const ComposeNews = () => {
         : getEmptyNews(currentUser, id);
 
       if (draft) {
-        console.log('draft', draft.components);
+        //console.log('draft', draft.components);
         setNews(draft);
         setShowDraftMessage(true);
       } else {
@@ -99,7 +102,7 @@ export const ComposeNews = () => {
       return { ...component, position };
     });*/
     const orderedComp = normalizeComponents(components);
-    console.log('ordered', orderedComp);
+    //console.log('ordered', orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
     setNews(_news);
     saveDraft(_news);
@@ -107,16 +110,18 @@ export const ComposeNews = () => {
 
   const normalizeComponents = (comps?: ComponentModel[]) => {
     if (comps && news.components) {
-      return comps
-        .map((comp, i) => {
+      return getValidComponents(
+        comps.map((comp, i) => {
           return !!comp.type
             ? { ...comp, position: i }
             : {
-                ...news.components?.find(c => c.id == comp.id),
+                ...news.components?.find(
+                  c => c.id == comp.id || c.tempId == comp.tempId
+                ),
                 position: comp.position
               };
         })
-        .sort((a: any, b: any) => a.position - b.position);
+      );
     }
 
     return comps;
@@ -223,6 +228,7 @@ export const ComposeNews = () => {
             </div>
           </div>
         </div>
+        <div className={style['edit-properties']}>&nbsp;</div>
       </div>
     </>
   );

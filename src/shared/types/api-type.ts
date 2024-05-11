@@ -27,6 +27,7 @@ export type NewsModel = {
 
 export type ComponentModel = {
   id?: number;
+  tempId?: string;
   newsId?: number;
   position?: number;
   type?: ComponentType;

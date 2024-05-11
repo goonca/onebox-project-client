@@ -4,7 +4,7 @@ import { Frame } from 'components/compose/Frame/Frame';
 import { QuoteProps } from 'components/compose/Quote';
 import { TextProps } from 'components/compose/Text';
 import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useComponent } from 'shared/hooks/useComponent';
 import { ComponentModel, ComponentType } from 'shared/types/api-type';
 
@@ -25,7 +25,6 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   props: ComponentEditProps
 ) => {
   const [components, setCompoenents] = useState<ComponentModel[]>();
-  const [componentsBuf, setCompoenentsBuf] = useState<ComponentModel[]>();
   const [selectedPosition, setSelectedPosition] = useState<number>();
   const [draggingPosition, setDraggingPosition] = useState<number>();
   const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -45,7 +44,11 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   };
 
   const onAddComponent = (position: number, type: ComponentType) => {
-    components?.splice(position, 0, { type, position });
+    components?.splice(position, 0, {
+      type,
+      position,
+      tempId: Math.random().toString(36).substr(2)
+    });
 
     props.onChange && props.onChange(components);
   };
@@ -71,20 +74,6 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   };
 
   const onDragEnd = (positions: any, lastPosition?: number) => {
-    //console.log('lastPosition', lastPosition);
-
-    const comps = positions
-      .map((comp: any) => {
-        return {
-          ...components?.find(c => c.id == comp.id),
-          position: comp.position
-        };
-      })
-      .sort((a: any, b: any) => a.position - b.position);
-
-    //console.log('comps', comps);
-
-    //setCompoenents(comps);
     props.onChange && props.onChange(positions);
 
     setSelectedPosition(lastPosition);
@@ -97,11 +86,8 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     moveDown: boolean,
     dontUpdate?: boolean
   ) => {
-    console.log('moveComponent');
     if (component.position !== undefined) {
       const newPosition = component.position + (moveDown ? 1 : -1);
-
-      console.log(component, newPosition);
 
       components?.splice(component.position, 1);
       components?.splice(newPosition, 0, component);
@@ -125,19 +111,14 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   const onCancel = () => {
     setDialogOpened(false);
   };
-  //here ********************************************
+
   useEffect(() => {
-    /*const comps = props.components?.map((component, position) => {
-      return { ...component, position };
-    });*/
     setCompoenents(props.components);
   }, [props.components]);
 
   useEffect(() => {
     setEditMode(!!props.editMode);
   }, [props.editMode]);
-
-  //console.log(components);
 
   return (
     <>
@@ -157,7 +138,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
 
             return (
               <div
-                key={(comp.position ?? 0) + '_' + (comp.id ?? 0)}
+                key={(comp.position ?? 0) + '_' + (comp.id ?? comp.tempId ?? 0)}
                 id={`comp-${comp.position}`}
                 className={
                   draggingPosition == comp.position ? style['dragging'] : ''

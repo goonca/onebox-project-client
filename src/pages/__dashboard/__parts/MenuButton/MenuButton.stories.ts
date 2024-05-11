@@ -34,6 +34,6 @@ export const Selected: Story = {
   args: {
     label: 'Profile',
     icon: faUser,
-    selected: true
+    preSelected: 'news'
   }
 };

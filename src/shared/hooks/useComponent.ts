@@ -6,6 +6,7 @@ import { ComponentModel, ComponentType } from 'shared/types/api-type';
 
 export type UseComponentType = {
   getComponentByType: (type: ComponentType) => ComponentModel;
+  getValidComponents(components: ComponentModel[]): ComponentModel[];
 };
 
 export const useComponent = () => {
@@ -32,5 +33,28 @@ export const useComponent = () => {
     return node;
   };
 
-  return { getComponentByType };
+  const getValidComponents = (
+    components: ComponentModel[]
+  ): ComponentModel[] => {
+    return components
+      .reduce((accumulator: ComponentModel[], current: ComponentModel) => {
+        let isInvalid = accumulator.find(item => {
+          return (
+            (item.id && item.id === current.id) ||
+            (item.tempId && item.tempId === current.tempId) ||
+            !!!current.type
+          );
+        });
+        if (!isInvalid) {
+          accumulator = accumulator.concat(current);
+        }
+        return accumulator;
+      }, [])
+      .sort(
+        (a: ComponentModel, b: ComponentModel) =>
+          (a.position ?? 0) - (b.position ?? 0)
+      );
+  };
+
+  return { getComponentByType, getValidComponents };
 };
