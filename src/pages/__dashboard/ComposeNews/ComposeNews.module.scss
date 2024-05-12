@@ -1,0 +1,137 @@
+@import '~/src/shared/style/variables.scss';
+
+.compose-news {
+  @include dashboard-section-header;
+
+  .draft-message {
+    border: 1px solid darken($color: $warning-color, $amount: 40);
+    background-color: $warning-color;
+    border-radius: 3px;
+    margin-bottom: $space-4;
+    padding: $space-1 $space-3;
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    column-gap: $space-2;
+    align-items: center;
+
+    button {
+      color: black;
+      margin: 0;
+      padding: 5px;
+      min-width: unset;
+    }
+
+    p {
+      margin: 0;
+      color: darken($color: $warning-color, $amount: 70);
+      width: 100%;
+    }
+
+    a {
+      cursor: pointer;
+    }
+
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  .wrapper {
+    display: flex;
+    gap: $space-2;
+
+    .left-side {
+      display: flex;
+      flex-direction: column;
+      row-gap: $space-4;
+
+      > .content {
+        width: 220px;
+        background-color: white;
+        box-shadow: $shadow-tiny;
+        border-radius: $space-tiny;
+        color: #666666;
+      }
+    }
+
+    .right-side {
+      width: 100%;
+      border: 3px solid darken($editor-color, 0);
+      background-color: white;
+      box-shadow: $shadow;
+      border-radius: $space-tiny;
+      min-height: 70vh;
+      position: relative;
+      margin-bottom: 100px;
+
+      .overlay {
+        position: absolute;
+        top: 29px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        background-color: black;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        z-index: 50;
+
+        &.visible {
+          opacity: 0.5;
+          pointer-events: unset;
+        }
+      }
+
+      .editor-header {
+        background-color: darken($editor-color, 0);
+        font-size: x-small;
+        text-transform: uppercase;
+        padding: 2px 2px 5px 4px;
+        color: darken($color: $editor-color, $amount: 15);
+        letter-spacing: 1px;
+        position: relative;
+        height: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        label {
+          width: 100%;
+          margin-right: 8px;
+          margin-left: 5px;
+        }
+
+        .editor-switcher {
+          color: $blue;
+          white-space: nowrap;
+
+          span {
+            font-size: x-small;
+            letter-spacing: 0.05rem;
+          }
+        }
+      }
+
+      > .content {
+        margin: auto;
+        padding: $space-3 $space-1;
+        width: 90%;
+        max-width: 750px;
+        min-width: unset;
+        //overflow: hidden;
+
+        .header {
+          padding: 0 $space-2;
+        }
+      }
+    }
+  }
+
+  .edit-properties {
+    position: fixed;
+    bottom: 0;
+    height: 200px;
+    left: 0;
+  }
+}

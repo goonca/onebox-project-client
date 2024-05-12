@@ -1,6 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { MenuButton } from './MenuButton';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { MenuButton } from './MenuButton';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -33,6 +34,6 @@ export const Selected: Story = {
   args: {
     label: 'Profile',
     icon: faUser,
-    selected: true
+    preSelected: 'news'
   }
 };

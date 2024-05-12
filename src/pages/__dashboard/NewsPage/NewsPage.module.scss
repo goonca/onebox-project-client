@@ -1,0 +1,222 @@
+@import '~/src/shared/style/variables.scss';
+
+$hovered-border: lighten(
+  $color: $dashboard-bg-dark,
+  $amount: 50
+);
+
+.news-page {
+  @include dashboard-section-header;
+
+  .search-input {
+    div[class*='MuiInputBase-root'] {
+      border-radius: 30px;
+      background-color: white;
+      width: 100%;
+    }
+  }
+
+  .wrapper {
+    display: flex;
+    gap: $space-2;
+    margin-top: $space-5;
+
+    .left-side {
+      > .content {
+        width: 200px;
+        background-color: white;
+        box-shadow: $shadow-tiny;
+        border-radius: $space-tiny;
+        display: flex;
+        flex-direction: column;
+        gap: $space-4;
+        padding: $space-5 $space-2;
+        color: #666666;
+
+        * {
+          font-size: 14px;
+          legend span {
+            padding: 0;
+          }
+        }
+      }
+    }
+
+    .right-side {
+      width: 100%;
+      background-color: white;
+      box-shadow: $shadow-tiny;
+      border-radius: $space-tiny;
+      margin-bottom: $space-5;
+
+      > .content {
+        padding: $space-3;
+
+        .table {
+          display: flex;
+          flex-direction: column;
+          column-gap: $space-1;
+
+          .item {
+            display: flex;
+            flex-direction: row;
+            row-gap: $space-1;
+            border: 1px solid white;
+            border-radius: $space-1;
+            padding: $space-2 $space-4;
+            transition: border 0.3s;
+            cursor: pointer;
+
+            &:hover {
+              border: 1px solid $hovered-border;
+            }
+
+            .title {
+              flex-grow: 10;
+
+              .badges {
+                margin-bottom: $space-2;
+
+                .draft-badge {
+                  background-color: darken($color: $warning-color, $amount: 40);
+                  border: 1px solid darken($color: $warning-color, $amount: 60);
+                  color: darken($color: $warning-color, $amount: 75);
+                  font-size: x-small;
+                  letter-spacing: 1px;
+                  padding: 2px $space-2;
+                  border-radius: 10px;
+                  text-transform: uppercase;
+                }
+              }
+
+              p {
+                margin: 3px;
+                color: #666666;
+                font-size: 12px;
+              }
+
+              h1 {
+                font-size: 20px;
+                font-weight: normal;
+                margin: 0;
+              }
+            }
+
+            .date {
+              > div {
+                white-space: nowrap;
+                font-size: small;
+                font-size: smaller;
+                color: darken($color: lightgray, $amount: 15);
+
+                &:first-of-type {
+                  font-size: small;
+                  color: unset;
+                }
+              }
+            }
+          }
+        }
+
+        //------
+        table {
+          width: 100%;
+          thead {
+            background-color: #f5f6fa;
+            text-transform: uppercase;
+            color: lighten($color: $dark-gray, $amount: 40);
+            font-size: x-small;
+            text-align: left;
+            height: 40px;
+          }
+          th,
+          td {
+            padding: $space-2 $space-3;
+          }
+          tbody {
+            //color: #666666;
+            tr {
+              color: $dark-gray;
+              cursor: pointer;
+
+              &:hover {
+                td {
+                  border-bottom: 1px solid $hovered-border;
+                  border-top: 1px solid $hovered-border;
+                  &:last-of-type {
+                    border-right: 1px solid $hovered-border;
+                  }
+                  &:first-of-type {
+                    border-left: 1px solid $hovered-border;
+                  }
+                }
+              }
+
+              td {
+                font-size: 14px;
+                border-bottom: 1px solid white;
+                border-top: 1px solid white;
+
+                &:last-of-type {
+                  border-right: 1px solid white;
+                  border-top-right-radius: 5px;
+                  border-bottom-right-radius: 5px;
+                }
+                &:first-of-type {
+                  border-left: 1px solid white;
+                  border-top-left-radius: 5px;
+                  border-bottom-left-radius: 5px;
+                }
+                //transition: border-bottom 0.2s;
+
+                &.date {
+                  > div {
+                    white-space: nowrap;
+                    font-size: small;
+                    font-size: smaller;
+                    color: darken($color: lightgray, $amount: 15);
+
+                    &:first-of-type {
+                      font-size: small;
+                      color: unset;
+                    }
+                  }
+                }
+                .badges {
+                  margin-bottom: $space-2;
+
+                  .draft-badge {
+                    background-color: darken(
+                      $color: $warning-color,
+                      $amount: 40
+                    );
+                    border: 1px solid
+                      darken($color: $warning-color, $amount: 60);
+                    color: darken($color: $warning-color, $amount: 75);
+                    font-size: x-small;
+                    letter-spacing: 1px;
+                    padding: 2px $space-2;
+                    border-radius: 10px;
+                    text-transform: uppercase;
+                  }
+                }
+
+                p {
+                  margin: 3px;
+                  color: #666666;
+                  font-size: 12px;
+                }
+
+                h1 {
+                  font-size: 20px;
+                  font-weight: normal;
+                  margin: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

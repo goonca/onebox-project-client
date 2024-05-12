@@ -2,3 +2,5 @@
 *mock*
 .next/
 config/
+src/stories/*
+next.config.js

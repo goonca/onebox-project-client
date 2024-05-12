@@ -1,0 +1,23 @@
+@import '~/src/shared/style/variables.scss';
+
+.free-editor {
+  margin-top: $space-5;
+  .wrapper {
+    width: 100%;
+    padding: $space-2;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    row-gap: $space-2;
+
+    .dragging {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(175, 175, 175, 0.1),
+        rgba(175, 175, 175, 0.1) 10px,
+        rgba(175, 175, 175, 0.2) 10px,
+        rgba(175, 175, 175, 0.2) 20px
+      );
+    }
+  }
+}

@@ -1,7 +1,7 @@
-import { AuthorType } from 'shared/types';
+import { UserModel } from 'shared/types/api-type';
 
-export const mock_author: AuthorType = {
-  fullname: 'Fernando Gazzoni',
+export const mock_author: UserModel = {
+  name: 'Fernando Gazzoni',
   username: 'fergazzoni',
   profileUrl: 'xxx/xxx'
 };

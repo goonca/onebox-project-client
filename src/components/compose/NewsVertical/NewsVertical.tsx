@@ -1,7 +1,8 @@
-import { Badge, BadgeProps } from 'components/compose/Badge';
-import { Figure, FigureProps } from 'components/compose/Figure';
-import style from './NewsVertical.module.scss';
+import { Badge } from 'components/compose/Badge';
+import { Figure } from 'components/compose/Figure';
 import { NewsCoverType } from 'shared/types';
+
+import style from './NewsVertical.module.scss';
 
 const NewsVertical = (props: NewsCoverType) => {
   const titleStyle =

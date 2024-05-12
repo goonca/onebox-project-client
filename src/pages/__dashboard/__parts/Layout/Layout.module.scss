@@ -1,0 +1,79 @@
+@import '~/src/shared/style/variables.scss';
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  column-gap: 0;
+  height: 100%;
+
+  .left-side {
+    z-index: 1000;
+    width: $menu-width;
+    transition: width 0.3s;
+
+    .fix-width {
+      width: $menu-width;
+      transition: width 0.3s;
+    }
+
+    .changer {
+      width: 30px;
+      height: 30px;
+      background-color: $dashboard-bg-dark;
+      border-radius: 15px;
+      position: fixed;
+      left: 235px;
+      transition: left 0.3s;
+      top: 20px;
+      box-shadow: $shadow-tiny;
+      cursor: pointer;
+
+      &:hover {
+        background-color: darken($color: $dashboard-bg-dark, $amount: 8);
+      }
+
+      &:after {
+        content: '\25C0';
+        color: lighten($color: $dashboard-bg-dark, $amount: 50);
+        position: relative;
+        top: 6px;
+
+        left: 8px;
+      }
+    }
+  }
+  .right-side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    padding-top: 100px;
+  }
+
+  &.closed {
+    .left-side {
+      width: $menu-closed-width;
+      .changer {
+        left: 45px;
+        &:after {
+          content: '\25BA';
+          left: 10px;
+        }
+      }
+      div[class*='_top_'] {
+        label {
+          opacity: 0;
+        }
+      }
+      div[class*='_menu_'],
+      div[class*='fix-width'] {
+        width: $menu-closed-width;
+      }
+      div[class*='_menu-button_'] {
+        label {
+          margin-left: $space-5;
+        }
+      }
+    }
+  }
+}

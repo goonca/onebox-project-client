@@ -1,0 +1,32 @@
+@import '~/src/shared/style/variables.scss';
+
+.header {
+  display: flex;
+  height: 70px;
+  background-color: white;
+  box-shadow: $shadow;
+  border-bottom: 1px solid lighten($color: $light-gray, $amount: 25);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  justify-content: right;
+  align-items: center;
+  padding-right: $space-3;
+  color: #4d4f5c;
+  column-gap: $space-2;
+  font-size: smaller;
+  z-index: 500;
+
+  .cover {
+    background-color: lightgray;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    color: rgb(146, 146, 146);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+  }
+}

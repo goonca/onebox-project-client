@@ -1,12 +1,16 @@
 $light-gray: #999999;
 $dark-gray: #494949;
-$dark-blue: #134b82;
+$dark-blue: #0a3561;
 $author-color: #194dd9;
 $dashboard-bg-dark: #3d3a54;
 $dashboard-bg-details: #a3a0fb;
 $dashboard-bg-light: #43425d;
 $dashboard-icon-color: #a6a3bf;
 $dashboard-menu-color: #e5e5e5;
+$dashboard-background: #f0f0f7;
+
+$menu-width: 250px;
+$menu-closed-width: 60px;
 
 $border-1: 1px;
 $border-2: 3px;
@@ -32,6 +36,11 @@ $badge-travel: #8100b5;
 $badge-technology: #930036;
 $badge-economy: #6f6d4c;
 $badge-cucine: #007751;
+$shadow: 0px 1px 10px lightgray;
+$shadow-tiny: 0px 1px 2px lightgray;
+$editor-color: #dcdced;
+$blue: #1976cf;
+$warning-color: #fefdf4;
 
 @mixin middle {
   transform: translateY(-50%);
@@ -50,4 +59,35 @@ $badge-cucine: #007751;
   position: relative;
   left: 50%;
   top: 50%;
+}
+
+@mixin dashboard-section-header {
+  .header {
+    display: flex;
+    margin-bottom: $space-5;
+    h2 {
+      font-family: 'Source Sans Pro' sans-serif;
+      font-weight: 400;
+      color: #43425d;
+      margin: 0;
+      a {
+        //text-decoration: none;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+    }
+
+    > div:first-of-type {
+      width: 100%;
+    }
+    > div:last-of-type {
+      display: flex;
+      gap: $space-1;
+      line-break: nowrap;
+
+      button {
+        min-width: 90px;
+      }
+    }
+  }
 }

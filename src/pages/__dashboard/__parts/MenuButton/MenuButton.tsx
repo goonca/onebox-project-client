@@ -1,22 +1,52 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import style from './MenuButton.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import style from './MenuButton.module.scss';
 
 export type MenuButtonProps = {
   label: string;
   icon: IconProp;
-  selected?: boolean;
+  preSelected?: string;
+  path?: string;
+  onClick?: (path?: string) => void;
 };
 
-export const MenuButton = (props: MenuButtonProps) => {
-  const styles: string[] = [style['menu-button']];
-  props.selected && styles.push(style['selected']);
+export const MenuButton = ({
+  preSelected,
+  label,
+  icon,
+  path,
+  onClick
+}: MenuButtonProps) => {
+  const [currentPath, setCurrentPath] = useState<string>();
+
+  const setCurrentPage = (path?: string) => {
+    const pathname = document.location.pathname;
+    setCurrentPath(
+      path ??
+        new URLSearchParams(document.location.search).get('path') ??
+        ((pathname && pathname.length > 2 && pathname.split('/')[2]) as string)
+    );
+  };
+
+  useEffect(() => {
+    setCurrentPage(preSelected);
+  }, [preSelected]);
+
   return (
     <>
-      <div className={styles.join(' ')}>
-        <FontAwesomeIcon icon={props.icon} />
-        <label>{props.label}</label>
-      </div>
+      <Link to={path ?? ''} onClick={() => onClick && onClick(path)}>
+        <div
+          className={`${style['menu-button']} ${
+            currentPath == path && style['selected']
+          }`}
+        >
+          <FontAwesomeIcon icon={icon} />
+          <label>{label}</label>
+        </div>
+      </Link>
     </>
   );
 };

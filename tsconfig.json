@@ -4,7 +4,7 @@
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,9 +22,16 @@
     "rootDir": ".",
     "paths": {
       "components/*": ["src/components/*"],
+      "pages/*": ["src/pages/*"],
       "shared/*": ["src/shared/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_app.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/_app.tsx",
+    "pages/teste.tsx"
+  ],
   "exclude": ["node_modules"]
 }
