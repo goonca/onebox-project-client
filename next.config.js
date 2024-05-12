@@ -2,7 +2,7 @@ const { BLOG_URL } = process.env;
 const path = require('path');
 
 module.exports = {
-  output: 'standalone',
+  output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
   experimental: {
     appDir: true
   }
