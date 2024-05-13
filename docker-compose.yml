@@ -22,9 +22,9 @@ services:
   client-prd:
     image: client-prd
     container_name: client-prd
-    hostname: onebox-dev
+    hostname: onebox-prd
     env_file:
-      - .env.prd
+      - .env.production
     build:
       context: ./
       target: production
