@@ -12,7 +12,8 @@
     "lint": "eslint --config config/eslint/.eslintrc.json --ignore-path config/eslint/.eslintignore",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "push": "git add --all && git commit -m \"auto push\" && git push origin develop"
+    "push": "git add --all && git commit -m \"auto push\" && git push origin develop",
+    "push:master": "git add --all && git commit -m \"auto push\" && git push origin develop"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.29.1",
