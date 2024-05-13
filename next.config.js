@@ -2,7 +2,7 @@ const { BLOG_URL } = process.env;
 const path = require('path');
 
 module.exports = {
-  output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
+  //output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
   experimental: {
     appDir: true
   }
@@ -45,7 +45,7 @@ module.exports = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true
   },
-  output: 'standalone',
+  //output: 'standalone',
   async redirects() {
     return [
       // Basic redirect
