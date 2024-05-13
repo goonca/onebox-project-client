@@ -6,3 +6,17 @@
   padding: $space-4 $space-1;
   font-weight: 500;
 }
+
+.quote-editor {
+  display: flex;
+  flex-direction: row;
+  column-gap: $space-2;
+
+  .markdown-editor {
+    flex-grow: 10;
+  }
+
+  .spacing {
+    margin-right: $space-3;
+  }
+}

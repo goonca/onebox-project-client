@@ -1,14 +1,13 @@
 'use client';
 
-import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
 import { PageProps } from 'shared/types/PagePropsType';
-
-import Layout from '../__parts/Layout/Layout';
-import { ComposeNews } from '../ComposeNews/ComposeNews';
-import { FilesPage } from '../FilesPage/FilesPage';
+import { Layout } from '../__parts/Layout/Layout';
 import { NewsPage } from '../NewsPage/NewsPage';
 import { ProfilePage } from '../ProfilePage/ProfilePage';
+import { ComposeNews } from '../ComposeNews/ComposeNews';
+import { FilesPage } from '../FilesPage/FilesPage';
 import style from './StartPage.module.scss';
 
 export const StartPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {

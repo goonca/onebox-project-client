@@ -1,0 +1,62 @@
+@import '~/src/shared/style/variables.scss';
+
+.spacing {
+  background-color: #f4f1ef;
+  height: 200px;
+  width: 250px;
+  border: 1px dashed #707070;
+  display: flex;
+  flex-direction: column;
+  row-gap: $space-1;
+  box-sizing: initial;
+  color: #707070;
+  text-transform: uppercase;
+  //padding: $space-2 0;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+    align-items: center;
+    justify-content: center;
+
+    label {
+      font-size: x-small;
+      margin: $space-1;
+    }
+
+    input[type='number']::-webkit-inner-spin-button {
+      opacity: 1;
+      padding: 3px;
+      height: 18px;
+    }
+
+    input[type='number'] {
+      opacity: 1;
+      width: 60px;
+      border: 1px solid lightgray;
+      height: 30px;
+      border-radius: 3px;
+      padding-left: $space-1;
+    }
+  }
+
+  .draw {
+    flex-grow: 10;
+    align-items: center;
+    justify-content: center;
+
+    > div {
+      display: flex;
+      background-color: #fff4ea;
+      border: 1px dashed #707070;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      width: 80%;
+      label {
+        font-size: small;
+      }
+    }
+  }
+}

@@ -37,10 +37,12 @@ $badge-technology: #930036;
 $badge-economy: #6f6d4c;
 $badge-cucine: #007751;
 $shadow: 0px 1px 10px lightgray;
+$shadow-up: 0px -1px 10px lightgray;
 $shadow-tiny: 0px 1px 2px lightgray;
 $editor-color: #dcdced;
 $blue: #1976cf;
 $warning-color: #fefdf4;
+$family-sans: 'Source Sans Pro', sans-serif;
 
 @mixin middle {
   transform: translateY(-50%);
@@ -66,7 +68,7 @@ $warning-color: #fefdf4;
     display: flex;
     margin-bottom: $space-5;
     h2 {
-      font-family: 'Source Sans Pro' sans-serif;
+      font-family: $family-sans;
       font-weight: 400;
       color: #43425d;
       margin: 0;

@@ -1,38 +1,45 @@
-import { Navigate,Outlet } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { EditorContext } from 'shared/context/EditorContext';
 
 import { Header } from '../Header/Header';
 import { Menu } from '../Menu/Menu';
 import style from './Layout.module.scss';
 
-const Layout = () => {
+export const Layout = () => {
   const path = new URLSearchParams(window.location.search).get('path');
 
   path && Navigate({ to: '/dashboard/' + path });
 
-  //couldn't use state for this
-  const toggleClosed = () => {
-    const layoutWrapper = document.querySelector('#layoutWrapper');
-    layoutWrapper?.classList.toggle(style['closed']);
-  };
+  return <LayoutContainer />;
+};
+
+//Split this was an workaround to not violate react hooks policies.
+// it is impossible to declare [opened, setOpened] before the Navigate() up there
+const LayoutContainer = () => {
+  const [opened, setOpened] = useState<boolean>(true);
 
   return (
     <>
-      <div className={style['layout']} id="layoutWrapper">
-        <div className={style['left-side']}>
-          <div className={style['fix-width']}></div>
-          <Menu />
-          <div
-            className={style['changer']}
-            onClick={() => toggleClosed()}
-          ></div>
+      <EditorContext.Provider value={{ maximized: !opened }}>
+        <div
+          className={`${style['layout']} ${!opened && style['closed']}`}
+          id="layoutWrapper"
+        >
+          <div className={style['left-side']}>
+            <div className={style['fix-width']}></div>
+            <Menu />
+            <div
+              className={style['changer']}
+              onClick={() => setOpened(!opened)}
+            ></div>
+          </div>
+          <div className={style['right-side']}>
+            <Header />
+            <Outlet />
+          </div>
         </div>
-        <div className={style['right-side']}>
-          <Header />
-          <Outlet />
-        </div>
-      </div>
+      </EditorContext.Provider>
     </>
   );
 };
-
-export default Layout;

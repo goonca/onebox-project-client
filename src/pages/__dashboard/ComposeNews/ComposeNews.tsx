@@ -20,6 +20,8 @@ import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import style from './ComposeNews.module.scss';
 import { useComponent } from 'shared/hooks/useComponent';
+import { QuoteEditor } from 'components/compose/Quote/Quote.editor';
+import { EditorContext } from 'shared/context/EditorContext';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -29,7 +31,10 @@ export const ComposeNews = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(true);
+  const [maximized, setMaximized] = useState<boolean>(false);
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
+
+  const editorContext = useContext(EditorContext);
 
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
@@ -141,6 +146,11 @@ export const ComposeNews = () => {
     return getCurrentNews(id as unknown as number);
   }, []);
 
+  useEffect(() => {
+    console.log(editorContext);
+    setMaximized(editorContext.maximized);
+  }, [editorContext]);
+
   return (
     <>
       <div className={style['compose-news']}>
@@ -228,7 +238,18 @@ export const ComposeNews = () => {
             </div>
           </div>
         </div>
-        <div className={style['edit-properties']}>&nbsp;</div>
+        <div
+          className={`${style['edit-properties']} ${
+            maximized && style['maximized']
+          }`}
+        >
+          <div className={style['header']}>
+            <h1>Quote</h1>
+          </div>
+          <div className={style['content']}>
+            <QuoteEditor />
+          </div>
+        </div>
       </div>
     </>
   );

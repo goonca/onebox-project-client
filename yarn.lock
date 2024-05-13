@@ -3095,6 +3095,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-numeric-input@^2.2.7":
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/@types/react-numeric-input/-/react-numeric-input-2.2.7.tgz#f22c66a035a017108778603126a6d5033ec45127"
+  integrity sha512-C55RyZCEXxjB13skjVkvxOc6+vTVK4v2vR1hS+foANbntYDz2cIF1zTD90B4oN5qxJsGHQ4ZRN0T381Y3T6YDg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.4.10":
   version "4.4.10"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.10.tgz#6ee71127bdab1f18f11ad8fb3322c6da27c327ac"
@@ -8646,6 +8653,11 @@ react-markdown@^9.0.1:
     unified "^11.0.0"
     unist-util-visit "^5.0.0"
     vfile "^6.0.0"
+
+react-numeric-input@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-numeric-input/-/react-numeric-input-2.2.3.tgz#4bf5918c3eafed851a80df1eb992d941002bb552"
+  integrity sha512-0hDXY8eznhTNMYfmeXRo/R1Fyx//ub0C/tpXbIeEaTnG72P95MGGMvJbiX5i+mnmiFVT6OCgIR33mke45nNZzQ==
 
 react-refresh@^0.14.0:
   version "0.14.0"
