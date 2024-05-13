@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "env-cmd .env.prd next build",
-    "start": "env-cmd .env.prd next start",
+    "build": "next build",
+    "start": "next start -p 3010",
     "ci": "yarn lint && yarn build",
     "prettier": "prettier --config config/prettier/prettier.config.js --ignore-path .gitignore",
     "format": "yarn prettier -- --write .",

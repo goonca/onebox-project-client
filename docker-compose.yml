@@ -5,7 +5,7 @@ services:
     container_name: client-dev
     hostname: onebox-dev
     env_file:
-      - .env
+      - .env.development
     build:
       context: ./
       target: dev

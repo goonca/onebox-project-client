@@ -1,3 +1,4 @@
+require('dotenv').config({ path: `${process.env.ENVIRONMENT}` });
 const { BLOG_URL } = process.env;
 const path = require('path');
 
