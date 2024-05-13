@@ -13,7 +13,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "push": "git add --all && git commit -m \"auto push\" && git push origin develop",
-    "push:master": "git add --all && git commit -m \"auto push\" && git push origin develop"
+    "push:master": "git add --all && git commit -m \"auto push\" && git push origin master"
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.29.1",
