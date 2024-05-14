@@ -1,22 +1,18 @@
 import { debounce } from '@mui/material';
-import { FigureProps } from 'components/compose/Figure';
 import { Frame } from 'components/compose/Frame/Frame';
-import { QuoteProps } from 'components/compose/Quote';
-import { TextProps } from 'components/compose/Text';
 import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useComponent } from 'shared/hooks/useComponent';
 import { ComponentModel, ComponentType } from 'shared/types/api-type';
 
 import { AddComponent } from '../AddComponent/AddComponent';
 import style from './FreeEditor.module.scss';
 
-export type ComponentProps = FigureProps | QuoteProps | TextProps;
-
 export type ComponentEditProps = {
   onComponentsOpen?: (opened: boolean) => void;
   editMode?: boolean;
   onChange?: (components?: ComponentModel[]) => void;
+  onEdit?: (component?: ComponentModel) => void;
   components?: ComponentModel[];
   newsId?: number;
 };
@@ -113,6 +109,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   };
 
   useEffect(() => {
+    //console.log('components changed', props.components);
     setCompoenents(props.components);
   }, [props.components]);
 
@@ -151,6 +148,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
                   onMoveDown={onMoveDown}
                   onDragStart={onDragStart}
                   onDragEnd={onDragEnd}
+                  onEdit={props.onEdit}
                   isFirst={index == 0}
                   isLast={index == components.length - 1}
                   selectedPosition={selectedPosition}

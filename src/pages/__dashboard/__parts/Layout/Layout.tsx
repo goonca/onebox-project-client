@@ -23,6 +23,7 @@ const LayoutContainer = () => {
     <>
       <EditorContext.Provider value={{ maximized: !opened }}>
         <div
+          data-component="layout"
           className={`${style['layout']} ${!opened && style['closed']}`}
           id="layoutWrapper"
         >

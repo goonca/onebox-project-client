@@ -14,6 +14,17 @@
 
   .markdown-editor {
     flex-grow: 10;
+    padding: 0 0 15px 15px;
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      border: 1px solid #ddd;
+      font-family: $family-helv;
+      padding: $space-2;
+      border-radius: 5px;
+      font-size: 16px;
+    }
   }
 
   .spacing {

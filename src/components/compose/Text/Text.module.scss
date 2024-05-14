@@ -2,3 +2,18 @@
 
 .text {
 }
+
+.text-editor {
+  display: flex;
+  flex-direction: row;
+  column-gap: $space-2;
+
+  .markdown-editor {
+    flex-grow: 10;
+    padding: 0 0 15px 15px;
+  }
+
+  .spacing {
+    margin-right: $space-3;
+  }
+}

@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ComponentModel } from 'shared/types/api-type';
 
 import style from './Quote.module.scss';
 
-export type QuoteProps = {
-  text?: string;
-};
-
-export const Quote: React.FC<QuoteProps> = (props: QuoteProps) => {
+export const Quote: React.FC<ComponentModel> = (props: ComponentModel) => {
   const defaultText: string = `Quote...`;
   return (
     <>
       <blockquote className={style['quote']} data-component="quote">
-        {props.text ?? defaultText}
+        {props.longFormattedText ?? defaultText}
       </blockquote>
     </>
   );

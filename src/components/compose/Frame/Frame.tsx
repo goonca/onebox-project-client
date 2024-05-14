@@ -11,7 +11,6 @@ import { Button, Tooltip } from '@mui/material';
 import {
   ReactNode,
   useEffect,
-  useRef,
   useState,
   forwardRef,
   useImperativeHandle
@@ -27,6 +26,7 @@ export type FrameProps = {
   onMoveUp?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onMoveDown?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onDragStart?: (component: ComponentModel) => void;
+  onEdit?: (component: ComponentModel) => void;
   onDragEnd?: (positions: any, lastPosition?: number) => void;
   isFirst?: boolean;
   editMode?: boolean;
@@ -44,6 +44,7 @@ export const Frame = forwardRef(function Frame(
     onMoveDown,
     onDragStart,
     onDragEnd,
+    onEdit,
     isFirst,
     editMode,
     isLast,
@@ -68,36 +69,18 @@ export const Frame = forwardRef(function Frame(
   );
 
   const [selected, setSelected] = useState<boolean>(false);
-  const [dragging, setDragging] = useState<boolean>(false);
   const [p, setP] = useState({
     initTop: 0,
     initScrollTop: 0,
-    initY: 0,
-    curY: 0,
     dragging: false,
-    currentHeight: 0,
     position: component.position,
     compAfter: {},
     compBefore: {},
     compCur: {},
-    afterCompMiddlePoint: 0,
-    beforeCompMiddlePoint: 0,
     clone: {},
     lastPosition: 0,
-    ignoreDragPosition: false,
     bodyHeight: document.body.scrollHeight
   });
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  const deleteComponent = () => {
-    onDelete && onDelete(component);
-  };
-  const onMoveUpComponent = () => {
-    onMoveUp && onMoveUp(component);
-  };
-  const onMoveDownComponent = () => {
-    onMoveDown && onMoveDown(component);
-  };
 
   const classnames = `${style['frame']} ${
     (selected ||
@@ -128,13 +111,13 @@ export const Frame = forwardRef(function Frame(
   };
 
   const moveUpButton = (
-    <Button disabled={isFirst} onClick={() => onMoveUpComponent()}>
+    <Button disabled={isFirst} onClick={() => onMoveUp(component)}>
       <FontAwesomeIcon icon={faChevronUp} />
     </Button>
   );
 
   const moveDownButton = (
-    <Button disabled={isLast} onClick={() => onMoveDownComponent()}>
+    <Button disabled={isLast} onClick={() => onMoveDown(component)}>
       <FontAwesomeIcon icon={faChevronDown} />
     </Button>
   );
@@ -146,8 +129,6 @@ export const Frame = forwardRef(function Frame(
   );
 
   const dragStart = (e: React.MouseEvent<HTMLInputElement>, reset: boolean) => {
-    //const $ = document.querySelector;
-    //const current = wrapperRef.current;
     const after = document.querySelector(
       '#comp-' + Number(component.position + 1)
     );
@@ -178,7 +159,6 @@ export const Frame = forwardRef(function Frame(
     //console.log('component.position', component.position);
     p.initTop = p.compCur.b.top;
     p.initScrollTop = window.scrollY;
-    p.initY = e.pageY;
 
     if (!reset) {
       p.clone.c = p.compCur.c.cloneNode(true);
@@ -214,15 +194,14 @@ export const Frame = forwardRef(function Frame(
     if (p.dragging) {
       e.preventDefault();
 
-      p.curY = e.pageY;
       if (
-        window.innerHeight + window.scrollY - p.curY < 100 &&
-        p.curY < p.bodyHeight - 50
+        window.innerHeight + window.scrollY - e.pageY < 100 &&
+        e.pageY < p.bodyHeight - 50
       ) {
         window.scrollTo(0, window.scrollY + 5);
       }
 
-      if (p.curY - window.scrollY < 130 && p.curY > 200) {
+      if (e.pageY - window.scrollY < 130 && e.pageY > 200) {
         window.scrollTo(0, window.scrollY - 5);
       }
 
@@ -310,29 +289,12 @@ export const Frame = forwardRef(function Frame(
   }, [selectedPosition]);
 
   useEffect(() => {
-    if (
-      draggingPosition !== undefined &&
-      draggingPosition !== component.position
-    ) {
-      setDragging(false);
-    }
-    if (
-      draggingPosition !== undefined &&
-      draggingPosition === component.position
-    ) {
-      //console.log('dragging', component.position);
-      setDragging(true);
-    }
-  }, [draggingPosition]);
-
-  useEffect(() => {
     selectedPosition === undefined && setSelected(false);
   }, [selectedPosition]);
 
   return (
     <>
       <div
-        ref={wrapperRef}
         id={`frame-${component.position}`}
         className={classnames}
         onMouseMove={() => __setSelected(true)}
@@ -345,12 +307,12 @@ export const Frame = forwardRef(function Frame(
             <label>{component?.type}</label>
             <hr />
             <Tooltip title="Edit" arrow>
-              <Button>
+              <Button onClick={() => onEdit(component)}>
                 <FontAwesomeIcon icon={faGear} />
               </Button>
             </Tooltip>
             <Tooltip title="Delete" arrow>
-              <Button onClick={() => deleteComponent()}>
+              <Button onClick={() => onDelete(component)}>
                 <FontAwesomeIcon icon={faTrash} />
               </Button>
             </Tooltip>

@@ -37,7 +37,13 @@ export const getServerSideProps = (async ({ req, res }) => {
 const Page = ({
   currentUser
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  return <StartPage currentUser={currentUser} />;
+  return (
+    <>
+      <link rel="stylesheet" href="/static/externals/simplemde.min.css" />
+      <script src="/static/externals/simplemde.min.js" defer></script>
+      <StartPage currentUser={currentUser} />;
+    </>
+  );
 };
 
 export default Page;

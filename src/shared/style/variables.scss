@@ -43,6 +43,9 @@ $editor-color: #dcdced;
 $blue: #1976cf;
 $warning-color: #fefdf4;
 $family-sans: 'Source Sans Pro', sans-serif;
+$family-helv: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+  'Helvetica Neue', sans-serif;
 
 @mixin middle {
   transform: translateY(-50%);
@@ -64,7 +67,7 @@ $family-sans: 'Source Sans Pro', sans-serif;
 }
 
 @mixin dashboard-section-header {
-  .header {
+  > .header {
     display: flex;
     margin-bottom: $space-5;
     h2 {

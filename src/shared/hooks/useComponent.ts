@@ -1,11 +1,15 @@
 import { Figure } from 'components/compose/Figure';
+import { FigureEditor } from 'components/compose/Figure/Figure.editor';
 import { Quote } from 'components/compose/Quote';
+import { QuoteEditor } from 'components/compose/Quote/Quote.editor';
 import { Text } from 'components/compose/Text';
+import { TextEditor } from 'components/compose/Text/Text.editor';
 import React from 'react';
 import { ComponentModel, ComponentType } from 'shared/types/api-type';
 
 export type UseComponentType = {
-  getComponentByType: (type: ComponentType) => ComponentModel;
+  getComponentByType: (type: ComponentType) => any;
+  getEditorByType: (type: ComponentType) => any;
   getValidComponents(components: ComponentModel[]): ComponentModel[];
 };
 
@@ -24,6 +28,29 @@ export const useComponent = () => {
 
       case 'Quote':
         node = Quote;
+        break;
+
+      default:
+        node = React.createElement('span');
+    }
+
+    return node;
+  };
+
+  const getEditorByType = (type?: ComponentType): any => {
+    let node: any;
+
+    switch (type) {
+      case 'Figure':
+        node = FigureEditor;
+        break;
+
+      case 'Text':
+        node = TextEditor;
+        break;
+
+      case 'Quote':
+        node = QuoteEditor;
         break;
 
       default:
@@ -56,5 +83,5 @@ export const useComponent = () => {
       );
   };
 
-  return { getComponentByType, getValidComponents };
+  return { getComponentByType, getValidComponents, getEditorByType };
 };

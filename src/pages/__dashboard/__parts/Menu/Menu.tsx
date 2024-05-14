@@ -25,7 +25,7 @@ export const Menu = () => {
 
   return (
     <>
-      <div className={style['menu']}>
+      <div className={style['menu']} data-component="menu">
         <div className={style['top']}>
           <label>ONEBOX</label>
         </div>

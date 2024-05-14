@@ -1,4 +1,4 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
@@ -22,6 +22,8 @@ import style from './ComposeNews.module.scss';
 import { useComponent } from 'shared/hooks/useComponent';
 import { QuoteEditor } from 'components/compose/Quote/Quote.editor';
 import { EditorContext } from 'shared/context/EditorContext';
+import { MDEditorReturn } from 'shared/types/MDEditorReturn';
+import React from 'react';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -32,6 +34,9 @@ export const ComposeNews = () => {
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(true);
   const [maximized, setMaximized] = useState<boolean>(false);
+  const [editingComponent, setEditingComponent] = useState<ComponentModel>();
+  const [lastEditingComponent, setLastEditingComponent] =
+    useState<ComponentModel>();
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
 
   const editorContext = useContext(EditorContext);
@@ -39,7 +44,7 @@ export const ComposeNews = () => {
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
 
-  const { getValidComponents } = useComponent();
+  const { getValidComponents, getEditorByType } = useComponent();
 
   const saveDraft = useCallback(
     debounce((n: NewsModel | undefined) => {
@@ -142,12 +147,40 @@ export const ComposeNews = () => {
     setShowDraftMessage(false);
   };
 
+  const changeComponentProps = (status: MDEditorReturn) => {
+    if (!editingComponent) return;
+
+    const _editingComponent: ComponentModel = {
+      ...editingComponent,
+      longText: status.text,
+      longFormattedText: status.formattedText
+    };
+
+    const _components = news.components?.map(component => {
+      if (
+        (!!component.tempId && component.tempId == _editingComponent?.tempId) ||
+        (!!component.id && component.id == _editingComponent?.id)
+      ) {
+        return _editingComponent;
+      }
+
+      return component;
+    });
+
+    //console.log('status', news.components, _editingComponent);
+    onComponentsChange(_components ?? []);
+  };
+
+  const onEdit = (component?: ComponentModel) => {
+    !!component && setLastEditingComponent(component);
+    setEditingComponent(component);
+  };
+
   useEffect(() => {
     return getCurrentNews(id as unknown as number);
   }, []);
 
   useEffect(() => {
-    console.log(editorContext);
     setMaximized(editorContext.maximized);
   }, [editorContext]);
 
@@ -197,7 +230,11 @@ export const ComposeNews = () => {
               <HeaderEditor updateHeader={updateHeader} news={news} />
             </div>
           </div>
-          <div className={style['right-side']}>
+          <div
+            className={`${style['right-side']} ${
+              editingComponent && style['editting']
+            }`}
+          >
             <div className={style['editor-header']}>
               <label>editor</label>
               <div className={style['editor-switcher']}>
@@ -229,27 +266,50 @@ export const ComposeNews = () => {
               {!loading && (
                 <FreeEditor
                   onComponentsOpen={onComponentsOpen}
-                  components={news.components ?? []}
+                  components={news.components}
                   newsId={id as unknown as number}
                   onChange={onComponentsChange}
+                  onEdit={onEdit}
                   editMode={editMode}
                 ></FreeEditor>
               )}
             </div>
           </div>
         </div>
-        <div
-          className={`${style['edit-properties']} ${
-            maximized && style['maximized']
-          }`}
-        >
-          <div className={style['header']}>
-            <h1>Quote</h1>
+        {
+          <div
+            className={`${style['edit-properties']} ${
+              !editingComponent && style['hidden']
+            } ${maximized && style['maximized']}`}
+          >
+            <div className={style['header']}>
+              <h1>
+                {(
+                  editingComponent ??
+                  lastEditingComponent ??
+                  {}
+                ).type?.toString()}
+              </h1>
+              <Button onClick={() => setEditingComponent(undefined)}>
+                <FontAwesomeIcon icon={faXmark} />
+              </Button>
+            </div>
+            <div className={style['content']}>
+              <div>
+                {(editingComponent || lastEditingComponent) &&
+                  React.createElement(
+                    getEditorByType(
+                      (editingComponent ?? lastEditingComponent ?? {}).type
+                    ),
+                    {
+                      component: editingComponent,
+                      onChange: changeComponentProps
+                    }
+                  )}
+              </div>
+            </div>
           </div>
-          <div className={style['content']}>
-            <QuoteEditor />
-          </div>
-        </div>
+        }
       </div>
     </>
   );

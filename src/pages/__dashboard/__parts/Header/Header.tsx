@@ -9,7 +9,7 @@ export const Header = () => {
   const currentUser = useContext(UserContext);
   return (
     <>
-      <div className={style['header']}>
+      <div className={style['header']} data-component="header">
         <label>{currentUser?.username}</label>
         <div className={style['cover']}>
           <FontAwesomeIcon icon={faUser} />

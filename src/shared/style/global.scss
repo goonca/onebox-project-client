@@ -42,3 +42,16 @@ a:visited {
 * {
   box-sizing: border-box;
 }
+
+.CodeMirror.CodeMirror {
+  min-height: initial;
+  height: 220px;
+}
+
+/*.cm-spell-error {
+  background-color: initial !important;
+}
+
+.editor-statusbar {
+  display: none;
+}*/
