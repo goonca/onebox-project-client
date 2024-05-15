@@ -5,13 +5,13 @@ import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
 
 export const getServerSideProps = (async ({ req, res }) => {
-  const { authenticate } = useServices();
+  /*const { authenticate } = useServices();
   const authToken = getCookie('authToken', { req, res });
   const response = await authenticate({
     authToken
-  });
+  });*/
 
-  const currentUser = response.data;
+  const currentUser = {}; //response.data;
 
   return { props: { currentUser } };
 }) satisfies GetServerSideProps<{ currentUser: PageProps }>;

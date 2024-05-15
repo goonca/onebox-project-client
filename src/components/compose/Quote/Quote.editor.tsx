@@ -16,14 +16,14 @@ export const QuoteEditor = (props: ComponentEditorProps) => {
     props.onChange && props.onChange({ longText, longFormattedText });
   };
 
-  const changeSpacing = ({ marginTop, marginBottom }: SpacingReturn) => {
+  const changeSpacing = ({ paddingTop, paddingBottom }: SpacingReturn) => {
     const longText = refTextarea.current?.value ?? '';
     const longFormattedText = longText.replace(/(?:\r|\n|\r\n)/g, '<br/>');
 
     props.onChange &&
       props.onChange({
-        marginTop,
-        marginBottom,
+        paddingTop,
+        paddingBottom,
         longText: longText,
         longFormattedText: longFormattedText
       });

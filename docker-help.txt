@@ -1,0 +1,6 @@
+docker tag client-dev oneboxnews/onebox-client
+docker push oneboxnews/onebox-client:latest
+docker images
+docker rmi --force "client-dev"
+
+docker-compose build client-dev

@@ -9,8 +9,8 @@ export const Quote: React.FC<ComponentModel> = (props: ComponentModel) => {
     <>
       <div
         style={{
-          paddingTop: (props.marginTop ?? 0) * 5 + 'px',
-          paddingBottom: (props.marginBottom ?? 0) * 5 + 'px'
+          paddingTop: (props.paddingTop ?? 0) * 5 + 'px',
+          paddingBottom: (props.paddingBottom ?? 0) * 5 + 'px'
         }}
       >
         <blockquote

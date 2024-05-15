@@ -13,27 +13,38 @@ export const TextEditor = (props: ComponentEditorProps) => {
   const [component, setComponent] = useState<ComponentModel>(
     props.component as ComponentModel
   );
-  //const mdEditorRef = useRef<any>(null);
+  let comp = useRef<ComponentModel>(props.component as ComponentModel);
 
   const changeText = ({ longText, longFormattedText }: EditorReturn) => {
     console.log(longText, longFormattedText);
-    props.onChange &&
-      props.onChange({
-        longText,
-        longFormattedText,
-        marginTop: (props.component?.marginTop ?? 0) as unknown as number,
-        marginBottom: (props.component?.marginBottom ?? 0) as unknown as number
-      });
+    const changes = {
+      longText,
+      longFormattedText,
+      paddingTop: (props.component?.paddingTop ?? 0) as unknown as number,
+      paddingBottom: (props.component?.paddingBottom ?? 0) as unknown as number
+    };
+
+    comp.current = {
+      ...comp.current,
+      ...changes
+    };
+    props.onChange && props.onChange(changes);
   };
 
-  const changeSpacing = ({ marginTop, marginBottom }: SpacingReturn) => {
-    props.onChange &&
-      props.onChange({
-        marginTop,
-        marginBottom,
-        longText: props.component?.longText,
-        longFormattedText: props.component?.longFormattedText
-      });
+  const changeSpacing = ({ paddingTop, paddingBottom }: SpacingReturn) => {
+    const changes = {
+      paddingTop,
+      paddingBottom,
+      longText: comp.current.longText,
+      longFormattedText: comp.current.longFormattedText
+    };
+
+    comp.current = {
+      ...comp.current,
+      ...changes
+    };
+
+    props.onChange && props.onChange(changes);
   };
 
   useEffect(() => {

@@ -155,8 +155,8 @@ export const ComposeNews = () => {
       ...editingComponent,
       longText: status.longText,
       longFormattedText: status.longFormattedText,
-      marginTop: status.marginTop,
-      marginBottom: status.marginBottom
+      paddingTop: status.paddingTop,
+      paddingBottom: status.paddingBottom
     };
 
     const _components = news.components?.map(component => {

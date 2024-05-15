@@ -3,8 +3,8 @@ import { ComponentModel } from 'shared/types/api-type';
 import style from './Spacing.module.scss';
 
 export type SpacingReturn = {
-  marginTop: number;
-  marginBottom: number;
+  paddingTop: number;
+  paddingBottom: number;
 };
 
 export type SpacingProps = {
@@ -19,19 +19,19 @@ export const Spacing = (props: SpacingProps) => {
   const changeValue = () => {
     props.onChange &&
       props.onChange({
-        marginTop: (topRef.current?.value ?? 0) as number,
-        marginBottom: (bottomRef.current?.value ?? 0) as number
+        paddingTop: (topRef.current?.value ?? 0) as number,
+        paddingBottom: (bottomRef.current?.value ?? 0) as number
       });
   };
 
   useEffect(() => {
     topRef.current &&
       (topRef.current.value = (
-        !!props.component?.marginTop ? props.component?.marginTop : '0'
+        !!props.component?.paddingTop ? props.component?.paddingTop : '0'
       ) as string);
     bottomRef.current &&
       (bottomRef.current.value = (
-        !!props.component?.marginBottom ? props.component?.marginBottom : '0'
+        !!props.component?.paddingBottom ? props.component?.paddingBottom : '0'
       ) as string);
     //console.log('changed');
   }, [props.component?.id]);
