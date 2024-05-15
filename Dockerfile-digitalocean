@@ -1,8 +1,9 @@
-FROM node:18-alpine as baseprod
+FROM node:18-alpine as base
 RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 COPY package*.json ./
 EXPOSE 3010
+
 
 
 FROM base as builder
@@ -12,7 +13,7 @@ ENV BUILD_STANDALONE=true
 RUN yarn build
 
 
-FROM baseprod as production
+FROM base as production
 WORKDIR /app
 
 ENV NODE_ENV=production
