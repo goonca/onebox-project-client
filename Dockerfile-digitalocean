@@ -1,10 +1,8 @@
-
-
 FROM node:18-alpine as baseprod
-#RUN apk add --no-cache g++ make py3-pip libc6-compat
-ADD --keep-git-dir=true https://github.com/goonca/onebox-project-client.git#master /onebox-project-client
+RUN apk add --no-cache g++ make py3-pip libc6-compat
+WORKDIR /app
+COPY package*.json ./
 EXPOSE 3010
-
 
 
 FROM base as builder
