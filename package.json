@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3010",
+    "start": "next start",
     "ci": "yarn lint && yarn build",
     "prettier": "prettier --config config/prettier/prettier.config.js --ignore-path .gitignore",
     "format": "yarn prettier -- --write .",
