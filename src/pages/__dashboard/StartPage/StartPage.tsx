@@ -12,7 +12,7 @@ import style from './StartPage.module.scss';
 
 export const StartPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   //fix this
-  document.body.style.backgroundColor = '#f0f0f7';
+  document.body.style.backgroundColor = '#F3F5F9';
   return (
     <>
       <div className={style['start-page']} data-component="start-page">

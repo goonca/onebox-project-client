@@ -1,19 +1,19 @@
 import React from 'react';
-import Markdown from 'react-markdown';
+import { ComponentModel } from 'shared/types/api-type';
 
 import style from './Text.module.scss';
 
-export type TextProps = {
-  text?: string;
-};
-
-export const Text: React.FC<TextProps> = (props: TextProps) => {
-  const defaultText: string = `Text component accepts ***markdown*** markup language.`;
+export const Text: React.FC<ComponentModel> = (props: ComponentModel) => {
+  const defaultText: string = `Text component accepts <strong>markdown</strong> markup language.`;
   return (
     <>
-      <div className={style['text']} data-component="text">
-        <Markdown>{props.text ?? defaultText}</Markdown>
-      </div>
+      <div
+        className={style['text']}
+        data-component="text"
+        dangerouslySetInnerHTML={{
+          __html: props.longFormattedText ?? defaultText
+        }}
+      ></div>
     </>
   );
 };

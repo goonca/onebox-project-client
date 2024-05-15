@@ -7,9 +7,13 @@ export const Quote: React.FC<ComponentModel> = (props: ComponentModel) => {
   const defaultText: string = `Quote...`;
   return (
     <>
-      <blockquote className={style['quote']} data-component="quote">
-        {props.longFormattedText ?? defaultText}
-      </blockquote>
+      <blockquote
+        className={style['quote']}
+        data-component="quote"
+        dangerouslySetInnerHTML={{
+          __html: props.longFormattedText ?? defaultText
+        }}
+      ></blockquote>
     </>
   );
 };

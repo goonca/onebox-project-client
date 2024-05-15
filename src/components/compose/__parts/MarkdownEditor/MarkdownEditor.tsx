@@ -1,13 +1,36 @@
 //@ts-nocheck
-import { useEffect } from 'react';
-import { MDEditorReturn } from 'shared/types/MDEditorReturn';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { EditorReturn } from 'shared/types/EditorReturn';
 
 export type MarkdownEditorProps = {
-  onChange?: (status: MDEditorReturn) => void;
+  onChange?: (status: EditorReturn) => void;
+  initialValue?: string;
 };
 
-export const MarkdownEditor = ({ onChange }: MarkdownEditorProps) => {
-  //let simplemde;
+export const MarkdownEditor = forwardRef(function MarkdownEditor(
+  props: MarkdownEditorProps,
+  ref
+) {
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        /*reset(initialValue?: string) {
+          resetEditor(initialValue);
+        }*/
+      };
+    },
+    []
+  );
+
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  /*const resetEditor = (initialValue?: string) => {
+    //console.log('resetEditor');
+    parentRef.current.innerHTML = '';
+    window.simplemde = undefined;
+    buildEditor(initialValue);
+  };*/
 
   const onFullscreen = (active: boolean) => {
     document
@@ -15,35 +38,40 @@ export const MarkdownEditor = ({ onChange }: MarkdownEditorProps) => {
         'div[class*="Layout_left-side"], div[data-component="header"]'
       )
       .forEach(c => {
-        c.style.display = active ? 'none' : '';
+        (c as HTMLElement).style.display = active ? 'none' : '';
       });
   };
 
-  useEffect(() => {
+  const buildEditor = (initialValue?: string) => {
     const codemirror = document.querySelector('.CodeMirror');
     if (!codemirror) {
+      parentRef.current.innerHTML = '<textarea id="markdownEditor"></textarea>';
       window.simplemde = new SimpleMDE({
-        element: document.getElementById('markdownEditor'),
-        forceSync: true,
+        element: document.getElementById('markdownEditor') ?? undefined,
         spellChecker: false,
         status: false,
+        initialValue: initialValue ?? props.initialValue,
         onFullscreen: onFullscreen
       });
 
       window.simplemde.codemirror.on('change', () => {
-        onChange &&
-          onChange({
-            text: window.simplemde.value(),
-            formattedText: window.simplemde.options.previewRender(
+        props.onChange &&
+          props.onChange({
+            longText: window.simplemde.value(),
+            longFormattedText: window.simplemde.options.previewRender(
               window.simplemde.value()
             )
           });
       });
     }
+  };
+
+  useEffect(() => {
+    buildEditor();
   }, []);
   return (
     <>
-      <textarea id="markdownEditor"></textarea>
+      <div ref={parentRef}></div>
     </>
   );
-};
+});

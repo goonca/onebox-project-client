@@ -1,6 +1,6 @@
 import { ComponentModel } from 'shared/types/api-type';
 import { ComponentEditorProps } from 'shared/types/ComponentEditorProps';
-import { MDEditorReturn } from 'shared/types/MDEditorReturn';
+import { EditorReturn } from 'shared/types/EditorReturn';
 import {
   MarkdownEditor,
   MarkdownEditorProps

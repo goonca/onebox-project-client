@@ -11,13 +11,12 @@ export const QuoteEditor = (props: ComponentEditorProps) => {
 
   const refTextarea = useRef<HTMLTextAreaElement>(null);
   const changeText = () => {
-    const text = refTextarea.current?.value ?? '';
-    const formattedText = text.replace(/(?:\r|\n|\r\n)/g, '<br/>');
-    props.onChange && props.onChange({ text, formattedText });
+    const longText = refTextarea.current?.value ?? '';
+    const longFormattedText = longText.replace(/(?:\r|\n|\r\n)/g, '<br/>');
+    props.onChange && props.onChange({ longText, longFormattedText });
   };
 
   useEffect(() => {
-    console.log('changed', props.component);
     refTextarea.current &&
       (refTextarea.current.value = props.component?.longText ?? '');
     setComponent(props.component as ComponentModel);
@@ -34,9 +33,7 @@ export const QuoteEditor = (props: ComponentEditorProps) => {
             defaultValue={component?.longText}
           ></textarea>
         </div>
-        <div className={style['spacing']}>
-          <Spacing />
-        </div>
+        <div className={style['spacing']}>{/*<Spacing />*/}</div>
       </div>
     </>
   );

@@ -34,8 +34,8 @@ export type ComponentModel = {
   src?: string;
   longText?: string;
   longFormattedText?: string;
-  marginTop?: string;
-  marginBottom?: string;
+  marginTop?: number;
+  marginBottom?: number;
   width?: string;
   height?: string;
 };

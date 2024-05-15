@@ -7,7 +7,7 @@ $dashboard-bg-details: #a3a0fb;
 $dashboard-bg-light: #43425d;
 $dashboard-icon-color: #a6a3bf;
 $dashboard-menu-color: #e5e5e5;
-$dashboard-background: #f0f0f7;
+$dashboard-background: #f3f5f9;
 
 $menu-width: 250px;
 $menu-closed-width: 60px;
@@ -23,7 +23,7 @@ $space-4: 20px;
 $space-5: 30px;
 $space-6: 40px;
 
-$radius-1: 0;
+$radius-1: 5px;
 $radius-2: 0;
 
 $badge-world: #ff0000;
@@ -37,7 +37,7 @@ $badge-technology: #930036;
 $badge-economy: #6f6d4c;
 $badge-cucine: #007751;
 $shadow: 0px 1px 10px lightgray;
-$shadow-up: 0px -1px 10px lightgray;
+$shadow-up: 0px 0px 5px rgba(gray, 80);
 $shadow-tiny: 0px 1px 2px lightgray;
 $editor-color: #dcdced;
 $blue: #1976cf;

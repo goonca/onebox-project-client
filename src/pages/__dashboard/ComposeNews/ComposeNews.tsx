@@ -20,9 +20,8 @@ import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import style from './ComposeNews.module.scss';
 import { useComponent } from 'shared/hooks/useComponent';
-import { QuoteEditor } from 'components/compose/Quote/Quote.editor';
 import { EditorContext } from 'shared/context/EditorContext';
-import { MDEditorReturn } from 'shared/types/MDEditorReturn';
+import { EditorReturn } from 'shared/types/EditorReturn';
 import React from 'react';
 
 export const ComposeNews = () => {
@@ -147,13 +146,17 @@ export const ComposeNews = () => {
     setShowDraftMessage(false);
   };
 
-  const changeComponentProps = (status: MDEditorReturn) => {
+  const changeComponentProps = (status: EditorReturn) => {
     if (!editingComponent) return;
+
+    console.log('status', editingComponent.position);
 
     const _editingComponent: ComponentModel = {
       ...editingComponent,
-      longText: status.text,
-      longFormattedText: status.formattedText
+      longText: status.longText,
+      longFormattedText: status.longFormattedText,
+      marginTop: status.marginTop,
+      marginBottom: status.marginBottom
     };
 
     const _components = news.components?.map(component => {
@@ -167,6 +170,7 @@ export const ComposeNews = () => {
       return component;
     });
 
+    //console.log('_components', _components);
     //console.log('status', news.components, _editingComponent);
     onComponentsChange(_components ?? []);
   };
@@ -174,6 +178,7 @@ export const ComposeNews = () => {
   const onEdit = (component?: ComponentModel) => {
     !!component && setLastEditingComponent(component);
     setEditingComponent(component);
+    console.log(editingComponent?.position, component?.position);
   };
 
   useEffect(() => {
