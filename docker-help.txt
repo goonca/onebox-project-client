@@ -4,3 +4,20 @@ docker images
 docker rmi --force "client-dev"
 
 docker-compose build client-dev
+
+--------
+steps to re-deploy
+
+** build image again
+docker-compose build client-prd 
+
+** delete tag image (run: "docker images" to check the id)
+docker rmi --force 'a04c699a5482'
+
+** tag again
+docker tag client-prd oneboxnews/onebox-client:latest
+
+** push
+docker push oneboxnews/onebox-client
+
+-----------------------
