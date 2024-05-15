@@ -8,12 +8,19 @@ export const Text: React.FC<ComponentModel> = (props: ComponentModel) => {
   return (
     <>
       <div
-        className={style['text']}
-        data-component="text"
-        dangerouslySetInnerHTML={{
-          __html: props.longFormattedText ?? defaultText
+        style={{
+          paddingTop: (props.marginTop ?? 0) * 5 + 'px',
+          paddingBottom: (props.marginBottom ?? 0) * 5 + 'px'
         }}
-      ></div>
+      >
+        <div
+          className={style['text']}
+          data-component="text"
+          dangerouslySetInnerHTML={{
+            __html: props.longFormattedText ?? defaultText
+          }}
+        ></div>
+      </div>
     </>
   );
 };
