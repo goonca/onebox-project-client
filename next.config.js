@@ -1,13 +1,13 @@
-require('dotenv').config({ path: `${process.env.ENVIRONMENT}` });
+//require('dotenv').config({ path: `${process.env.ENVIRONMENT}` });
 const { BLOG_URL } = process.env;
 const path = require('path');
-
+/*
 module.exports = {
   //output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
   experimental: {
     appDir: true
   }
-};
+};*/
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
