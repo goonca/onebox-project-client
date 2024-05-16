@@ -1,4 +1,4 @@
-//require('dotenv').config({ path: `${process.env.ENVIRONMENT}` });
+require('dotenv').config({ path: `.${process.env.ENVIRONMENT}` });
 const { BLOG_URL } = process.env;
 const path = require('path');
 /*
@@ -29,14 +29,6 @@ const nextConfig = {
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
-  },
-  serverRuntimeConfig: {
-    APP_BASE_URL: process.env.APP_BASE_URL,
-    NODE_ENV: process.env.APP_BASE_URL
-  },
-  publicRuntimeConfig: {
-    APP_BASE_URL: process.env.APP_BASE_URL,
-    NODE_ENV: process.env.APP_BASE_URL
   }
 };
 
