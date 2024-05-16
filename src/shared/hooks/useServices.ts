@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { UserContext } from 'shared/context/UserContext';
 import { NewsModel, RequestStatus, UserModel } from 'shared/types/api-type';
 
 export type ResponseType = {
@@ -18,6 +20,9 @@ export type ServicesType = {
 };
 
 export const useServices = (): ServicesType => {
+  let currentUser: UserModel | undefined;
+  typeof window !== 'undefined' && (currentUser = useContext(UserContext));
+
   const uri = {
     AUTH: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth`,
     USER: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/user`,
@@ -29,12 +34,18 @@ export const useServices = (): ServicesType => {
   const _fetch = async (method: string, url: string, data?: any) => {
     const rawResponse = await fetch(url, {
       method: method,
+      //@ts-ignore
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        usertoken: currentUser?.authToken
       },
       credentials: 'include',
-      ...(data ? { body: JSON.stringify(data) } : {})
+      ...(data
+        ? {
+            body: JSON.stringify(data)
+          }
+        : {})
     });
     const content = await rawResponse.json();
     return content;
