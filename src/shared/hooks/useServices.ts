@@ -25,8 +25,6 @@ export const useServices = (): ServicesType => {
   let currentUser: UserModel | undefined;
   typeof window !== 'undefined' && (currentUser = useContext(UserContext));
 
-  console.log('APP_BASE_URL', APP_BASE_URL);
-
   const uri = {
     AUTH: `${APP_BASE_URL}/auth`,
     USER: `${APP_BASE_URL}/user`,
