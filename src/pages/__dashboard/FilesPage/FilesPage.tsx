@@ -49,10 +49,7 @@ export const FilesPage = () => {
             files.map(file => {
               return (
                 <div className={style['tile']} key={file.id}>
-                  <img
-                    width={200}
-                    src={`${APP_BASE_URL}/files/${file.originalname}`}
-                  />
+                  <img width={200} src={`${APP_BASE_URL}/files/${file.key}`} />
                   <p className={style['name']}>{file.originalname}</p>
                   <div>
                     <p className={style['size']}>

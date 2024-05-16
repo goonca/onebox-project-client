@@ -44,6 +44,9 @@ export type ComponentModel = {
 
 export type FileModel = {
   id?: number;
+  etag?: string;
+  key?: string;
+  location?: string;
   fieldname?: string;
   originalname?: string;
   encoding?: string;
