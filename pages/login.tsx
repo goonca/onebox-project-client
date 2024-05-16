@@ -2,7 +2,7 @@ import { getCookie } from 'cookies-next';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
 import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
-import LoginPage from 'src/pages/Login/LoginPage';
+import { LoginPage } from 'src/pages/Login/LoginPage';
 
 export const getServerSideProps = (async ({ req, res }) => {
   const { authenticate } = useServices();
@@ -21,6 +21,7 @@ export const getServerSideProps = (async ({ req, res }) => {
       }
     };
   }*/
+  console.log(currentUser);
 
   return { props: { currentUser } };
 }) satisfies GetServerSideProps<{ currentUser: PageProps }>;

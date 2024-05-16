@@ -29,18 +29,21 @@ const nextConfig = {
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
-  } /*,
+  },
   serverRuntimeConfig: {
-    APP_BASE_URL: process.env.APP_BASE_URL
+    APP_BASE_URL: process.env.APP_BASE_URL,
+    NODE_ENV: process.env.APP_BASE_URL
   },
   publicRuntimeConfig: {
-    APP_BASE_URL: process.env.APP_BASE_URL
-  }*/
+    APP_BASE_URL: process.env.APP_BASE_URL,
+    NODE_ENV: process.env.APP_BASE_URL
+  }
 };
 
-module.exports = nextConfig;
+//module.exports = nextConfig;
 
 module.exports = {
+  ...nextConfig,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.

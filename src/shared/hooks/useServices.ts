@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { NewsModel, RequestStatus, UserModel } from 'shared/types/api-type';
+import { useEnvVars } from './useEnvVars';
 
 export type ResponseType = {
   data?: object;
@@ -20,15 +21,18 @@ export type ServicesType = {
 };
 
 export const useServices = (): ServicesType => {
+  const { APP_BASE_URL } = useEnvVars();
   let currentUser: UserModel | undefined;
   typeof window !== 'undefined' && (currentUser = useContext(UserContext));
 
+  console.log('APP_BASE_URL', APP_BASE_URL);
+
   const uri = {
-    AUTH: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/auth`,
-    USER: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/user`,
-    NEWS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news`,
-    COMPONENT: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news/components`,
-    FILES: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files`
+    AUTH: `${APP_BASE_URL}/auth`,
+    USER: `${APP_BASE_URL}/user`,
+    NEWS: `${APP_BASE_URL}/news`,
+    COMPONENT: `${APP_BASE_URL}/news/components`,
+    FILES: `${APP_BASE_URL}/files`
   };
 
   const _fetch = async (method: string, url: string, data?: any) => {
