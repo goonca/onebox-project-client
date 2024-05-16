@@ -1,5 +1,6 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useEnvVars } from 'shared/hooks/useEnvVars';
 import { useFile } from 'shared/hooks/useFile';
 import { useMoment } from 'shared/hooks/useMoment';
 import { useServices } from 'shared/hooks/useServices';
@@ -13,6 +14,7 @@ export const FilesPage = () => {
   const [files, setFiles] = useState<FileModel[]>();
   const { toDateTimeString } = useMoment();
   const { readableSize } = useFile();
+  const { APP_BASE_URL } = useEnvVars();
 
   const listFiles = async () => {
     const files = await getFiles();
@@ -49,7 +51,7 @@ export const FilesPage = () => {
                 <div className={style['tile']} key={file.id}>
                   <img
                     width={200}
-                    src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${file.originalname}`}
+                    src={`${APP_BASE_URL}/files/${file.originalname}`}
                   />
                   <p className={style['name']}>{file.originalname}</p>
                   <div>

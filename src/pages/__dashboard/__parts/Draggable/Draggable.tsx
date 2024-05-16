@@ -8,6 +8,7 @@ import {
   useState
 } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useEnvVars } from 'shared/hooks/useEnvVars';
 import { useFile } from 'shared/hooks/useFile';
 import { ResponseType } from 'shared/hooks/useServices';
 import { FileModel } from 'shared/types/api-type';
@@ -44,6 +45,7 @@ export const Draggable = forwardRef(function Draggable(
     []
   );
 
+  const { APP_BASE_URL } = useEnvVars();
   const [blobFiles, setBlobFiles] = useState<CustomFile[]>();
   const [previewFile, setPreviewFile] = useState<FileModel>();
   const [uploading, setUploading] = useState<boolean>(false);
@@ -71,7 +73,7 @@ export const Draggable = forwardRef(function Draggable(
       //};
     }
 
-    await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + '/files/upload', {
+    await fetch(APP_BASE_URL + '/files/upload', {
       method: 'POST',
       body: formData,
       credentials: 'include'
@@ -187,7 +189,7 @@ export const Draggable = forwardRef(function Draggable(
             <>
               <img
                 className={style['preview']}
-                src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${previewFile.filename}`}
+                src={`${APP_BASE_URL}/files/${previewFile.filename}`}
               />
             </>
           )}
