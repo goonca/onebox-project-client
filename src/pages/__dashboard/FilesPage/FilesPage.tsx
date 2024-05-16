@@ -14,7 +14,7 @@ export const FilesPage = () => {
   const [files, setFiles] = useState<FileModel[]>();
   const { toDateTimeString } = useMoment();
   const { readableSize } = useFile();
-  const { APP_BASE_URL } = useEnvVars();
+  //const { APP_BASE_URL } = useEnvVars();
 
   const listFiles = async () => {
     const files = await getFiles();
@@ -49,7 +49,10 @@ export const FilesPage = () => {
             files.map(file => {
               return (
                 <div className={style['tile']} key={file.id}>
-                  <img width={200} src={`${APP_BASE_URL}/files/${file.key}`} />
+                  <img
+                    width={200}
+                    src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${file.key}`}
+                  />
                   <p className={style['name']}>{file.originalname}</p>
                   <div>
                     <p className={style['size']}>

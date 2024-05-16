@@ -45,7 +45,7 @@ export const Draggable = forwardRef(function Draggable(
     []
   );
 
-  const { APP_BASE_URL } = useEnvVars();
+  //const { APP_BASE_URL } = useEnvVars();
   const [blobFiles, setBlobFiles] = useState<CustomFile[]>();
   const [previewFile, setPreviewFile] = useState<FileModel>();
   const [uploading, setUploading] = useState<boolean>(false);
@@ -73,7 +73,7 @@ export const Draggable = forwardRef(function Draggable(
       //};
     }
 
-    await fetch(APP_BASE_URL + '/files/upload', {
+    await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + '/files/upload', {
       method: 'POST',
       body: formData,
       credentials: 'include'
@@ -189,7 +189,7 @@ export const Draggable = forwardRef(function Draggable(
             <>
               <img
                 className={style['preview']}
-                src={`${APP_BASE_URL}/files/${previewFile.filename}`}
+                src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${previewFile.filename}`}
               />
             </>
           )}
