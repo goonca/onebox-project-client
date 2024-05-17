@@ -3,15 +3,16 @@ import { Button, CircularProgress, Link } from '@mui/material';
 import {
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useImperativeHandle,
   useState
 } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useEnvVars } from 'shared/hooks/useEnvVars';
+import { UserContext } from 'shared/context/UserContext';
 import { useFile } from 'shared/hooks/useFile';
 import { ResponseType } from 'shared/hooks/useServices';
-import { FileModel } from 'shared/types/api-type';
+import { FileModel, UserModel } from 'shared/types/api-type';
 
 import style from './Draggable.module.scss';
 
@@ -51,6 +52,8 @@ export const Draggable = forwardRef(function Draggable(
   const [uploading, setUploading] = useState<boolean>(false);
   const [invalidFile, setInvalidFile] = useState<boolean>(false);
   const { readableSize } = useFile();
+  let currentUser: UserModel | undefined;
+  typeof window !== 'undefined' && (currentUser = useContext(UserContext));
 
   const openSelector = () => {
     (
@@ -75,6 +78,9 @@ export const Draggable = forwardRef(function Draggable(
 
     await fetch(process.env.NEXT_PUBLIC_APP_BASE_URL + '/files/upload', {
       method: 'POST',
+      headers: {
+        usertoken: currentUser?.authToken as string
+      },
       body: formData,
       credentials: 'include'
     })
