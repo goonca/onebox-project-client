@@ -22,7 +22,9 @@ export const getServerSideProps = (async ({ req, res }) => {
 
   console.log(
     'process.env.NEXT_PUBLIC_APP_BASE_URL',
-    process.env.NEXT_PUBLIC_APP_BASE_URL
+    process.env.NEXT_PUBLIC_APP_BASE_URL,
+    'process.env.APP_BASE_URL',
+    process.env.APP_BASE_URL
   );
   const currentUser = response.data;
 
