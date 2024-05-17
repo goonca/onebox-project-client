@@ -111,7 +111,7 @@ export const ComposeNews = () => {
       return { ...component, position };
     });*/
     const orderedComp = normalizeComponents(components);
-    //console.log('ordered', orderedComp);
+    //console.log(orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
     setNews(_news);
     saveDraft(_news);
@@ -147,9 +147,8 @@ export const ComposeNews = () => {
   };
 
   const changeComponentProps = (status: EditorReturn) => {
+    //console.log('components', news.components);
     if (!editingComponent) return;
-
-    console.log('status', editingComponent.position);
 
     const _editingComponent: ComponentModel = {
       ...editingComponent,
@@ -164,7 +163,7 @@ export const ComposeNews = () => {
         (!!component.tempId && component.tempId == _editingComponent?.tempId) ||
         (!!component.id && component.id == _editingComponent?.id)
       ) {
-        return _editingComponent;
+        return { ..._editingComponent, position: component.position };
       }
 
       return component;
@@ -178,7 +177,7 @@ export const ComposeNews = () => {
   const onEdit = (component?: ComponentModel) => {
     !!component && setLastEditingComponent(component);
     setEditingComponent(component);
-    console.log(editingComponent?.position, component?.position);
+    //console.log(editingComponent?.position, component?.position);
   };
 
   useEffect(() => {

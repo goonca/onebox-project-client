@@ -36,3 +36,26 @@
     }
   }
 }
+
+@media screen and (max-width: $screen-sm) {
+  .menu-button {
+    flex-direction: column;
+    border-left: initial;
+    border-top: $space-1 solid $dashboard-bg-light;
+    min-width: 80px;
+    width: 25vw;
+    padding-left: 0;
+    align-items: center;
+    justify-content: center;
+
+    &.selected {
+      border-left-color: initial;
+      border-top-color: $dashboard-bg-details;
+    }
+
+    label {
+      font-size: x-small;
+      margin-left: 0 !important;
+    }
+  }
+}

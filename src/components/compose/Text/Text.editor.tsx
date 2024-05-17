@@ -2,10 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ComponentModel } from 'shared/types/api-type';
 import { ComponentEditorProps } from 'shared/types/ComponentEditorProps';
 import { EditorReturn } from 'shared/types/EditorReturn';
-import {
-  MarkdownEditor,
-  MarkdownEditorProps
-} from '../__parts/MarkdownEditor/MarkdownEditor';
+import { MarkdownEditor } from '../__parts/MarkdownEditor/MarkdownEditor';
 import { Spacing, SpacingReturn } from '../__parts/Spacing/Spacing';
 import style from './Text.module.scss';
 
@@ -16,12 +13,12 @@ export const TextEditor = (props: ComponentEditorProps) => {
   let comp = useRef<ComponentModel>(props.component as ComponentModel);
 
   const changeText = ({ longText, longFormattedText }: EditorReturn) => {
-    console.log(longText, longFormattedText);
+    //console.log(longText, longFormattedText);
     const changes = {
       longText,
       longFormattedText,
-      paddingTop: (props.component?.paddingTop ?? 0) as unknown as number,
-      paddingBottom: (props.component?.paddingBottom ?? 0) as unknown as number
+      paddingTop: comp.current.paddingTop,
+      paddingBottom: comp.current.paddingBottom
     };
 
     comp.current = {

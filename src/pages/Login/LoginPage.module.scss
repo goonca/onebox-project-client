@@ -24,3 +24,14 @@
     }
   }
 }
+
+@media screen and (max-width: $screen-sm) {
+  .login-page {
+    .left-side {
+      display: none;
+    }
+    .right-side {
+      width: 100%;
+    }
+  }
+}

@@ -109,7 +109,6 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   };
 
   useEffect(() => {
-    //console.log('components changed', props.components);
     setCompoenents(props.components);
   }, [props.components]);
 

@@ -77,3 +77,14 @@
     }
   }
 }
+
+@media screen and (max-width: $screen-sm) {
+  .layout {
+    .left-side {
+      position: absolute;
+      .changer {
+        display: none;
+      }
+    }
+  }
+}

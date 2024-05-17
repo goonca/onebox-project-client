@@ -11,6 +11,10 @@ import style from './HomePage.module.scss';
 
 const HomePage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   const [user, setUser] = useState(currentUser);
+
+  const goToLogin = () => {
+    document.location.href = '/login';
+  };
   return (
     <>
       <div className={style['homepage']}>
@@ -23,7 +27,7 @@ const HomePage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
                 create their own news space without requiring any technical
                 knowledge.
               </p>
-              <Button data-dark variant="contained">
+              <Button data-dark variant="contained" onClick={goToLogin}>
                 my space
               </Button>
             </div>

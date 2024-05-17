@@ -9,24 +9,41 @@ export const QuoteEditor = (props: ComponentEditorProps) => {
     props.component as ComponentModel
   );
 
+  let comp = useRef<ComponentModel>(props.component as ComponentModel);
   const refTextarea = useRef<HTMLTextAreaElement>(null);
   const changeText = () => {
     const longText = refTextarea.current?.value ?? '';
     const longFormattedText = longText.replace(/(?:\r|\n|\r\n)/g, '<br/>');
-    props.onChange && props.onChange({ longText, longFormattedText });
+
+    const changes = {
+      longText,
+      longFormattedText,
+      paddingTop: comp.current.paddingTop,
+      paddingBottom: comp.current.paddingBottom
+    };
+
+    comp.current = {
+      ...comp.current,
+      ...changes
+    };
+
+    props.onChange && props.onChange(changes);
   };
 
   const changeSpacing = ({ paddingTop, paddingBottom }: SpacingReturn) => {
-    const longText = refTextarea.current?.value ?? '';
-    const longFormattedText = longText.replace(/(?:\r|\n|\r\n)/g, '<br/>');
+    const changes = {
+      paddingTop,
+      paddingBottom,
+      longText: comp.current.longText,
+      longFormattedText: comp.current.longFormattedText
+    };
 
-    props.onChange &&
-      props.onChange({
-        paddingTop,
-        paddingBottom,
-        longText: longText,
-        longFormattedText: longFormattedText
-      });
+    comp.current = {
+      ...comp.current,
+      ...changes
+    };
+
+    props.onChange && props.onChange(changes);
   };
 
   useEffect(() => {

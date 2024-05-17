@@ -1,3 +1,5 @@
+@import '~/src/shared/style/variables.scss';
+
 .homepage {
   color: initial;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -128,9 +130,7 @@
   }
 }
 
-$small: 767px;
-
-@media screen and (max-width: $small) {
+@media screen and (max-width: $screen-sm) {
   .homepage {
     .header {
       .left-side {
