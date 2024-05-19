@@ -82,6 +82,14 @@ export const Frame = forwardRef(function Frame(
     bodyHeight: document.body.scrollHeight
   });
 
+  const handleEdit = (
+    e: React.MouseEvent<HTMLDivElement>,
+    component: ComponentModel
+  ) => {
+    e.stopPropagation();
+    onEdit && onEdit(component);
+  };
+
   const classnames = `${style['frame']} ${
     (selected ||
       selectedPosition == component.position ||
@@ -307,7 +315,14 @@ export const Frame = forwardRef(function Frame(
             <label>{component?.type}</label>
             <hr />
             <Tooltip title="Edit" arrow>
-              <Button onClick={() => onEdit(component)}>
+              <Button
+                onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                  handleEdit(e, component)
+                }
+                onMouseDown={(e: React.MouseEvent<HTMLDivElement>) =>
+                  e.stopPropagation()
+                }
+              >
                 <FontAwesomeIcon icon={faGear} />
               </Button>
             </Tooltip>
@@ -340,7 +355,12 @@ export const Frame = forwardRef(function Frame(
             )}
           </div>
         </div>
-        <div className={style['wrapper']}>
+        <div
+          className={style['wrapper']}
+          onMouseDown={(e: React.MouseEvent<HTMLDivElement>) =>
+            e.stopPropagation()
+          }
+        >
           <div>{children}</div>
         </div>
       </div>

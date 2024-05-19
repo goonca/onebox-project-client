@@ -8,7 +8,13 @@ import {
   Switch
 } from '@mui/material';
 import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import {
+  MouseEventHandler,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
@@ -178,6 +184,13 @@ export const ComposeNews = () => {
     //console.log(editingComponent?.position, component?.position);
   };
 
+  const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+  const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
+    setEditingComponent(undefined);
+  };
+
   useEffect(() => {
     return getCurrentNews(id as unknown as number);
   }, []);
@@ -188,7 +201,7 @@ export const ComposeNews = () => {
 
   return (
     <>
-      <div className={style['compose-news']}>
+      <div className={style['compose-news']} onMouseDown={closeEditor}>
         <div className={style['header']}>
           <div>
             <h2>
@@ -280,6 +293,8 @@ export const ComposeNews = () => {
         </div>
         {
           <div
+            onClick={handleEditorClick}
+            onMouseDown={handleEditorClick}
             className={`${style['edit-properties']} ${
               !editingComponent && style['hidden']
             } ${maximized && style['maximized']}`}

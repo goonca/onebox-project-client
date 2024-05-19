@@ -8,9 +8,6 @@ export const Figure: React.FC<ComponentModel> = (props: ComponentModel) => {
     e.currentTarget.src = '/static/default-picture.svg';
   };
 
-  useEffect(() => {
-    console.log('props', props);
-  }, [props]);
   return (
     <>
       <div
