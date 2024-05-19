@@ -113,6 +113,7 @@ export const ComposeNews = () => {
     const orderedComp = normalizeComponents(components);
     //console.log(orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
+    console.log(_news.components);
     setNews(_news);
     saveDraft(_news);
   };
@@ -146,16 +147,13 @@ export const ComposeNews = () => {
     setShowDraftMessage(false);
   };
 
-  const changeComponentProps = (status: EditorReturn) => {
+  const changeComponentProps = (changes: EditorReturn) => {
     //console.log('components', news.components);
     if (!editingComponent) return;
 
     const _editingComponent: ComponentModel = {
       ...editingComponent,
-      longText: status.longText,
-      longFormattedText: status.longFormattedText,
-      paddingTop: status.paddingTop,
-      paddingBottom: status.paddingBottom
+      ...changes
     };
 
     const _components = news.components?.map(component => {

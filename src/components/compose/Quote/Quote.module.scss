@@ -11,6 +11,8 @@
   display: flex;
   flex-direction: row;
   column-gap: $space-2;
+  width: 100%;
+  max-width: 1000px;
 
   .markdown-editor {
     flex-grow: 10;

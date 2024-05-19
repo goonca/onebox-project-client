@@ -1,6 +1,3 @@
-export type EditorReturn = {
-  longText?: string;
-  longFormattedText?: string;
-  paddingTop?: number;
-  paddingBottom?: number;
-};
+import { ComponentModel } from './api-type';
+
+export type EditorReturn = ComponentModel;

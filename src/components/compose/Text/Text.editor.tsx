@@ -16,24 +16,20 @@ export const TextEditor = (props: ComponentEditorProps) => {
     //console.log(longText, longFormattedText);
     const changes = {
       longText,
-      longFormattedText,
-      paddingTop: comp.current.paddingTop,
-      paddingBottom: comp.current.paddingBottom
+      longFormattedText
     };
 
     comp.current = {
       ...comp.current,
       ...changes
     };
-    props.onChange && props.onChange(changes);
+    props.onChange && props.onChange(comp.current);
   };
 
   const changeSpacing = ({ paddingTop, paddingBottom }: SpacingReturn) => {
     const changes = {
       paddingTop,
-      paddingBottom,
-      longText: comp.current.longText,
-      longFormattedText: comp.current.longFormattedText
+      paddingBottom
     };
 
     comp.current = {
@@ -41,7 +37,7 @@ export const TextEditor = (props: ComponentEditorProps) => {
       ...changes
     };
 
-    props.onChange && props.onChange(changes);
+    props.onChange && props.onChange(comp.current);
   };
 
   useEffect(() => {
@@ -55,7 +51,9 @@ export const TextEditor = (props: ComponentEditorProps) => {
       <div className={style['text-editor']}>
         <div className={style['markdown-editor']}>
           <MarkdownEditor
-            key={`${component.id ?? 0}${component.tempId ?? 0}`}
+            key={`${(component && component.id) ?? 0}${
+              (component && component.tempId) ?? 0
+            }`}
             onChange={changeText}
             initialValue={component?.longText}
           />

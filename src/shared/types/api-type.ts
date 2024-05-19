@@ -1,3 +1,12 @@
+export type FigureFitType =
+  | 'fill'
+  | 'contain'
+  | 'cover'
+  | 'none'
+  | 'scale-down';
+
+export type ComponentType = 'Figure' | 'Quote' | 'Text';
+
 export type UserModel = {
   id?: number;
   name?: string;
@@ -9,8 +18,6 @@ export type UserModel = {
   authToken?: string;
   profileUrl?: string;
 };
-
-export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
 export type NewsModel = {
   id?: number | string;
@@ -32,6 +39,10 @@ export type ComponentModel = {
   position?: number;
   type?: ComponentType;
   src?: string;
+  key?: string;
+  $key?: string;
+  fitType?: FigureFitType;
+  caption?: string;
   longText?: string;
   longFormattedText?: string;
   paddingTop?: number;

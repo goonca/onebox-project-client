@@ -1,0 +1,42 @@
+@import '~/src/shared/style/variables.scss';
+
+.source-dialog {
+  .content {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: center;
+    column-gap: $space-2;
+    row-gap: $space-2;
+    margin: auto;
+
+    .tile {
+      overflow: hidden;
+      max-width: 150px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid white;
+      transition: border 0.3s;
+      padding: $space-2;
+      align-items: center;
+      justify-content: center;
+      border-radius: $space-1;
+      align-self: center;
+      justify-self: center;
+
+      &.selectable {
+        cursor: pointer;
+        &:hover {
+          border: 1px solid $blue;
+        }
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .dialog-actions {
+    justify-content: center;
+    border-top: 1px solid lightgray;
+  }
+}

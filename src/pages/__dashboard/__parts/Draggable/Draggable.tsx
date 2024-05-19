@@ -20,7 +20,7 @@ export type DraggableProps = {
   onUpload: (files?: FileModel[]) => void;
   hideButtons?: boolean;
   showPreview?: boolean; //with preview, only one file at time is allowed
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 type CustomFile = File & {
   invalidMessage?: string[];
@@ -92,7 +92,6 @@ export const Draggable = forwardRef(function Draggable(
             props.onUpload(res.data as FileModel[]);
           setBlobFiles(undefined);
           setUploading(false);
-          //console.log('res', res);
           props.showPreview &&
             setPreviewFile((res.data as Array<FileModel>)[0]);
         }, 1000);
@@ -180,6 +179,10 @@ export const Draggable = forwardRef(function Draggable(
     await submitForm();
   };
 
+  const handleUpload = () => {
+    props.onUpload && props.onUpload([previewFile ?? {}]);
+  };
+
   return (
     <>
       <div className={style['content']}>
@@ -195,7 +198,7 @@ export const Draggable = forwardRef(function Draggable(
             <>
               <img
                 className={style['preview']}
-                src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${previewFile.filename}`}
+                src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${previewFile.key}`}
               />
             </>
           )}
@@ -218,13 +221,17 @@ export const Draggable = forwardRef(function Draggable(
                         click here to select
                       </Link>
                     </p>
-                    <small>Max 5 files at time / 5Mb each</small>
+                    {props.showPreview ? (
+                      <small>Max 5Mb</small>
+                    ) : (
+                      <small>Max 5 files at time / 5Mb each</small>
+                    )}
                   </>
                 )
               )}
             </div>
           )}
-          <div className={style['uploaded-files']}>
+          <div className={style['uploaded-files']} {...props}>
             {((props.showPreview && invalidFile) || !props.showPreview) && (
               <>
                 {blobFiles?.map((file: CustomFile) => {
@@ -283,7 +290,12 @@ export const Draggable = forwardRef(function Draggable(
                         </LoadingButton>
                       )}
                     {!!previewFile && (
-                      <Button data-dark size="small" variant="contained">
+                      <Button
+                        data-dark
+                        size="small"
+                        variant="contained"
+                        onClick={handleUpload}
+                      >
                         Use it
                       </Button>
                     )}

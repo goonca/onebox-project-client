@@ -130,7 +130,10 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
           )}
           {components?.map((comp, index) => {
             const node = getComponentByType(comp.type);
-            const element = React.createElement(node, comp);
+            const element = React.createElement(node, {
+              ...comp,
+              $key: comp.key
+            });
 
             return (
               <div

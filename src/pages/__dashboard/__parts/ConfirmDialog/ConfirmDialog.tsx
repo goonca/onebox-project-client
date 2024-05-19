@@ -52,10 +52,8 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       className={style['confirm-dialog']}
       open={!!opened}
       onClose={onCancel}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{headerText}</DialogTitle>
+      <DialogTitle>{headerText}</DialogTitle>
       <DialogContent>
         <DialogContentText minWidth={500} minHeight={40}>
           {bodyText}
