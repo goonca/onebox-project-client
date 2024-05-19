@@ -132,14 +132,28 @@
 
 @media screen and (max-width: $screen-sm) {
   .homepage {
+    background-image: url('/static/bacground-mobile.svg');
     .header {
+      background-image: url('/static/oneboxdraw.png');
+      background-repeat: no-repeat;
+      background-size: 65vh;
+      background-position-y: 50vh;
+      background-position-x: 15vw;
+      display: block;
+      padding-top: 30%;
+
       .left-side {
         width: 100%;
         padding-left: initial;
         padding: 0 10%;
       }
       .right-side {
+        position: absolute;
         display: none;
+        /*img {
+          position: static;
+          transform: translate(50vw, 35vh);
+        }*/
       }
     }
     .section-2 {
