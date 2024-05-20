@@ -36,8 +36,10 @@ const LayoutContainer = () => {
             ></div>
           </div>
           <div className={style['right-side']}>
-            <Header />
-            <Outlet />
+            <div>
+              <Header />
+              <Outlet />
+            </div>
           </div>
         </div>
       </EditorContext.Provider>

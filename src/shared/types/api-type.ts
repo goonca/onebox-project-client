@@ -41,6 +41,7 @@ export type ComponentModel = {
   src?: string;
   key?: string;
   $key?: string;
+  isCover?: boolean;
   fitType?: FigureFitType;
   caption?: string;
   longText?: string;

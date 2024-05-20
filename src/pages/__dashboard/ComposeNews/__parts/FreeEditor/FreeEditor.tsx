@@ -49,6 +49,22 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     props.onChange && props.onChange(components);
   };
 
+  const handleCoverChange = (component: ComponentModel) => {
+    props.onChange &&
+      props.onChange(
+        components?.map(_component => {
+          if (
+            (_component.tempId && _component.tempId == component.tempId) ||
+            (_component.id && _component.id == component.id)
+          ) {
+            return component;
+          } else {
+            return { ..._component, isCover: false };
+          }
+        })
+      );
+  };
+
   const onDelete = (component: ComponentModel) => {
     setDeletingComponent(component);
     setDialogOpened(true);
@@ -151,6 +167,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
                   onDragStart={onDragStart}
                   onDragEnd={onDragEnd}
                   onEdit={props.onEdit}
+                  onCoverChange={handleCoverChange}
                   isFirst={index == 0}
                   isLast={index == components.length - 1}
                   selectedPosition={selectedPosition}

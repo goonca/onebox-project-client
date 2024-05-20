@@ -108,5 +108,23 @@ $transition-delay: 0s;
     transition-delay: 0s;
     z-index: 10;
     background-color: transparent;
+
+    .is-cover {
+      background-color: rgba($color: white, $alpha: 0.5);
+      padding: $space-1 $space-3 $space-1 $space-1;
+      position: absolute;
+      border-radius: 5px;
+      transform: translate(5px);
+
+      label {
+        margin: 0;
+        span {
+          font-size: small;
+          padding: 0;
+          color: $text-gray;
+          margin-left: 5px;
+        }
+      }
+    }
   }
 }

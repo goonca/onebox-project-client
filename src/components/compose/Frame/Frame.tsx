@@ -7,7 +7,7 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Tooltip } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import {
   ReactNode,
   useEffect,
@@ -27,6 +27,7 @@ export type FrameProps = {
   onMoveDown?: (component: ComponentModel, dontUpdate?: boolean) => void;
   onDragStart?: (component: ComponentModel) => void;
   onEdit?: (component: ComponentModel) => void;
+  onCoverChange?: (component: ComponentModel) => void;
   onDragEnd?: (positions: any, lastPosition?: number) => void;
   isFirst?: boolean;
   editMode?: boolean;
@@ -44,6 +45,7 @@ export const Frame = forwardRef(function Frame(
     onMoveDown,
     onDragStart,
     onDragEnd,
+    onCoverChange,
     onEdit,
     isFirst,
     editMode,
@@ -81,6 +83,11 @@ export const Frame = forwardRef(function Frame(
     lastPosition: 0,
     bodyHeight: document.body.scrollHeight
   });
+
+  const handleCoverChange = () => {
+    onCoverChange &&
+      onCoverChange({ ...component, isCover: !component.isCover });
+  };
 
   const handleEdit = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -361,6 +368,24 @@ export const Frame = forwardRef(function Frame(
             e.stopPropagation()
           }
         >
+          <div
+            className={style['is-cover']}
+            style={{
+              top: (component.paddingTop ?? 0) * 5 + 5 + 'px',
+              display: editMode && component.type == 'Figure' ? 'block' : 'none'
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="small"
+                  checked={component.isCover}
+                  onClick={handleCoverChange}
+                />
+              }
+              label="News cover"
+            />
+          </div>
           <div>{children}</div>
         </div>
       </div>
