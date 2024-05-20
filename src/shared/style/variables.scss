@@ -7,12 +7,14 @@ $light-gray: #999999;
 $dark-gray: #494949;
 $dark-blue: #0a3561;
 $author-color: #194dd9;
-$dashboard-bg-dark: #3d3a54;
 $dashboard-bg-details: #a3a0fb;
-$dashboard-bg-light: #43425d;
+$dashboard-menu-blue: #242443;
+$dashboard-menu-selected: darken($dashboard-menu-blue, 3);
 $dashboard-icon-color: #a6a3bf;
 $dashboard-menu-color: #e5e5e5;
 $dashboard-background: #f3f5f9;
+
+$block-radius: 8px;
 
 $menu-width: 250px;
 $menu-closed-width: 60px;

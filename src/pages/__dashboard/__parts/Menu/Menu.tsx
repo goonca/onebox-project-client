@@ -29,7 +29,7 @@ export const Menu = () => {
         <div className={style['top']}>
           <label>ONEBOX</label>
         </div>
-        <MenuButton label="Home" icon={faHouse} />
+        <MenuButton label="Home" icon={faHouse} preSelected={page} />
         <MenuButton
           label="Profile"
           icon={faUser}

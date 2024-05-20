@@ -7,6 +7,11 @@ export type FigureFitType =
 
 export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
+export enum NewsStatus {
+  CREATED,
+  PUBLISHED
+}
+
 export type UserModel = {
   id?: number;
   name?: string;
@@ -23,12 +28,15 @@ export type NewsModel = {
   id?: number | string;
   title?: string;
   headline?: string;
+  cover?: string;
   user?: UserModel;
   createdAt?: Date;
   showAuthor?: boolean;
   showBadge?: boolean;
   showDate?: boolean;
   userId?: number;
+  publishedAt?: Date;
+  status?: NewsStatus;
   components?: ComponentModel[];
 };
 

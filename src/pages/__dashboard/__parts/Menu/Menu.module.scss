@@ -1,6 +1,6 @@
 @import '~/src/shared/style/variables.scss';
 .menu {
-  background-color: $dashboard-bg-light;
+  background-color: $dashboard-menu-blue;
   height: 100%;
   width: $menu-width;
   transition: width 0.3s;
@@ -15,7 +15,7 @@
 
   .top {
     height: 70px;
-    background-color: $dashboard-bg-dark;
+    background-color: $dashboard-menu-selected;
     font-family: $family-sans;
     display: flex;
     align-items: center;

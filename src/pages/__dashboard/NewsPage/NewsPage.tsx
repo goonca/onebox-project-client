@@ -1,4 +1,7 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMagnifyingGlass,
+  faPenToSquare
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, OutlinedInput } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
@@ -92,6 +95,9 @@ export const NewsPage = () => {
                         className={style['item']}
                         onClick={() => editNews(n.id as number)}
                       >
+                        <img
+                          src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${n.cover}`}
+                        ></img>
                         <div className={style['title']}>
                           {hasBadges && (
                             <div className={style['badges']}>
@@ -116,6 +122,14 @@ export const NewsPage = () => {
                       </div>
                     );
                   })}
+                {(!!!news || (!!news && !!!news.length)) && (
+                  <div className={style['no-news-message']}>
+                    <h2>You have no news yet</h2>
+                    <Button variant="contained" onClick={() => composeNews()}>
+                      Start now !
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

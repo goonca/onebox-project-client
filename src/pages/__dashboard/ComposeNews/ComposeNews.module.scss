@@ -50,7 +50,7 @@
         width: 220px;
         background-color: white;
         box-shadow: $shadow-tiny;
-        border-radius: $space-1;
+        border-radius: $block-radius;
         color: #666666;
       }
     }
@@ -59,8 +59,8 @@
       width: 100%;
       border: 3px solid darken($editor-color, 0);
       background-color: white;
-      box-shadow: $shadow;
-      border-radius: $space-tiny;
+      box-shadow: $shadow-tiny;
+      border-radius: $block-radius;
       min-height: 70vh;
       position: relative;
       margin-bottom: 100px;

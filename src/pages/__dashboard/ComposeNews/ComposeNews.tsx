@@ -119,7 +119,8 @@ export const ComposeNews = () => {
     const orderedComp = normalizeComponents(components);
     //console.log(orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
-    console.log(_news.components);
+    _news.cover = (components?.find(c => !!c.isCover) || {}).key;
+    //console.log(_news.components);
     setNews(_news);
     saveDraft(_news);
   };

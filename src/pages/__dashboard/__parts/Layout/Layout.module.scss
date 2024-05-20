@@ -19,7 +19,7 @@
     .changer {
       width: 30px;
       height: 30px;
-      background-color: $dashboard-bg-dark;
+      background-color: $dashboard-menu-selected;
       border-radius: 15px;
       position: fixed;
       left: 235px;
@@ -29,12 +29,12 @@
       cursor: pointer;
 
       &:hover {
-        background-color: darken($color: $dashboard-bg-dark, $amount: 8);
+        background-color: darken($color: $dashboard-menu-selected, $amount: 8);
       }
 
       &:after {
         content: '\25C0';
-        color: lighten($color: $dashboard-bg-dark, $amount: 50);
+        color: lighten($color: $dashboard-menu-selected, $amount: 50);
         position: relative;
         top: 6px;
 

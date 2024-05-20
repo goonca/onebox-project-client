@@ -1,7 +1,7 @@
 @import '~/src/shared/style/variables.scss';
 
 $hovered-border: lighten(
-  $color: $dashboard-bg-dark,
+  $color: $dashboard-menu-selected,
   $amount: 50
 );
 
@@ -26,7 +26,7 @@ $hovered-border: lighten(
         width: 200px;
         background-color: white;
         box-shadow: $shadow-tiny;
-        border-radius: $space-tiny;
+        border-radius: $block-radius;
         display: flex;
         flex-direction: column;
         gap: $space-4;
@@ -46,7 +46,7 @@ $hovered-border: lighten(
       width: 100%;
       background-color: white;
       box-shadow: $shadow-tiny;
-      border-radius: $space-tiny;
+      border-radius: $block-radius;
       margin-bottom: $space-5;
 
       > .content {
@@ -60,15 +60,22 @@ $hovered-border: lighten(
           .item {
             display: flex;
             flex-direction: row;
-            row-gap: $space-1;
-            border: 1px solid white;
+            gap: $space-2;
+            //border: 1px solid white;
             border-radius: $space-1;
             padding: $space-2 $space-4;
-            transition: border 0.3s;
+            //transition: background-color 0.5s;
             cursor: pointer;
 
             &:hover {
-              border: 1px solid $hovered-border;
+              //background-color: #fbfbfb;
+            }
+
+            img {
+              object-fit: cover;
+              width: 100px;
+              height: 100px;
+              border-radius: $space-tiny;
             }
 
             .title {
@@ -216,6 +223,15 @@ $hovered-border: lighten(
             }
           }
         }
+      }
+
+      .no-news-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $space-3;
+        padding: $space-6;
+        color: #666666;
       }
     }
   }
