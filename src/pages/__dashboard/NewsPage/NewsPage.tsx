@@ -1,9 +1,11 @@
 import {
   faMagnifyingGlass,
-  faPenToSquare
+  faPenToSquare,
+  faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, OutlinedInput } from '@mui/material';
+import { Loading } from 'components/global/loading/Loading';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMoment } from 'shared/hooks/useMoment';
@@ -19,6 +21,7 @@ export const NewsPage = () => {
   const { twoLinesDate } = useMoment();
 
   const [news, setNews] = useState<NewsModel[]>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const localStorageKeys = Object.keys(localStorage);
 
@@ -36,8 +39,10 @@ export const NewsPage = () => {
   };
 
   const listNews = async () => {
+    setLoading(true);
     const news = await getNews();
     setNews(news.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -55,8 +60,19 @@ export const NewsPage = () => {
             <h2>News</h2>
           </div>
           <div>
-            <Button variant="contained" onClick={() => composeNews()}>
+            <Button
+              className={style['compose-button']}
+              variant="contained"
+              onClick={() => composeNews()}
+            >
               Compose
+            </Button>
+            <Button
+              className={style['mobile-compose-button']}
+              variant="contained"
+              onClick={() => composeNews()}
+            >
+              <FontAwesomeIcon icon={faPlus} />
             </Button>
           </div>
         </div>
@@ -79,94 +95,103 @@ export const NewsPage = () => {
           </div>*/}
           <div className={style['right-side']}>
             <div className={style['content']}>
-              <div className={style['table']}>
-                {news &&
-                  news?.map(n => {
-                    const createdAtInLines = n.createdAt
-                      ? twoLinesDate(n.createdAt)
-                      : [];
-                    const updatedAtInLines = n.updatedAt
-                      ? twoLinesDate(n.createdAt)
-                      : [];
-                    const draftBadge = localStorageKeys.includes(
-                      'draft-' + n.id
-                    );
-                    const hasBadges = !!draftBadge;
-                    return (
-                      <>
-                        <div
-                          key={n.id}
-                          className={style['table-inside']}
-                          onClick={() => editNews(n.id as number)}
+              {loading ? (
+                <Loading />
+              ) : (
+                <>
+                  <div className={style['table']}>
+                    {news &&
+                      news?.map(n => {
+                        const createdAtInLines = n.createdAt
+                          ? twoLinesDate(n.createdAt)
+                          : [];
+                        const updatedAtInLines = n.updatedAt
+                          ? twoLinesDate(n.createdAt)
+                          : [];
+                        const draftBadge = localStorageKeys.includes(
+                          'draft-' + n.id
+                        );
+                        const hasBadges = !!draftBadge;
+                        return (
+                          <>
+                            <div
+                              key={n.id}
+                              className={style['table-inside']}
+                              onClick={() => editNews(n.id as number)}
+                            >
+                              <div className={style['item']}>
+                                <img
+                                  src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${n.cover}`}
+                                ></img>
+                                <div className={style['title']}>
+                                  {hasBadges && (
+                                    <div className={style['badges']}>
+                                      {draftBadge && (
+                                        <span className={style['draft-badge']}>
+                                          unsaved changes
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                  <h1>{n.title}</h1>
+                                  <p>{n.headline}</p>
+                                </div>
+                                <div className={style['date-block']}>
+                                  <div>
+                                    <label className={style['label-date']}>
+                                      created at
+                                    </label>
+                                    <div className={style['date']}>
+                                      {createdAtInLines.length && (
+                                        <>
+                                          {createdAtInLines[0] && (
+                                            <div>{createdAtInLines[0]}</div>
+                                          )}
+                                          {createdAtInLines[1] && (
+                                            <div>{createdAtInLines[1]}</div>
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label className={style['label-date']}>
+                                      last update
+                                    </label>
+                                    <div className={style['date']}>
+                                      {updatedAtInLines.length && (
+                                        <>
+                                          {updatedAtInLines[0] && (
+                                            <div>{updatedAtInLines[0]}</div>
+                                          )}
+                                          {updatedAtInLines[1] && (
+                                            <div>{updatedAtInLines[1]}</div>
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <hr />
+                          </>
+                        );
+                      })}
+                    {(!!!news || (!!news && !!!news.length)) && (
+                      <div className={style['no-news-message']}>
+                        <h2>You have no news yet</h2>
+                        <Button
+                          variant="contained"
+                          onClick={() => composeNews()}
                         >
-                          <div className={style['item']}>
-                            <img
-                              src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${n.cover}`}
-                            ></img>
-                            <div className={style['title']}>
-                              {hasBadges && (
-                                <div className={style['badges']}>
-                                  {draftBadge && (
-                                    <span className={style['draft-badge']}>
-                                      unsaved changes
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                              <h1>{n.title}</h1>
-                              <p>{n.headline}</p>
-                            </div>
-                            <div className={style['date-block']}>
-                              <div>
-                                <label className={style['label-date']}>
-                                  created at
-                                </label>
-                                <div className={style['date']}>
-                                  {createdAtInLines.length && (
-                                    <>
-                                      {createdAtInLines[0] && (
-                                        <div>{createdAtInLines[0]}</div>
-                                      )}
-                                      {createdAtInLines[1] && (
-                                        <div>{createdAtInLines[1]}</div>
-                                      )}
-                                    </>
-                                  )}
-                                </div>
-                              </div>
-                              <div>
-                                <label className={style['label-date']}>
-                                  last update
-                                </label>
-                                <div className={style['date']}>
-                                  {updatedAtInLines.length && (
-                                    <>
-                                      {updatedAtInLines[0] && (
-                                        <div>{updatedAtInLines[0]}</div>
-                                      )}
-                                      {updatedAtInLines[1] && (
-                                        <div>{updatedAtInLines[1]}</div>
-                                      )}
-                                    </>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <hr />
-                      </>
-                    );
-                  })}
-                {(!!!news || (!!news && !!!news.length)) && (
-                  <div className={style['no-news-message']}>
-                    <h2>You have no news yet</h2>
-                    <Button variant="contained" onClick={() => composeNews()}>
-                      Start now !
-                    </Button>
+                          Start now !
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </>
+              )}
             </div>
           </div>
         </div>

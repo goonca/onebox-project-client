@@ -8,6 +8,17 @@ $hovered-border: lighten(
 .news-page {
   @include dashboard-section-header;
 
+  .header {
+    .mobile-compose-button {
+      min-width: initial !important;
+      width: 45px;
+      height: 45px;
+      border-radius: 35px;
+      display: none;
+      font-size: large;
+    }
+  }
+
   .search-input {
     div[class*='MuiInputBase-root'] {
       border-radius: 30px;
@@ -180,6 +191,15 @@ $hovered-border: lighten(
 
 @media screen and (max-width: $screen-sm) {
   .news-page {
+    .header {
+      .mobile-compose-button {
+        display: flex;
+        //position: absolute;
+      }
+      .compose-button {
+        display: none;
+      }
+    }
     .wrapper {
       .right-side {
         hr {
