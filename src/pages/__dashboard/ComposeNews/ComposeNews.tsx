@@ -95,8 +95,9 @@ export const ComposeNews = () => {
     response.then((r: any) => {
       const resNews = r.data[0];
       setNews({ ...news, ...resNews });
-      initialise(resNews.id?.toString() ?? 'undefined');
       removeLocalStorage();
+      initialise(resNews.id?.toString() ?? 'undefined');
+      //removeLocalStorage();
       hideDraftMessage();
       !news.id &&
         history.replaceState(
@@ -155,7 +156,7 @@ export const ComposeNews = () => {
   };
 
   const changeComponentProps = (changes: EditorReturn) => {
-    //console.log('components', news.components);
+    console.log('components', news.components);
     if (!editingComponent) return;
 
     const _editingComponent: ComponentModel = {

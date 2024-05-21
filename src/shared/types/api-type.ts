@@ -31,6 +31,7 @@ export type NewsModel = {
   cover?: string;
   user?: UserModel;
   createdAt?: Date;
+  updatedAt?: Date;
   showAuthor?: boolean;
   showBadge?: boolean;
   showDate?: boolean;
