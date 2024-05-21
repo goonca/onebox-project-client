@@ -1,6 +1,5 @@
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PropaneSharp } from '@mui/icons-material';
 import {
   FormControl,
   FormControlLabel,

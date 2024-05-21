@@ -1,0 +1,129 @@
+@import '~/src/shared/style/variables.scss';
+
+.profile-page {
+  @include dashboard-section-header;
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: $space-3;
+
+    .content {
+      width: 100%;
+      background-color: white;
+      box-shadow: $shadow-tiny;
+      border-radius: $block-radius;
+    }
+
+    .left-side {
+      width: 400px;
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: $space-2;
+        padding: $space-4 $space-2;
+
+        .account-cover {
+          text-align: center;
+          position: relative;
+
+          svg {
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 160px;
+            color: gray;
+            position: absolute;
+          }
+
+          img {
+            width: 130px;
+            height: 130px;
+            border-radius: 100px;
+            position: relative;
+            z-index: 1;
+          }
+
+          .edit-pencil {
+            background-color: white;
+            height: 35px;
+            width: 35px;
+            border: 3px solid gray;
+            padding: 5px;
+            border-radius: 30px;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            left: calc(50% + 20px);
+            bottom: 0;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            z-index: 2;
+
+            svg {
+              font-size: 16px;
+              color: black;
+              position: initial;
+              top: initial;
+              left: initial;
+              transform: initial;
+            }
+
+            &:hover {
+              background-color: #efefef;
+            }
+          }
+        }
+
+        .account-name {
+          text-align: center;
+          margin: 0;
+        }
+
+        .account-username {
+          text-align: center;
+          margin: 0;
+          color: gray;
+        }
+      }
+    }
+    .right-side {
+      width: 100%;
+
+      .content {
+        @include dashboard-section-header;
+        padding: $space-4;
+
+        h2 {
+          font-size: large;
+        }
+
+        .social-media-label {
+          margin-top: $space-4;
+          font-size: smaller;
+        }
+
+        .social-media-wrapper {
+          padding: $space-5;
+          border: 1px solid darken(#efefef, 5);
+          background-color: lighten(#efefef, 3);
+          border-radius: $block-radius;
+        }
+      }
+
+      [class*='MuiFormControl-root'] {
+        width: 100%;
+        [class*='MuiTextField-root'] {
+          margin: $space-2 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $screen-sm) {
+  .profile-page {
+  }
+}

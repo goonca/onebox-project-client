@@ -18,15 +18,7 @@
   font-size: smaller;
   z-index: 500;
 
-  .cover {
-    background-color: lightgray;
-    border-radius: 50%;
-    height: 45px;
-    width: 45px;
-    color: rgb(146, 146, 146);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: large;
+  .account-cover {
+    font-size: 45px;
   }
 }

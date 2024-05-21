@@ -1,5 +1,6 @@
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AccountCircle } from '@mui/icons-material';
 import { useContext } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 
@@ -11,9 +12,8 @@ export const Header = () => {
     <>
       <div className={style['header']} data-component="header">
         <label>{currentUser?.username}</label>
-        <div className={style['cover']}>
-          <FontAwesomeIcon icon={faUser} />
-        </div>
+
+        <AccountCircle className={style['account-cover']} />
       </div>
     </>
   );

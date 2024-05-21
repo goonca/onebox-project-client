@@ -11,7 +11,7 @@ import {
   TextField
 } from '@mui/material';
 import { Draggable } from 'pages/__dashboard/__parts/Draggable/Draggable';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useServices } from 'shared/hooks/useServices';
 import { FileModel } from 'shared/types/api-type';
 import style from './SourceSelector.module.scss';
@@ -20,6 +20,7 @@ export type SourceSelectorProps = {
   opened?: boolean;
   onCornfirm?: (key?: string) => void;
   onCancel?: () => void;
+  extraFooter?: React.ReactElement;
 };
 
 export const SourceSelector = (props: SourceSelectorProps) => {
@@ -114,6 +115,7 @@ export const SourceSelector = (props: SourceSelectorProps) => {
         <Button variant="outlined" size="small" onClick={handleCancel}>
           Cancel
         </Button>
+        {props.extraFooter && props.extraFooter}
       </DialogActions>
     </Dialog>
   );

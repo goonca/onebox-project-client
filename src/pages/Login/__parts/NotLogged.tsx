@@ -52,10 +52,16 @@ export const NotLogged = () => {
             type="password"
           />
           {firstTime && (
-            <TextField inputRef={emailRef} label="Email" variant="outlined" />
+            <TextField
+              inputRef={emailRef}
+              label="Email"
+              type="email"
+              variant="outlined"
+            />
           )}
           <div className={style['form-controls']}>
             <Button
+              type="submit"
               data-dark
               variant={firstTime ? 'outlined' : 'contained'}
               onClick={() => mangeUser()}

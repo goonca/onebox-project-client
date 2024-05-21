@@ -16,12 +16,20 @@ export type UserModel = {
   id?: number;
   name?: string;
   username?: string;
+  description?: string;
   password?: string;
   email?: string;
+  avatar?: string;
   accountType?: AccountType;
   lastLoginDate?: string;
   authToken?: string;
   profileUrl?: string;
+  occupation?: string;
+  university?: string;
+  instagram?: string;
+  youtube?: string;
+  twitter?: string;
+  facebook?: string;
 };
 
 export type NewsModel = {

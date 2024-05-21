@@ -11,6 +11,7 @@ export type ResponseType = {
 export type ServicesType = {
   authenticate: (user: UserModel) => any;
   saveUser: (user: UserModel) => any;
+  updateUser: (user: UserModel) => any;
   saveNews: (news: NewsModel) => any;
   getNewsById: (id: number) => any;
   getNews: () => any;
@@ -72,6 +73,11 @@ export const useServices = (): ServicesType => {
   const saveUser = async (user: UserModel) => {
     return await post(uri.USER, user);
   };
+
+  const updateUser = async (user: UserModel) => {
+    return await post(uri.USER + '/update', user);
+  };
+
   const saveNews = async (news: NewsModel) => {
     return await post(uri.NEWS, news);
   };
@@ -105,6 +111,7 @@ export const useServices = (): ServicesType => {
     saveUser,
     logoff,
     saveNews,
+    updateUser,
     getNewsById,
     getNews,
     getFiles,
