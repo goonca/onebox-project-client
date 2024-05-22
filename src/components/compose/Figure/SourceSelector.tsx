@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { Draggable } from 'pages/__dashboard/__parts/Draggable/Draggable';
 import React, { useEffect, useRef, useState } from 'react';
+import { useMediaQuery } from 'shared/hooks/useMediaQuery';
 import { useServices } from 'shared/hooks/useServices';
 import { FileModel } from 'shared/types/api-type';
 import style from './SourceSelector.module.scss';
@@ -26,10 +27,10 @@ export type SourceSelectorProps = {
 export const SourceSelector = (props: SourceSelectorProps) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<string>('1');
-  const urlRef = useRef<typeof TextField>();
+  const [files, setFiles] = useState<FileModel[]>();
 
   const { getFiles } = useServices();
-  const [files, setFiles] = useState<FileModel[]>();
+  const { isMobile } = useMediaQuery();
 
   const handleCancel = () => {
     //setOpened(false);
@@ -61,7 +62,7 @@ export const SourceSelector = (props: SourceSelectorProps) => {
   }, [props]);
   return (
     <Dialog
-      fullScreen={false}
+      fullScreen={isMobile()}
       className={style['source-dialog']}
       open={!!opened}
       fullWidth={true}

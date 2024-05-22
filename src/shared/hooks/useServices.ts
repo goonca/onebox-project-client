@@ -8,10 +8,17 @@ export type ResponseType = {
   status?: RequestStatus;
 };
 
+export type UpdatePassword = {
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+};
+
 export type ServicesType = {
   authenticate: (user: UserModel) => any;
   saveUser: (user: UserModel) => any;
   updateUser: (user: UserModel) => any;
+  updatePassword: (data: UpdatePassword) => any;
   saveNews: (news: NewsModel) => any;
   getNewsById: (id: number) => any;
   getNews: () => any;
@@ -78,6 +85,10 @@ export const useServices = (): ServicesType => {
     return await post(uri.USER + '/update', user);
   };
 
+  const updatePassword = async (data: UpdatePassword) => {
+    return await post(uri.USER + '/update/password', data);
+  };
+
   const saveNews = async (news: NewsModel) => {
     return await post(uri.NEWS, news);
   };
@@ -112,6 +123,7 @@ export const useServices = (): ServicesType => {
     logoff,
     saveNews,
     updateUser,
+    updatePassword,
     getNewsById,
     getNews,
     getFiles,

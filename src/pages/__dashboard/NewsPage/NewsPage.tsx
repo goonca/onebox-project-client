@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, OutlinedInput } from '@mui/material';
-import { Loading } from 'components/global/loading/Loading';
+import { Loading } from 'components/global/Loading/Loading';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMoment } from 'shared/hooks/useMoment';

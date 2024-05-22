@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import { Loading } from 'components/global/loading/Loading';
+import { Loading } from 'components/global/Loading/Loading';
 import { useEffect, useState } from 'react';
 import { useEnvVars } from 'shared/hooks/useEnvVars';
 import { useFile } from 'shared/hooks/useFile';

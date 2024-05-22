@@ -6,10 +6,17 @@ import {
   faXTwitter
 } from '@fortawesome/free-brands-svg-icons';
 import {
+  Alert,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormLabel,
   InputAdornment,
+  Snackbar,
   TextField
 } from '@mui/material';
 import { useContext, useRef, useState } from 'react';
@@ -20,16 +27,27 @@ import { UserModel } from 'shared/types/api-type';
 import { useServices } from 'shared/hooks/useServices';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { SourceSelector } from 'components/compose/Figure/SourceSelector';
+import { InputPassword } from 'components/global/InputPassword/InputPassword';
+import { SnackBarType } from 'shared/types/SnackBarType';
+import { useMediaQuery } from 'shared/hooks/useMediaQuery';
+import { useValidation } from 'shared/hooks/useValidation';
 
 export const ProfilePage = () => {
   const currentUser = useContext(UserContext);
-  const [dialogOpened, setDialogOpened] = useState<boolean>(false);
+  const { isMobile } = useMediaQuery();
+  const [sourceDialogOpened, setSourceDialogOpened] = useState<boolean>(false);
+  const [passwordDialogOpened, setPasswordDialogOpened] =
+    useState<boolean>(false);
   const [showAvatar, setShowAvatar] = useState<boolean>(true);
+  const [snackBar, setSnackBar] = useState<SnackBarType | undefined>(undefined);
+  const [snackBarOpened, setSnackBarOpened] = useState<boolean>(false);
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [avatarKey, setAvatarKey] = useState<string | undefined>(
     currentUser?.avatar as string
   );
 
-  const { updateUser } = useServices();
+  const { updateUser, updatePassword } = useServices();
+  const { validateEmail } = useValidation();
   const refEmail = useRef<HTMLInputElement>();
   const refName = useRef<HTMLInputElement>();
   const refDescription = useRef<HTMLInputElement>();
@@ -37,39 +55,65 @@ export const ProfilePage = () => {
   const refYoutube = useRef<HTMLInputElement>();
   const refTwitter = useRef<HTMLInputElement>();
   const refFacebook = useRef<HTMLInputElement>();
-  const refAccountAvatar = useRef<HTMLDivElement>(null);
+  const refOldPassword = useRef<typeof InputPassword>(null);
+  const refNewPassword = useRef<typeof InputPassword>(null);
+  const refConfirmNewPassword = useRef<typeof InputPassword>(null);
 
   const saveUser = async () => {
-    console.log(refName.current?.value);
-
     const user: UserModel = {
       name: refName.current?.value,
       description: refDescription.current?.value,
-      email: refEmail.current?.value,
+      email: !!refEmail.current?.value ? refEmail.current?.value : undefined,
       instagram: refInstagram.current?.value,
       youtube: refYoutube.current?.value,
       twitter: refTwitter.current?.value,
       facebook: refFacebook.current?.value,
       avatar: avatarKey
     };
-    const updatedUser = await updateUser(user);
+
+    await updateUser(user);
   };
 
   const handleConfirm = (key?: string) => {
     setAvatarKey(key);
-    setDialogOpened(false);
+    setSourceDialogOpened(false);
   };
 
   const handleCancel = () => {
-    setDialogOpened(false);
+    setSourceDialogOpened(false);
   };
   const handleAvatarOnload = () => {
     setShowAvatar(false);
   };
 
+  const handleValidateEmail = (e: React.FocusEvent<HTMLInputElement>) => {
+    const isValid = validateEmail(refEmail.current?.value as string);
+    if (!isEmailValid) {
+      setIsEmailValid(isValid);
+    } else if (e.type === 'blur') {
+      setIsEmailValid(isValid);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    const result = await updatePassword({
+      oldPassword: (refOldPassword.current as any).value,
+      newPassword: (refNewPassword.current as any).value,
+      confirmNewPassword: (refConfirmNewPassword.current as any).value
+    });
+    console.log(result);
+
+    setSnackBar({
+      severity: result.status == 1 ? 'error' : 'success',
+      errors: result.errors
+    });
+    setSnackBarOpened(true);
+    setPasswordDialogOpened(result.status == 1);
+  };
+
   const removeAvatar = () => {
     setAvatarKey('');
-    setDialogOpened(false);
+    setSourceDialogOpened(false);
   };
 
   return (
@@ -80,7 +124,11 @@ export const ProfilePage = () => {
             <h2>Profile</h2>
           </div>
           <div>
-            <Button variant="contained" size="small">
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => setPasswordDialogOpened(true)}
+            >
               Change password
             </Button>
             <Button
@@ -88,6 +136,7 @@ export const ProfilePage = () => {
               size="small"
               data-dark
               onClick={saveUser}
+              disabled={!isEmailValid}
             >
               Save
             </Button>
@@ -111,7 +160,7 @@ export const ProfilePage = () => {
 
                 <span
                   className={style['edit-pencil']}
-                  onClick={() => setDialogOpened(true)}
+                  onClick={() => setSourceDialogOpened(true)}
                 >
                   <FontAwesomeIcon icon={faPencil} />
                 </span>
@@ -134,7 +183,15 @@ export const ProfilePage = () => {
                   label="Email"
                   variant="outlined"
                   inputRef={refEmail}
+                  {...{
+                    error: isEmailValid ? undefined : true,
+                    helperText: isEmailValid
+                      ? undefined
+                      : 'MSG_ERR_INVALID_EMAIL'
+                  }}
                   defaultValue={currentUser?.email}
+                  onChange={handleValidateEmail}
+                  onBlur={handleValidateEmail}
                 />
                 <TextField
                   label="Name"
@@ -212,17 +269,65 @@ export const ProfilePage = () => {
             </div>
           </div>
         </div>
+        <SourceSelector
+          opened={sourceDialogOpened}
+          onCornfirm={handleConfirm}
+          onCancel={handleCancel}
+          extraFooter={
+            <Button variant="contained" size="small" onClick={removeAvatar}>
+              Remove avatar
+            </Button>
+          }
+        />
+        <Dialog fullScreen={isMobile()} open={passwordDialogOpened}>
+          <DialogTitle>Change password</DialogTitle>
+          <DialogContent>
+            <DialogContentText minWidth={500} minHeight={40}>
+              <InputPassword label="Old password" ref={refOldPassword} />
+              <div>
+                <InputPassword label="New password" ref={refNewPassword} />
+                <InputPassword
+                  label="Repeat new password"
+                  ref={refConfirmNewPassword}
+                />
+              </div>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions className={style['dialog-actions']}>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => setPasswordDialogOpened(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleChangePassword}
+            >
+              Change
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Snackbar
+          open={snackBarOpened}
+          autoHideDuration={6000}
+          onClose={() => setSnackBarOpened(false)}
+        >
+          <Alert
+            onClose={() => setSnackBarOpened(false)}
+            severity={snackBar?.severity}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {snackBar?.errors?.map(m => (
+              <div>{m.message}</div>
+            ))}
+          </Alert>
+        </Snackbar>
       </div>
-      <SourceSelector
-        opened={dialogOpened}
-        onCornfirm={handleConfirm}
-        onCancel={handleCancel}
-        extraFooter={
-          <Button variant="contained" size="small" onClick={removeAvatar}>
-            Remove avatar
-          </Button>
-        }
-      />
     </>
   );
 };

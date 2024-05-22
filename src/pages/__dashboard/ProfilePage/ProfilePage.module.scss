@@ -123,6 +123,12 @@
   }
 }
 
+.dialog-actions {
+  justify-content: center !important;
+  align-items: center;
+  border-top: 1px solid lightgray;
+}
+
 @media screen and (max-width: $screen-sm) {
   .profile-page {
   }

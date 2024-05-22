@@ -22,6 +22,10 @@ body {
   &.MuiButton-contained {
     &[data-dark] {
       background-color: $dark-blue;
+      &:disabled {
+        color: rgba(white, 0.35);
+        background-color: lighten($dark-blue, 10);
+      }
     }
   }
   &.MuiButton-outlined {
