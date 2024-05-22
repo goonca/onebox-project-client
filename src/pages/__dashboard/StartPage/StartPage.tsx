@@ -71,7 +71,7 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
               snackBar?.severity || (!!snackBar?.errors ? 'error' : 'success')
             }
             variant="filled"
-            sx={{ width: '100%' }}
+            sx={{ width: '100%', bottom: '50px' }}
           >
             {!!snackBar?.errors &&
               snackBar?.errors?.map((m, i) => <div key={i}>{m.message}</div>)}

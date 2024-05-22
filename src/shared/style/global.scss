@@ -52,6 +52,12 @@ a:visited {
   height: 220px;
 }
 
+@media screen and (max-width: $screen-sm) {
+  .MuiSnackbar-anchorOriginBottomLeft {
+    bottom: 65px !important;
+  }
+}
+
 /*.cm-spell-error {
   background-color: initial !important;
 }
