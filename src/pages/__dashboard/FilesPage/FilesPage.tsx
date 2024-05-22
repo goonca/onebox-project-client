@@ -1,7 +1,6 @@
 import { Button } from '@mui/material';
-import { Loading } from 'components/global/Loading/Loading';
+//import { Loading } from 'components/global/Loading/Loading';
 import { useEffect, useState } from 'react';
-import { useEnvVars } from 'shared/hooks/useEnvVars';
 import { useFile } from 'shared/hooks/useFile';
 import { useMoment } from 'shared/hooks/useMoment';
 import { useServices } from 'shared/hooks/useServices';
@@ -50,7 +49,7 @@ export const FilesPage = () => {
         <Draggable onUpload={() => onUpload()} showPreview={false} />
 
         {loading ? (
-          <Loading />
+          <></>
         ) : (
           <div className={style['content']}>
             {files &&
