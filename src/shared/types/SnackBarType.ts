@@ -8,5 +8,6 @@ export type SequilizeErrorType = {
 
 export type SnackBarType = {
   errors?: SequilizeErrorType[];
+  messages?: string[];
   severity?: 'success' | 'info' | 'warning' | 'error';
 };

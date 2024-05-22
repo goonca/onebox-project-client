@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { NewsModel, RequestStatus, UserModel } from 'shared/types/api-type';
 import { useEnvVars } from './useEnvVars';
+import { EventType, useEvent } from './useEvent';
 
 export type ResponseType = {
   data?: object;
@@ -30,6 +31,7 @@ export type ServicesType = {
 
 export const useServices = (): ServicesType => {
   //const { APP_BASE_URL } = useEnvVars();
+  const { trigger } = useEvent();
   let currentUser: UserModel | undefined;
   typeof window !== 'undefined' && (currentUser = useContext(UserContext));
 
@@ -58,6 +60,7 @@ export const useServices = (): ServicesType => {
         : {})
     });
     const content = await rawResponse.json();
+    trigger(EventType.UPDATE_SNACKBAR, content);
     return content;
   };
 

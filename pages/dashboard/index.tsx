@@ -39,7 +39,7 @@ const Page = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
-      <link rel="stylesheet" href="/static/externals/simplemde.min.css" />
+      <link href="/static/externals/simplemde.min.css" rel="preload" />
       <script src="/static/externals/simplemde.min.js" defer></script>
       <StartPage currentUser={currentUser} />;
     </>

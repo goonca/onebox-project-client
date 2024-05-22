@@ -31,16 +31,16 @@ import { InputPassword } from 'components/global/InputPassword/InputPassword';
 import { SnackBarType } from 'shared/types/SnackBarType';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
 import { useValidation } from 'shared/hooks/useValidation';
+import { EventType, useEvent } from 'shared/hooks/useEvent';
 
 export const ProfilePage = () => {
   const currentUser = useContext(UserContext);
   const { isMobile } = useMediaQuery();
+  const { trigger } = useEvent();
   const [sourceDialogOpened, setSourceDialogOpened] = useState<boolean>(false);
   const [passwordDialogOpened, setPasswordDialogOpened] =
     useState<boolean>(false);
   const [showAvatar, setShowAvatar] = useState<boolean>(true);
-  const [snackBar, setSnackBar] = useState<SnackBarType | undefined>(undefined);
-  const [snackBarOpened, setSnackBarOpened] = useState<boolean>(false);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [avatarKey, setAvatarKey] = useState<string | undefined>(
     currentUser?.avatar as string
@@ -71,7 +71,9 @@ export const ProfilePage = () => {
       avatar: avatarKey
     };
 
-    await updateUser(user);
+    const response = await updateUser(user);
+    //console.log(response);
+    trigger(EventType.UPDATE_CURRENT_USER, response);
   };
 
   const handleConfirm = (key?: string) => {
@@ -101,13 +103,7 @@ export const ProfilePage = () => {
       newPassword: (refNewPassword.current as any).value,
       confirmNewPassword: (refConfirmNewPassword.current as any).value
     });
-    console.log(result);
 
-    setSnackBar({
-      severity: result.status == 1 ? 'error' : 'success',
-      errors: result.errors
-    });
-    setSnackBarOpened(true);
     setPasswordDialogOpened(result.status == 1);
   };
 
@@ -310,23 +306,6 @@ export const ProfilePage = () => {
             </Button>
           </DialogActions>
         </Dialog>
-
-        <Snackbar
-          open={snackBarOpened}
-          autoHideDuration={6000}
-          onClose={() => setSnackBarOpened(false)}
-        >
-          <Alert
-            onClose={() => setSnackBarOpened(false)}
-            severity={snackBar?.severity}
-            variant="filled"
-            sx={{ width: '100%' }}
-          >
-            {snackBar?.errors?.map(m => (
-              <div>{m.message}</div>
-            ))}
-          </Alert>
-        </Snackbar>
       </div>
     </>
   );
