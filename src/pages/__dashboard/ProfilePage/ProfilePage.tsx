@@ -6,7 +6,6 @@ import {
   faXTwitter
 } from '@fortawesome/free-brands-svg-icons';
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -16,7 +15,6 @@ import {
   FormControl,
   FormLabel,
   InputAdornment,
-  Snackbar,
   TextField
 } from '@mui/material';
 import { useContext, useRef, useState } from 'react';
@@ -28,7 +26,6 @@ import { useServices } from 'shared/hooks/useServices';
 import { faPencil } from '@fortawesome/free-solid-svg-icons';
 import { SourceSelector } from 'components/compose/Figure/SourceSelector';
 import { InputPassword } from 'components/global/InputPassword/InputPassword';
-import { SnackBarType } from 'shared/types/SnackBarType';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
 import { useValidation } from 'shared/hooks/useValidation';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
@@ -72,7 +69,6 @@ export const ProfilePage = () => {
     };
 
     const response = await updateUser(user);
-    //console.log(response);
     trigger(EventType.UPDATE_CURRENT_USER, response);
   };
 
@@ -141,7 +137,7 @@ export const ProfilePage = () => {
         <div className={style['wrapper']}>
           <div className={style['left-side']}>
             <div className={style['content']}>
-              <div className={style['account-cover']}>
+              <div className={style['avatar']}>
                 {(showAvatar || !!!avatarKey) && <AccountCircle />}
 
                 <img
@@ -275,12 +271,16 @@ export const ProfilePage = () => {
             </Button>
           }
         />
-        <Dialog fullScreen={isMobile()} open={passwordDialogOpened}>
+        <Dialog
+          fullScreen={isMobile()}
+          open={passwordDialogOpened}
+          className={style['change-password-dialog']}
+        >
           <DialogTitle>Change password</DialogTitle>
           <DialogContent>
-            <DialogContentText minWidth={500} minHeight={40}>
+            <DialogContentText>
               <InputPassword label="Old password" ref={refOldPassword} />
-              <div>
+              <div className={style['new-password-wrapper']}>
                 <InputPassword label="New password" ref={refNewPassword} />
                 <InputPassword
                   label="Repeat new password"

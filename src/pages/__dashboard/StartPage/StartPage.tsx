@@ -8,12 +8,12 @@ import { NewsPage } from '../NewsPage/NewsPage';
 import { ProfilePage } from '../ProfilePage/ProfilePage';
 import { ComposeNews } from '../ComposeNews/ComposeNews';
 import { FilesPage } from '../FilesPage/FilesPage';
-import style from './StartPage.module.scss';
 import { useEffect, useState } from 'react';
 import { UserModel } from 'shared/types/api-type';
 import { Alert, Snackbar } from '@mui/material';
 import { SnackBarType } from 'shared/types/SnackBarType';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
+import style from './StartPage.module.scss';
 
 export const StartPage: React.FC<PageProps> = (props: PageProps) => {
   //fix this
@@ -28,7 +28,6 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
 
   useEffect(() => {
     const handleUpdateUser = ({ detail }: any) => {
-      console.log(detail);
       !!!detail.errors && setCurrentUser(detail.data);
     };
 

@@ -35,7 +35,7 @@ export const InputPassword = forwardRef(function InputPassword(
   };
 
   return (
-    <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+    <FormControl variant="outlined">
       <InputLabel>{props.label}</InputLabel>
       <OutlinedInput
         type={showPassword ? 'text' : 'password'}

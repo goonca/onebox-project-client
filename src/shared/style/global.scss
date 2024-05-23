@@ -56,6 +56,21 @@ a:visited {
   .MuiSnackbar-anchorOriginBottomLeft {
     bottom: 65px !important;
   }
+
+  .MuiDialogContent-root {
+    margin-top: 30px;
+  }
+
+  .MuiDialogActions-root {
+    background-color: $dashboard-background;
+    border-top: 1px solid darken($color: $dashboard-background, $amount: 20);
+    height: 60px;
+  }
+
+  .MuiDialogTitle-root {
+    background-color: $dashboard-background;
+    border-bottom: 1px solid darken($color: $dashboard-background, $amount: 20);
+  }
 }
 
 /*.cm-spell-error {

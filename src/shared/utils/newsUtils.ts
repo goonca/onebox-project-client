@@ -1,4 +1,4 @@
-import { NewsStatus, UserModel } from 'shared/types/api-type';
+import { UserModel } from 'shared/types/api-type';
 
 export const getEmptyNews = (currentUser: UserModel | undefined, id: any) => ({
   id,

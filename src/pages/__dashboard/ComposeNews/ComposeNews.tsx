@@ -7,7 +7,7 @@ import {
   Link as UILink,
   Switch
 } from '@mui/material';
-import { NewsHeader, NewsHeaderProps } from 'components/compose/NewsHeader';
+import { NewsHeader } from 'components/compose/NewsHeader';
 import {
   MouseEventHandler,
   useCallback,
@@ -81,7 +81,7 @@ export const ComposeNews = () => {
     });
   }, []);
 
-  const updateHeader = (header?: NewsHeaderProps) => {
+  const updateHeader = (header?: NewsModel) => {
     const _news = {
       ...news,
       ...header
@@ -277,7 +277,7 @@ export const ComposeNews = () => {
             ></div>
             <div className={style['content']}>
               <div className={style['header']}>
-                <NewsHeader {...news}></NewsHeader>
+                <NewsHeader news={news}></NewsHeader>
               </div>
 
               {!loading && (
