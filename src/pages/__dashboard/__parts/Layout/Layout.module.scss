@@ -66,8 +66,10 @@
         }
       }
       div[class*='_top_'] {
-        label {
-          opacity: 0;
+        img[class*='box'] {
+        }
+        img[class*='text'] {
+          margin-left: 50px;
         }
       }
       div[class*='_menu_'],

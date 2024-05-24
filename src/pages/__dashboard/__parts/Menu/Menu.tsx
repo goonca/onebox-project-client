@@ -27,7 +27,16 @@ export const Menu = () => {
     <>
       <div className={style['menu']} data-component="menu">
         <div className={style['top']}>
-          <label>ONEBOX</label>
+          <img
+            src="/static/onebox-box-logo-light.svg"
+            height={20}
+            className={style['box']}
+          />
+          <img
+            src="/static/onebox-text-logo-light.svg"
+            height={15}
+            className={style['text']}
+          />
         </div>
         <MenuButton label="Home" icon={faHouse} preSelected={page} />
         <MenuButton

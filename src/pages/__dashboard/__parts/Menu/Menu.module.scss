@@ -22,12 +22,18 @@
     letter-spacing: 3px;
     //padding-left: $space-3;
     margin-bottom: 1px;
+    margin-left: 10px;
     color: white;
+    gap: 10px;
+    opacity: 0.5;
 
-    label {
-      margin-left: $space-3;
-      opacity: 1;
-      transition: opacity 0.3s;
+    .box {
+      transition: margin-left 0.3s;
+      margin-left: 6px;
+    }
+    .text {
+      transition: margin-left 0.3s;
+      margin-left: 0;
     }
   }
 }

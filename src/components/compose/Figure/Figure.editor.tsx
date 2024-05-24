@@ -1,4 +1,9 @@
-import { faLink } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLeftRight,
+  faLink,
+  faPercent,
+  faUpDown
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   FormControl,
@@ -24,6 +29,8 @@ export const FigureEditor = (props: ComponentEditorProps) => {
 
   let comp = useRef<ComponentModel>(props.component as ComponentModel);
   const refCaption = useRef<HTMLTextAreaElement>(null);
+  const refWidth = useRef<HTMLInputElement>(null);
+  const refHeight = useRef<HTMLInputElement>(null);
   const refImage = useRef<HTMLImageElement>(null);
   const refObjFit = useRef<typeof RadioGroup>(null);
 
@@ -55,6 +62,24 @@ export const FigureEditor = (props: ComponentEditorProps) => {
 
   const changeObjFit = (_: any, fitType: string) => {
     const changes = { fitType: fitType as FigureFitType };
+
+    comp.current = {
+      ...comp.current,
+      ...changes
+    };
+
+    props.onChange && props.onChange(comp.current);
+  };
+
+  const handleChangeSize = () => {
+    const changes = {
+      width: !!refWidth.current?.value
+        ? Math.max(parseInt(refWidth.current?.value), 50)
+        : undefined,
+      height: !!refHeight.current?.value
+        ? Math.min(parseInt(refHeight.current?.value), 1000)
+        : undefined
+    };
 
     comp.current = {
       ...comp.current,
@@ -125,41 +150,77 @@ export const FigureEditor = (props: ComponentEditorProps) => {
               </div>
             </div>
           </div>
-          <div className={style['object-fit']}>
-            <FormControl>
-              <FormLabel>Object Fit</FormLabel>
-              <RadioGroup
-                defaultValue={props.component?.fitType}
-                onChange={changeObjFit}
-                ref={refObjFit}
-              >
-                <FormControlLabel
-                  value="cover"
-                  control={<Radio size="small" />}
-                  label="Cover"
-                />
-                <FormControlLabel
-                  value="fill"
-                  control={<Radio size="small" />}
-                  label="Fill"
-                />
-                <FormControlLabel
-                  value="scale-down"
-                  control={<Radio size="small" />}
-                  label="Scale down"
-                />
-                <FormControlLabel
-                  value="contain"
-                  control={<Radio size="small" />}
-                  label="Contain"
-                />
-                <FormControlLabel
-                  value="none"
-                  control={<Radio size="small" />}
-                  label="None"
-                />
-              </RadioGroup>
-            </FormControl>
+          <div className={style['other-properties']}>
+            <div className={style['object-fit']}>
+              <FormControl>
+                <FormLabel>Object Fit</FormLabel>
+                <RadioGroup
+                  defaultValue={props.component?.fitType}
+                  onChange={changeObjFit}
+                  ref={refObjFit}
+                >
+                  <FormControlLabel
+                    value="cover"
+                    control={<Radio size="small" />}
+                    label="Cover"
+                  />
+                  <FormControlLabel
+                    value="fill"
+                    control={<Radio size="small" />}
+                    label="Fill"
+                  />
+                  {/*<FormControlLabel
+                    value="scale-down"
+                    control={<Radio size="small" />}
+                    label="Scale down"
+                  />
+                  <FormControlLabel
+                    value="contain"
+                    control={<Radio size="small" />}
+                    label="Contain"
+                  />*/}
+                  <FormControlLabel
+                    value="none"
+                    control={<Radio size="small" />}
+                    label="None"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+            <div className={style['size']}>
+              <FormControl>
+                <FormLabel>Size</FormLabel>
+                <label className={style['helper']}>
+                  empty for original size
+                </label>
+                <div className={style['box']}>
+                  <FontAwesomeIcon icon={faLeftRight} />
+                  <input
+                    ref={refWidth}
+                    type="number"
+                    min={50}
+                    max={100}
+                    step={10}
+                    onChange={handleChangeSize}
+                    defaultValue={component?.width}
+                  />
+                  <FontAwesomeIcon icon={faPercent} />
+                </div>
+                <div className={style['box']}>
+                  <FontAwesomeIcon icon={faUpDown} />
+                  <input
+                    ref={refHeight}
+                    type="number"
+                    min={100}
+                    max={500}
+                    step={10}
+                    onChange={handleChangeSize}
+                    defaultValue={component?.height}
+                  />
+                  &nbsp;PX
+                </div>
+              </FormControl>
+            </div>
           </div>
           <div className={style['spacing']}>
             <Spacing onChange={changeSpacing} component={component} />

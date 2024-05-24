@@ -4,6 +4,12 @@
   color: initial;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 
+  .logo {
+    @include center;
+    position: absolute;
+    top: 20px;
+  }
+
   button {
     text-transform: uppercase !important;
     height: 45px;

@@ -26,12 +26,13 @@ export const NotLogged = () => {
     const user = {
       username: usernameRef.current?.value,
       password: passwordRef.current?.value,
-      email: emailRef.current?.value
+      email: !!emailRef.current?.value ? emailRef.current?.value : undefined
     };
     const response = firstTime ? createUser(user) : authenticateUser(user);
     response.then((res: ResponseType) => {
+      console.log(res);
       if (res.status == RequestStatus.SUCCESS) {
-        push('/dashboard');
+        document.location.href = '/dashboard';
       }
     });
   };

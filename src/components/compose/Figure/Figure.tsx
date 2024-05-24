@@ -13,19 +13,21 @@ export const Figure: React.FC<ComponentModel> = (props: ComponentModel) => {
       <div
         style={{
           paddingTop: (props.paddingTop ?? 0) * 5 + 'px',
-          paddingBottom: (props.paddingBottom ?? 0) * 5 + 'px'
+          paddingBottom: (props.paddingBottom ?? 0) * 5 + 'px',
+          display: 'flex',
+          justifyContent: 'center'
         }}
       >
         <figure
           data-component="figure"
           className={style['figure']}
-          style={{ width: props.width }}
+          style={{ width: (props.width ?? 80) + '%' }}
         >
           <img
             src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${props.$key}`}
             onError={handleError}
             width="100%"
-            height={props.height}
+            height={props.height ? props.height + 'px' : undefined}
             style={{ objectFit: props.fitType }}
           ></img>
           {props.caption && <figcaption>{props.caption}</figcaption>}

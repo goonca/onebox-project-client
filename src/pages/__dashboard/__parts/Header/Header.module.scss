@@ -18,6 +18,12 @@
   font-size: smaller;
   z-index: 500;
 
+  .logo {
+    width: 100%;
+    margin-left: 20px;
+    display: none;
+  }
+
   .avatar {
     text-align: center;
     position: relative;
@@ -37,6 +43,14 @@
       border-radius: 100px;
       position: relative;
       z-index: 1;
+    }
+  }
+}
+
+@media screen and (max-width: $screen-sm) {
+  .header {
+    .logo {
+      display: initial;
     }
   }
 }

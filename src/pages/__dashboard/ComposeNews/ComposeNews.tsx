@@ -2,9 +2,10 @@ import { faClose, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
+  Checkbox,
   debounce,
   FormControlLabel,
-  Link as UILink,
+  Link as MUILink,
   Switch
 } from '@mui/material';
 import { NewsHeader } from 'components/compose/NewsHeader';
@@ -13,6 +14,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState
 } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -24,11 +26,11 @@ import { getEmptyNews } from 'shared/utils/newsUtils';
 
 import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
-import style from './ComposeNews.module.scss';
 import { useComponent } from 'shared/hooks/useComponent';
 import { EditorContext } from 'shared/context/EditorContext';
 import { EditorReturn } from 'shared/types/EditorReturn';
 import React from 'react';
+import style from './ComposeNews.module.scss';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -43,6 +45,9 @@ export const ComposeNews = () => {
   const [lastEditingComponent, setLastEditingComponent] =
     useState<ComponentModel>();
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
+  const refContext_0 = useRef<HTMLInputElement>(null);
+  const refContext_1 = useRef<HTMLInputElement>(null);
+  const refContext_2 = useRef<HTMLInputElement>(null);
 
   const editorContext = useContext(EditorContext);
 
@@ -65,14 +70,13 @@ export const ComposeNews = () => {
     getNewsById(id).then((r: any) => {
       setLoading(false);
       const news: NewsModel = id
-        ? {
+        ? /*{
             ...r?.data.news,
             components: r?.data.components
-          }
+          }*/ r?.data
         : getEmptyNews(currentUser, id);
 
       if (draft) {
-        //console.log('draft', draft.components);
         setNews(draft);
         setShowDraftMessage(true);
       } else {
@@ -91,7 +95,10 @@ export const ComposeNews = () => {
   };
 
   const createNews = useCallback((news: NewsModel) => {
-    const response = saveNews(news);
+    const response = saveNews({
+      ...news,
+      locationId: currentUser?.location?.geoname_id
+    });
     response.then((r: any) => {
       const resNews = r.data[0];
       setNews({ ...news, ...resNews });
@@ -189,6 +196,11 @@ export const ComposeNews = () => {
   const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
+
+  const handleChangeContext = () => {
+    //refContext_0.
+  };
+
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
     setEditingComponent(undefined);
   };
@@ -218,7 +230,12 @@ export const ComposeNews = () => {
             >
               Save draft
             </Button>
-            <Button variant="contained" size="small">
+            <Button
+              variant="contained"
+              size="small"
+              href={document.location.origin + '/viewer?id=' + news.id}
+              target="_blank"
+            >
               View
             </Button>
             <Button variant="contained" size="small" data-dark>
@@ -235,9 +252,9 @@ export const ComposeNews = () => {
             </span>
             <p>There are unsaved changes for this draft</p>
             <span>
-              <UILink onClick={hideDraftMessage}>Keep changes</UILink>
+              <MUILink onClick={hideDraftMessage}>Keep changes</MUILink>
               &nbsp;&nbsp;|&nbsp;&nbsp;
-              <UILink onClick={discardDraft}>Discard changes</UILink>
+              <MUILink onClick={discardDraft}>Discard changes</MUILink>
             </span>
           </div>
         )}
@@ -245,6 +262,56 @@ export const ComposeNews = () => {
           <div className={style['left-side']}>
             <div className={style['content']}>
               <HeaderEditor updateHeader={updateHeader} news={news} />
+            </div>
+            <div className={style['content']}>
+              <div className={style['context']}>
+                <div className={style['header']}>
+                  <div>
+                    <h2>News context</h2>
+                  </div>
+                  <div>
+                    <MUILink>Change</MUILink>
+                  </div>
+                </div>
+                <div className={style['level-1']}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        size="small"
+                        defaultChecked={true}
+                        inputRef={refContext_0}
+                      />
+                    }
+                    label="World"
+                  />
+                </div>
+                <div className={style['level-2']}>
+                  <h3>↳</h3>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        size="small"
+                        defaultChecked={true}
+                        inputRef={refContext_1}
+                      />
+                    }
+                    label={currentUser?.location?.country}
+                  />
+                </div>
+                <div className={style['level-3']}>
+                  <h3>↳</h3>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        size="small"
+                        defaultChecked={true}
+                        inputRef={refContext_2}
+                      />
+                    }
+                    label={currentUser?.location?.name + ' and region'}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div

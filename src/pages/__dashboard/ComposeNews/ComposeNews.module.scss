@@ -47,11 +47,67 @@
       row-gap: $space-4;
 
       > .content {
-        width: 220px;
+        width: 250px;
         background-color: white;
         box-shadow: $shadow-tiny;
         border-radius: $block-radius;
         color: #666666;
+
+        .context {
+          @include dashboard-section-header;
+          padding: $space-3;
+
+          .header {
+            margin-bottom: $space-3;
+
+            a {
+              font-size: small;
+            }
+          }
+
+          h2 {
+            font-size: large;
+            margin-bottom: 0;
+          }
+
+          h3 {
+            margin: 0;
+          }
+
+          label[class*='MuiFormControlLabel-root'] {
+            align-items: flex-start;
+            line-height: 1;
+          }
+
+          span[class*='MuiFormControlLabel-label'] {
+            line-height: 1.1;
+            margin-top: 3px;
+          }
+
+          > div {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            margin-bottom: 3px;
+
+            span[class*='MuiTypography-root'] {
+              font-size: smaller;
+              padding-top: 2px;
+            }
+
+            span[class*='MuiButtonBase-root'] {
+              padding: 2px 3px 0 5px;
+            }
+
+            &.level-2 {
+              margin-left: 5px;
+            }
+
+            &.level-3 {
+              margin-left: 33px;
+            }
+          }
+        }
       }
     }
 

@@ -44,7 +44,7 @@ export const Spacing = (props: SpacingProps) => {
           <input
             type="number"
             min={0}
-            max={5}
+            max={10}
             ref={topRef}
             onChange={changeValue}
           />
@@ -58,7 +58,7 @@ export const Spacing = (props: SpacingProps) => {
           <input
             type="number"
             min={0}
-            max={5}
+            max={10}
             ref={bottomRef}
             onChange={changeValue}
           />

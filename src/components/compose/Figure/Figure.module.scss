@@ -8,7 +8,7 @@
   }
 
   figcaption {
-    font-size: x-small;
+    font-size: small;
     color: $light-gray;
   }
 }
@@ -72,13 +72,36 @@
         font-size: 14px;
       }
     }
+    .other-properties {
+      width: 130px;
 
-    .object-fit {
-      flex-grow: 5;
+      .object-fit {
+        span {
+          padding: 2px 5px 0 0;
+          font-size: 14px;
+        }
+      }
 
-      span {
-        padding: 2px 5px 0 0;
-        font-size: 14px;
+      .size {
+        margin-top: $space-2;
+
+        .helper {
+          font-size: small;
+          margin-bottom: $space-2;
+          color: #666666;
+        }
+
+        .box {
+          margin-bottom: 3px;
+        }
+
+        input {
+          width: 65px;
+        }
+
+        svg {
+          width: 25px;
+        }
       }
     }
 

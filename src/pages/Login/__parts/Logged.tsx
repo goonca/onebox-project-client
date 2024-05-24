@@ -16,7 +16,7 @@ export const Logged: React.FC<LoogedPageType> = ({
   setUser
 }: LoogedPageType) => {
   const username = currentUser?.name ?? currentUser?.username;
-  const { push } = useRouter();
+  //const { push } = useRouter();
   const { logoff } = useServices();
 
   const logoffUser = async () => {
@@ -24,13 +24,13 @@ export const Logged: React.FC<LoogedPageType> = ({
     setUser(undefined);
   };
   const goToMySpace = () => {
-    push('/dashboard');
+    document.location.href = '/dashboard';
   };
 
   return (
     <>
       <div className={style['logged']}>
-        <h1>Welcome {username}!</h1>
+        <h2>Welcome {username}!</h2>
         <Button data-dark variant="contained" onClick={() => goToMySpace()}>
           Go to My Space
         </Button>

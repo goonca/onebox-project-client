@@ -12,6 +12,24 @@ export enum NewsStatus {
   PUBLISHED
 }
 
+export enum NewsContext {
+  WORLD,
+  COUNTRY,
+  REGION
+}
+
+export enum AccountType {
+  VIEWER,
+  WRITER,
+  PUBLISHER,
+  BUSINESS
+}
+
+export enum RequestStatus {
+  SUCCESS,
+  FAILED
+}
+
 export type UserModel = {
   id?: number;
   name?: string;
@@ -30,6 +48,8 @@ export type UserModel = {
   youtube?: string;
   twitter?: string;
   facebook?: string;
+  location?: LocationModel;
+  locationId?: string;
 };
 
 export type NewsModel = {
@@ -47,6 +67,8 @@ export type NewsModel = {
   publishedAt?: Date;
   status?: NewsStatus;
   components?: ComponentModel[];
+  location?: LocationModel;
+  locationId?: string;
 };
 
 export type ComponentModel = {
@@ -67,8 +89,8 @@ export type ComponentModel = {
   paddingBottom?: number;
   marginTop?: number;
   marginBottom?: number;
-  width?: string;
-  height?: string;
+  width?: number;
+  height?: number;
 };
 
 export type FileModel = {
@@ -89,11 +111,32 @@ export type FileModel = {
   createdAt?: Date;
 };
 
-export enum AccountType {
-  WRITER,
-  VIEWER
-}
-export enum RequestStatus {
-  SUCCESS,
-  FAILED
-}
+export type LocationModel = {
+  geoname_id: string;
+  name: string;
+  ascii_name: string;
+  alternate_names: string[] | string;
+  latitude: string;
+  longitude: string;
+  feature_class: string;
+  feature_code: string;
+  country_code: string;
+  country_code_2: string;
+  admin1_code: string;
+  admin2_code: string;
+  admin3_code: string;
+  admin4_code: string;
+  population: number;
+  elevation: string;
+  dem: number;
+  timezone: string;
+  modification_date: string;
+  country: string;
+  coordinates:
+    | {
+        lon: number;
+        lat: number;
+      }
+    | number[]
+    | { type: string; coordinates: number[] };
+};

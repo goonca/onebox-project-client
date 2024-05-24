@@ -52,6 +52,22 @@ a:visited {
   height: 220px;
 }
 
+a.MuiButtonBase-root:visited {
+  color: white !important;
+}
+
+input[type='number'] {
+  opacity: 1;
+  border: 1px solid lightgray;
+  height: 30px;
+  border-radius: 3px;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+  opacity: 1;
+  padding: 3px;
+  height: 18px;
+}
 @media screen and (max-width: $screen-sm) {
   .MuiSnackbar-anchorOriginBottomLeft {
     bottom: 65px !important;

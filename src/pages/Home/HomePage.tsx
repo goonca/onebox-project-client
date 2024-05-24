@@ -18,6 +18,11 @@ const HomePage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   return (
     <>
       <div className={style['homepage']}>
+        <img
+          src="/static/onebox-complete-logo-light.svg"
+          height={20}
+          className={style['logo']}
+        />
         <div className={style['header']}>
           <div className={style['left-side']}>
             <div className={style['wrapper']}>

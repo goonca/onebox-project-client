@@ -13,7 +13,7 @@ export const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
         <div className={style['left-side']}>&nbsp;</div>
         <div className={style['right-side']}>
           <div>
-            <img src="/static/onebox-logo.svg" height={30} />
+            <img src="/static/onebox-complete-logo-dark.svg" height={20} />
 
             {user ? (
               <Logged currentUser={user} setUser={setUser} />

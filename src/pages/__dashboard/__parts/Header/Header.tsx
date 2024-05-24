@@ -14,6 +14,9 @@ export const Header = () => {
   return (
     <>
       <div className={style['header']} data-component="header">
+        <div className={style['logo']}>
+          <img src="/static/onebox-complete-logo-dark.svg" height={18} />
+        </div>
         <label>{currentUser?.username}</label>
 
         <div className={style['avatar']}>
