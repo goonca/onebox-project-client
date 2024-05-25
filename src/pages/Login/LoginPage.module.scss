@@ -16,12 +16,21 @@
   }
 
   .right-side {
+    padding: 30px;
+
     > * {
       @include middle-center;
       display: inline-block;
       text-align: center;
       min-height: 200px;
       color: #666666;
+    }
+
+    .wrapper {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 }

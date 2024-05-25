@@ -1,4 +1,4 @@
-import { UserModel } from 'shared/types/api-type';
+import { NewsContext, UserModel } from 'shared/types/api-type';
 
 export const getEmptyNews = (currentUser: UserModel | undefined, id: any) => ({
   id,
@@ -9,5 +9,6 @@ export const getEmptyNews = (currentUser: UserModel | undefined, id: any) => ({
   createdAt: new Date(),
   showAuthor: true,
   showDate: true,
-  components: []
+  components: [],
+  context: NewsContext.REGION
 });

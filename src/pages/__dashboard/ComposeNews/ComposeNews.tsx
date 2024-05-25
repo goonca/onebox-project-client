@@ -201,6 +201,7 @@ export const ComposeNews = () => {
 
   const handleChangeContext = (_: any, context: string) => {
     console.log(context);
+    news.context = parseInt(context);
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -269,14 +270,18 @@ export const ComposeNews = () => {
               <div className={style['context']}>
                 <div className={style['header']}>
                   <div>
-                    <h2>News context {news.context}</h2>
+                    <h2>News context</h2>
                   </div>
                   <div>
                     <MUILink>Change</MUILink>
                   </div>
                 </div>
                 <FormControl>
-                  <RadioGroup onChange={handleChangeContext} ref={refContext}>
+                  <RadioGroup
+                    onChange={handleChangeContext}
+                    ref={refContext}
+                    defaultValue={news.context}
+                  >
                     <div className={`${style['level']} ${style['level-1']}`}>
                       <FormControlLabel
                         control={

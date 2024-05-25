@@ -31,7 +31,7 @@ export const Logged: React.FC<LoogedPageType> = ({
     <>
       <div className={style['logged']}>
         <h2>Welcome {username}!</h2>
-        <Button data-dark variant="contained" onClick={() => goToMySpace()}>
+        <Button variant="contained" onClick={() => goToMySpace()}>
           Go to My Space
         </Button>
         <Link underline="hover" onClick={() => logoffUser()}>

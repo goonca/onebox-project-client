@@ -12,7 +12,7 @@ export const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
       <div className={style['login-page']}>
         <div className={style['left-side']}>&nbsp;</div>
         <div className={style['right-side']}>
-          <div>
+          <div className={style['wrapper']}>
             <img src="/static/onebox-complete-logo-dark.svg" height={20} />
 
             {user ? (
