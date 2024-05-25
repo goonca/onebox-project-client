@@ -4,8 +4,12 @@ import {
   Button,
   Checkbox,
   debounce,
+  FormControl,
   FormControlLabel,
+  FormLabel,
   Link as MUILink,
+  Radio,
+  RadioGroup,
   Switch
 } from '@mui/material';
 import { NewsHeader } from 'components/compose/NewsHeader';
@@ -21,7 +25,7 @@ import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { useServices } from 'shared/hooks/useServices';
-import { ComponentModel, NewsModel } from 'shared/types/api-type';
+import { ComponentModel, NewsContext, NewsModel } from 'shared/types/api-type';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 
 import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
@@ -45,9 +49,7 @@ export const ComposeNews = () => {
   const [lastEditingComponent, setLastEditingComponent] =
     useState<ComponentModel>();
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
-  const refContext_0 = useRef<HTMLInputElement>(null);
-  const refContext_1 = useRef<HTMLInputElement>(null);
-  const refContext_2 = useRef<HTMLInputElement>(null);
+  const refContext = useRef<typeof RadioGroup>(null);
 
   const editorContext = useContext(EditorContext);
 
@@ -197,8 +199,8 @@ export const ComposeNews = () => {
     e.stopPropagation();
   };
 
-  const handleChangeContext = () => {
-    //refContext_0.
+  const handleChangeContext = (_: any, context: string) => {
+    console.log(context);
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -267,50 +269,42 @@ export const ComposeNews = () => {
               <div className={style['context']}>
                 <div className={style['header']}>
                   <div>
-                    <h2>News context</h2>
+                    <h2>News context {news.context}</h2>
                   </div>
                   <div>
                     <MUILink>Change</MUILink>
                   </div>
                 </div>
-                <div className={style['level-1']}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        defaultChecked={true}
-                        inputRef={refContext_0}
+                <FormControl>
+                  <RadioGroup onChange={handleChangeContext} ref={refContext}>
+                    <div className={`${style['level']} ${style['level-1']}`}>
+                      <FormControlLabel
+                        control={
+                          <Radio value={NewsContext.WORLD} size="small" />
+                        }
+                        label="World"
                       />
-                    }
-                    label="World"
-                  />
-                </div>
-                <div className={style['level-2']}>
-                  <h3>↳</h3>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        defaultChecked={true}
-                        inputRef={refContext_1}
+                    </div>
+                    <div className={`${style['level']} ${style['level-2']}`}>
+                      <h3>↳</h3>
+                      <FormControlLabel
+                        control={
+                          <Radio value={NewsContext.COUNTRY} size="small" />
+                        }
+                        label={currentUser?.location?.country}
                       />
-                    }
-                    label={currentUser?.location?.country}
-                  />
-                </div>
-                <div className={style['level-3']}>
-                  <h3>↳</h3>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        size="small"
-                        defaultChecked={true}
-                        inputRef={refContext_2}
+                    </div>
+                    <div className={`${style['level']} ${style['level-3']}`}>
+                      <h3>↳</h3>
+                      <FormControlLabel
+                        control={
+                          <Radio value={NewsContext.REGION} size="small" />
+                        }
+                        label={currentUser?.location?.name + ' and region'}
                       />
-                    }
-                    label={currentUser?.location?.name + ' and region'}
-                  />
-                </div>
+                    </div>
+                  </RadioGroup>
+                </FormControl>
               </div>
             </div>
           </div>

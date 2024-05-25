@@ -13,9 +13,9 @@ export enum NewsStatus {
 }
 
 export enum NewsContext {
-  WORLD,
-  COUNTRY,
-  REGION
+  WORLD = 0,
+  COUNTRY = 1,
+  REGION = 2
 }
 
 export enum AccountType {
@@ -69,6 +69,7 @@ export type NewsModel = {
   components?: ComponentModel[];
   location?: LocationModel;
   locationId?: string;
+  context?: NewsContext;
 };
 
 export type ComponentModel = {

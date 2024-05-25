@@ -57,6 +57,10 @@
           @include dashboard-section-header;
           padding: $space-3;
 
+          div[class*='MuiFormControl-root'] {
+            margin-left: 10px;
+          }
+
           .header {
             margin-bottom: $space-3;
 
@@ -73,39 +77,21 @@
           h3 {
             margin: 0;
           }
+        }
 
-          label[class*='MuiFormControlLabel-root'] {
-            align-items: flex-start;
-            line-height: 1;
+        .level {
+          display: flex;
+          flex-direction: row;
+          gap: 12px;
+          margin: 2px 0;
+
+          &.level-3 {
+            margin-left: 30px;
           }
 
-          span[class*='MuiFormControlLabel-label'] {
-            line-height: 1.1;
-            margin-top: 3px;
-          }
-
-          > div {
-            display: flex;
-            flex-direction: row;
-            gap: 5px;
-            margin-bottom: 3px;
-
-            span[class*='MuiTypography-root'] {
-              font-size: smaller;
-              padding-top: 2px;
-            }
-
-            span[class*='MuiButtonBase-root'] {
-              padding: 2px 3px 0 5px;
-            }
-
-            &.level-2 {
-              margin-left: 5px;
-            }
-
-            &.level-3 {
-              margin-left: 33px;
-            }
+          span {
+            padding: 0;
+            font-size: small;
           }
         }
       }
