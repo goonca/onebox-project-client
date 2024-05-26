@@ -25,7 +25,12 @@ import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { useServices } from 'shared/hooks/useServices';
-import { ComponentModel, NewsContext, NewsModel } from 'shared/types/api-type';
+import {
+  ComponentModel,
+  LocationModel,
+  NewsContext,
+  NewsModel
+} from 'shared/types/api-type';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 
 import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
@@ -35,6 +40,7 @@ import { EditorContext } from 'shared/context/EditorContext';
 import { EditorReturn } from 'shared/types/EditorReturn';
 import React from 'react';
 import style from './ComposeNews.module.scss';
+import { ChangeRegionDialog } from './__parts/ChangeRegionDialog/ChangeRegionDialog';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -46,6 +52,7 @@ export const ComposeNews = () => {
   const [editMode, setEditMode] = useState<boolean>(true);
   const [maximized, setMaximized] = useState<boolean>(false);
   const [editingComponent, setEditingComponent] = useState<ComponentModel>();
+  const [regionDialogOpened, setRegionDialogOpened] = useState<boolean>(false);
   const [lastEditingComponent, setLastEditingComponent] =
     useState<ComponentModel>();
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
@@ -200,8 +207,11 @@ export const ComposeNews = () => {
   };
 
   const handleChangeContext = (_: any, context: string) => {
-    console.log(context);
     news.context = parseInt(context);
+  };
+
+  const handleChangeRegion = (location: LocationModel) => {
+    console.log(location);
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -273,7 +283,9 @@ export const ComposeNews = () => {
                     <h2>News context</h2>
                   </div>
                   <div>
-                    <MUILink>Change</MUILink>
+                    <MUILink onClick={() => setRegionDialogOpened(true)}>
+                      Change
+                    </MUILink>
                   </div>
                 </div>
                 <FormControl>
@@ -396,6 +408,10 @@ export const ComposeNews = () => {
           </div>
         }
       </div>
+      <ChangeRegionDialog
+        open={regionDialogOpened}
+        onChange={handleChangeRegion}
+      />
     </>
   );
 };

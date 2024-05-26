@@ -1,0 +1,15 @@
+@import '~/src/shared/style/variables.scss';
+
+.change-region-dialog {
+  .wrapper {
+    padding: $space-2;
+
+    .search-input {
+      div[class*='MuiInputBase-root'] {
+        border-radius: 30px;
+        background-color: white;
+        width: 100%;
+      }
+    }
+  }
+}
