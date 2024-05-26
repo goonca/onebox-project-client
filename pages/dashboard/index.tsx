@@ -88,7 +88,7 @@ const Page = ({
     <>
       <link rel="stylesheet" href="/static/externals/simplemde.min.css" />
       <script src="/static/externals/simplemde.min.js" defer></script>
-      <StartPage currentUser={currentUser} />;
+      <StartPage currentUser={currentUser} />
     </>
   );
 };

@@ -4,6 +4,11 @@
   display: flex;
   flex-direction: column;
   row-gap: $space-3;
+  align-items: center;
+
+  button {
+    width: 200px;
+  }
 
   a {
     margin-top: $space-5;

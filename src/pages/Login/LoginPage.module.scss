@@ -16,29 +16,38 @@
   }
 
   .right-side {
-    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     > * {
-      @include middle-center;
-      display: inline-block;
+      //@include middle-center;
+      //display: inline-block;
       text-align: center;
       min-height: 200px;
       color: #666666;
     }
 
     .wrapper {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
+      width: 80%;
+      max-width: 450px;
     }
   }
 }
 
 @media screen and (max-width: $screen-sm) {
   .login-page {
+    .logo {
+      @include center;
+      position: absolute;
+      top: 20px;
+    }
+
     .left-side {
-      display: none;
+      width: 0px;
+      position: absolute;
+      opacity: 0;
     }
     .right-side {
       width: 100%;
