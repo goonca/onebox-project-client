@@ -28,6 +28,6 @@ export const Default: Story = {
   args: {
     src: mock_figure,
     caption: 'Aliquam aliquam mi arcu, quis sagittis ligula pellentesque quis.',
-    width: '50%'
+    width: 50
   }
 };

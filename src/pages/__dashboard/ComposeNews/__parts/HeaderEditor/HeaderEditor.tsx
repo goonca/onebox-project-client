@@ -1,12 +1,12 @@
 import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
-import { NewsHeaderProps } from 'components/compose/NewsHeader';
 import { useRef } from 'react';
+import { NewsModel } from 'shared/types/api-type';
 
 import style from './HeaderEditor.module.scss';
 
 type HeaderEditorProps = {
-  updateHeader?: (header?: NewsHeaderProps) => void;
-  news?: NewsHeaderProps;
+  updateHeader?: (header?: NewsModel) => void;
+  news?: NewsModel;
 };
 
 export const HeaderEditor: React.FC<HeaderEditorProps> = ({

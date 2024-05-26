@@ -12,7 +12,7 @@ const meta = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    user: { name: 'Author' }
+    news: { user: { name: 'Author' } }
   }
 } satisfies Meta<typeof NewsHeader>;
 
@@ -22,11 +22,13 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    title: 'Etiam sed est a leo vehicula pretium ac vitae tellus',
-    user: mock_author,
-    headline:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend' +
-      'sit amet tortor sed condimentum. Mauris lobortis auctor tellus et ornare',
-    createdAt: new Date()
+    news: {
+      title: 'Etiam sed est a leo vehicula pretium ac vitae tellus',
+      user: mock_author,
+      headline:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend' +
+        'sit amet tortor sed condimentum. Mauris lobortis auctor tellus et ornare',
+      createdAt: new Date()
+    }
   }
 };

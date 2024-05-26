@@ -22,7 +22,7 @@ const NewsHorizontal = (props: NewsCoverType) => {
         }`}
         style={props.width ? { width: props.width } : {}}
       >
-        {props.figure && <Figure {...props.figure} width="25%"></Figure>}
+        {props.figure && <Figure {...props.figure} width={25}></Figure>}
         <div className={style['wrapper']}>
           <div className={style['content']}>
             {props.badge && props.badgeType !== 'titled' && (
