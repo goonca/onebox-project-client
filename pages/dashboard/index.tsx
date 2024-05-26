@@ -59,12 +59,12 @@ export const getServerSideProps = (async ({ req, res }) => {
   console.log(
     'getCurrentLocation',
     location.geoname_id,
-    currentUser.locationId
+    currentUser.locationGeonameId
   );
 
   await updateUser(
     {
-      locationId: location.geoname_id
+      locationGeonameId: location.geoname_id
     } as UserModel,
     authToken
   );

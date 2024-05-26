@@ -49,7 +49,7 @@ export type UserModel = {
   twitter?: string;
   facebook?: string;
   location?: LocationModel;
-  locationId?: string;
+  locationGeonameId?: string;
 };
 
 export type NewsModel = {
@@ -68,7 +68,7 @@ export type NewsModel = {
   status?: NewsStatus;
   components?: ComponentModel[];
   location?: LocationModel;
-  locationId?: string;
+  locationGeonameId?: string;
   context?: NewsContext;
 };
 

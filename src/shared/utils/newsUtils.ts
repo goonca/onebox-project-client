@@ -10,5 +10,6 @@ export const getEmptyNews = (currentUser: UserModel | undefined, id: any) => ({
   showAuthor: true,
   showDate: true,
   components: [],
-  context: NewsContext.REGION
+  context: NewsContext.REGION,
+  location: currentUser?.location
 });

@@ -99,7 +99,7 @@ export const ComposeNews = () => {
   const createNews = useCallback((news: NewsModel) => {
     const response = saveNews({
       ...news,
-      locationId: currentUser?.location?.geoname_id
+      locationGeonameId: news?.location?.geoname_id
     });
     response.then((r: any) => {
       const resNews = r.data[0];
@@ -296,7 +296,7 @@ export const ComposeNews = () => {
                         control={
                           <Radio value={NewsContext.COUNTRY} size="small" />
                         }
-                        label={currentUser?.location?.country}
+                        label={news?.location?.country}
                       />
                     </div>
                     <div className={`${style['level']} ${style['level-3']}`}>
@@ -305,7 +305,7 @@ export const ComposeNews = () => {
                         control={
                           <Radio value={NewsContext.REGION} size="small" />
                         }
-                        label={currentUser?.location?.name + ' and region'}
+                        label={news?.location?.name + ' and region'}
                       />
                     </div>
                   </RadioGroup>
