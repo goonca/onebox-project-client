@@ -41,3 +41,6 @@ Thumbs.db
 # Sonarqube Files
 eslint-report.json
 .scannerwork
+
+# Sentry Config File
+.env.sentry-build-plugin
