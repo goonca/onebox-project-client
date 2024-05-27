@@ -17,6 +17,7 @@ export type LocationProps = {
     lat: string
   ) => Promise<0 | LocationModel>;
   getIp: (req: NextApiRequest) => string;
+  getDistanceBetweenCitites: (from: LocationModel, to: LocationModel) => number;
 };
 
 const IPAPI_KEY = 'jNXKxf32P1D6X4lsYh7uTLR7JEPxofsHCF8SoSBHB8TzguGrO3';
@@ -93,18 +94,47 @@ export const useLocation = (): LocationProps => {
   const getCitiesByName = async (name: string): Promise<LocationResponse> => {
     let response: LocationResponse;
     const rawResponse = await fetch(
-      `${OPEN_DATASOFT_URI}?where=name%20like%20%${name}%27&limit=100`
+      `${OPEN_DATASOFT_URI}?where=${encodeURIComponent(
+        `name like '${name}*'`
+      )}&limit=100`
     );
     response = (await rawResponse.json()) as LocationResponse;
     //console.log('getCitiesByName(' + name + ')', response);
     return response;
   };
 
+  const getDistanceBetweenCitites = (
+    from: LocationModel,
+    to: LocationModel
+  ): number => {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(
+      parseFloat(to.latitude as string) - parseFloat(from.latitude as string)
+    ); // deg2rad below
+    var dLon = deg2rad(
+      parseFloat(to.longitude as string) - parseFloat(from.longitude as string)
+    );
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(parseFloat(from.latitude as string))) *
+        Math.cos(deg2rad(parseFloat(to.latitude as string))) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+  };
+
+  function deg2rad(deg: number) {
+    return deg * (Math.PI / 180);
+  }
+
   return {
     getCurrentLocation,
     getCitiesByName,
     getIp,
     getCitiesNearby,
-    getCityByNameAndLocation
+    getCityByNameAndLocation,
+    getDistanceBetweenCitites
   };
 };

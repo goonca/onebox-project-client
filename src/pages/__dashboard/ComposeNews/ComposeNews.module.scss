@@ -85,6 +85,17 @@
           gap: 12px;
           margin: 2px 0;
 
+          [class*='MuiFormControlLabel-root'] {
+            display: flex;
+            gap: 2px;
+            align-items: flex-start;
+
+            [class*='MuiTypography-root'] {
+              line-height: 15px;
+              margin-top: 2px;
+            }
+          }
+
           &.level-3 {
             margin-left: 30px;
           }
@@ -92,6 +103,12 @@
           span {
             padding: 0;
             font-size: small;
+          }
+
+          .and-region-label {
+            font-style: italic;
+            font-size: smaller;
+            white-space: nowrap;
           }
         }
       }

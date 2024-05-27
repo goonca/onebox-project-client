@@ -133,6 +133,7 @@ export type LocationModel = {
   timezone?: string;
   modification_date?: string;
   country?: string;
+  distance?: number;
   coordinates?:
     | {
         lon: number;

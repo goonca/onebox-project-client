@@ -12,6 +12,10 @@ body {
   //letter-spacing: 0.025rem;
 }
 
+a {
+  cursor: pointer;
+}
+
 .MuiButton-root {
   &[class*='MuiButton'] {
     text-transform: initial;

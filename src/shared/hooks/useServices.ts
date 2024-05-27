@@ -116,6 +116,7 @@ export const useServices = (): ServicesType => {
   };
 
   const saveNews = async (news: NewsModel) => {
+    news.location && (await saveLocation(news.location));
     return await post(uri.NEWS, news);
   };
 

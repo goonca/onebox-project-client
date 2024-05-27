@@ -3,6 +3,8 @@
 .change-region-dialog {
   .wrapper {
     padding: $space-2;
+    min-width: 500px;
+    height: 300px;
 
     .search-input {
       div[class*='MuiInputBase-root'] {
@@ -10,6 +12,60 @@
         background-color: white;
         width: 100%;
       }
+    }
+
+    .grid-header {
+      font-size: smaller;
+      text-align: right;
+      margin: 15px 30px;
+      padding-right: 10px;
+      border-bottom: 1px solid darken($dashboard-background, 10);
+      color: darken($dashboard-background, 30);
+      font-style: italic;
+    }
+
+    .city {
+      display: flex;
+      flex-direction: row;
+      gap: $space-2;
+      align-items: baseline;
+      margin: 15px 30px;
+      cursor: pointer;
+
+      &:hover {
+        h3 {
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+      }
+
+      h3 {
+        margin: 0;
+      }
+      .country {
+        flex-grow: 10;
+        font-size: small;
+      }
+      .distance {
+        background-color: darken($dashboard-background, 8);
+        border: 1px solid darken($dashboard-background, 30);
+        color: darken($dashboard-background, 50);
+        padding: 0 15px;
+        font-size: small;
+        border-radius: 30px;
+      }
+    }
+  }
+  .dialog-actions {
+    justify-content: center;
+    border-top: 1px solid lightgray;
+  }
+}
+
+@media screen and (max-width: $screen-sm) {
+  .change-region-dialog {
+    .wrapper {
+      min-width: initial;
     }
   }
 }

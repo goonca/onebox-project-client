@@ -211,7 +211,9 @@ export const ComposeNews = () => {
   };
 
   const handleChangeRegion = (location: LocationModel) => {
+    setRegionDialogOpened(false);
     console.log(location);
+    location && setNews({ ...news, location });
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -317,7 +319,14 @@ export const ComposeNews = () => {
                         control={
                           <Radio value={NewsContext.REGION} size="small" />
                         }
-                        label={news?.location?.name + ' and region'}
+                        label={
+                          <>
+                            {news?.location?.name}{' '}
+                            <span className={style['and-region-label']}>
+                              (and region)
+                            </span>
+                          </>
+                        }
                       />
                     </div>
                   </RadioGroup>
@@ -411,6 +420,7 @@ export const ComposeNews = () => {
       <ChangeRegionDialog
         open={regionDialogOpened}
         onChange={handleChangeRegion}
+        onClose={() => setRegionDialogOpened(false)}
       />
     </>
   );
