@@ -5,6 +5,13 @@
   flex-direction: row;
   height: 100%;
 
+  .logo {
+    display: initial;
+    &.light {
+      display: none;
+    }
+  }
+
   > * {
     width: 50%;
     height: 100%;
@@ -30,27 +37,41 @@
     }
 
     .wrapper {
-      width: 80%;
+      width: 90%;
       max-width: 450px;
+      margin-top: -40px;
     }
   }
 }
 
 @media screen and (max-width: $screen-sm) {
   .login-page {
+    background-image: url('/static/bluegreen-background.svg');
+    background-size: cover;
+    padding: 60px 20px 20px 20px;
+    box-sizing: border-box;
+
     .logo {
       @include center;
       position: absolute;
       top: 20px;
+      display: none;
+
+      &.light {
+        display: initial;
+      }
     }
 
     .left-side {
       width: 0px;
       position: absolute;
       opacity: 0;
+      background-image: initial;
     }
     .right-side {
       width: 100%;
+      background-color: white;
+      border-radius: 10px;
     }
   }
 }

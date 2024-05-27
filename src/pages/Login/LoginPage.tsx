@@ -18,6 +18,11 @@ export const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
               height={20}
               className={style['logo']}
             />
+            <img
+              src="/static/onebox-complete-logo-light.svg"
+              height={20}
+              className={`${style['logo']} ${style['light']}`}
+            />
 
             {user ? (
               <Logged currentUser={user} setUser={setUser} />
