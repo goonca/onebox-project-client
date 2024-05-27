@@ -16,8 +16,6 @@ import { EventType, useEvent } from 'shared/hooks/useEvent';
 import style from './StartPage.module.scss';
 
 export const StartPage: React.FC<PageProps> = (props: PageProps) => {
-  //fix this
-  document.body.style.backgroundColor = '#F3F5F9';
   const [currentUser, setCurrentUser] = useState<UserModel | undefined>(
     props.currentUser
   );
@@ -44,6 +42,11 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
 
   return (
     <>
+      <style jsx global>{`
+        body {
+          background-color: #f3f5f9;
+        }
+      `}</style>
       <div className={style['start-page']} data-component="start-page">
         <UserContext.Provider value={currentUser}>
           <BrowserRouter>

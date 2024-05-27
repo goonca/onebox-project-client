@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PageProps } from 'shared/types/PagePropsType';
 
 import { Logged } from './__parts/Logged';
@@ -7,12 +7,15 @@ import style from './LoginPage.module.scss';
 
 export const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   const [user, setUser] = useState(currentUser);
-  document.body.style.backgroundImage =
-    "url('/static/bluegreen-background.svg')";
-  document.body.style.backgroundSize = 'cover';
 
   return (
     <>
+      <style jsx global>{`
+        body {
+          background-image: url('/static/bluegreen-background.svg');
+          background-size: cover;
+        }
+      `}</style>
       <div className={style['login-page']}>
         <div className={style['left-side']}>&nbsp;</div>
         <div className={style['right-side']}>
