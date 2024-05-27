@@ -282,7 +282,7 @@ export const ComposeNews = () => {
               <div className={style['context']}>
                 <div className={style['header']}>
                   <div>
-                    <h2>News context</h2>
+                    <h2>Context</h2>
                   </div>
                   <div>
                     <MUILink onClick={() => setRegionDialogOpened(true)}>

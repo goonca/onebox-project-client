@@ -29,7 +29,10 @@ export const getServerSideProps = (async ({ req, res }) => {
 
   let clientIp = await getIp(req as NextApiRequest);
 
+  console.log('clientIp', clientIp);
+
   const ipLocation = await getCurrentLocation(clientIp);
+  console.log('ipLocation', ipLocation);
   let location = await getCityByNameAndLocation(
     ipLocation.city,
     ipLocation.longitude.toString(),
