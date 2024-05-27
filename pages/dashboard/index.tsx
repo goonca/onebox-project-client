@@ -33,6 +33,9 @@ export const getServerSideProps = (async ({ req, res }) => {
 
   const ipLocation = await getCurrentLocation(clientIp);
   console.log('ipLocation', ipLocation);
+  if (ipLocation.error) {
+    //TODO: get from browser country
+  }
   let location = await getCityByNameAndLocation(
     ipLocation.city,
     ipLocation.longitude.toString(),

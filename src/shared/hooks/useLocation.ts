@@ -32,16 +32,8 @@ export const useLocation = (): LocationProps => {
   //https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-500/records?where=name%20like%20%27astorga%27&limit=20
 
   const getIp = (req: NextApiRequest) => {
-    let ipAddress = req.headers['x-real-ip'];
-    const forwardedFor = req.headers['x-forwarded-for'] as string;
-
-    console.log(req.headers);
-
-    if (!ipAddress && forwardedFor) {
-      ipAddress = forwardedFor?.split(',').at(0) ?? 'Unknown';
-    }
-
-    return (ipAddress as string).split(':').pop() as string;
+    let ipAddress = req.headers['x-forwarded-for'];
+    return (ipAddress as string).split(',').pop() as string;
   };
 
   const getCitiesNearby = async (
