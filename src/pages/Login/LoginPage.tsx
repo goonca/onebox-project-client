@@ -13,7 +13,7 @@ export const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
       <style jsx global>{`
         body {
           background-image: url('/static/bluegreen-background.svg');
-          background-size: cover;
+          overflow: hidden;
         }
       `}</style>
       <div className={style['login-page']}>
