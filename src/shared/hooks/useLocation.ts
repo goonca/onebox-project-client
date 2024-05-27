@@ -33,6 +33,7 @@ export const useLocation = (): LocationProps => {
 
   const getIp = (req: NextApiRequest) => {
     let ipAddress = req.headers['x-forwarded-for'];
+    console.log(ipAddress, req.connection.remoteAddress);
     return (ipAddress as string).split(',').pop() as string;
   };
 
