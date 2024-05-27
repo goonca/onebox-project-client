@@ -18,8 +18,8 @@
   }
 
   .left-side {
-    background-image: url('/static/bluegreen-background.svg');
-    background-size: cover;
+    /*background-image: url('/static/bluegreen-background.svg');
+    background-size: cover;*/
   }
 
   .right-side {
@@ -27,6 +27,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: white;
 
     > * {
       //@include middle-center;
@@ -46,8 +47,8 @@
 
 @media screen and (max-width: $screen-sm) {
   .login-page {
-    background-image: url('/static/bluegreen-background.svg');
-    background-size: cover;
+    /*background-image: url('/static/bluegreen-background.svg');
+    background-size: cover;*/
     padding: 60px 20px 20px 20px;
     box-sizing: border-box;
 

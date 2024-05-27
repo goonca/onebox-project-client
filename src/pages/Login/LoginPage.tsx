@@ -7,6 +7,10 @@ import style from './LoginPage.module.scss';
 
 export const LoginPage: React.FC<PageProps> = ({ currentUser }: PageProps) => {
   const [user, setUser] = useState(currentUser);
+  document.body.style.backgroundImage =
+    "url('/static/bluegreen-background.svg')";
+  document.body.style.backgroundSize = 'cover';
+
   return (
     <>
       <div className={style['login-page']}>
