@@ -26,4 +26,5 @@ export type IPLocation = {
   country_population: number;
   asn: string;
   org: string;
+  error?: string;
 };
