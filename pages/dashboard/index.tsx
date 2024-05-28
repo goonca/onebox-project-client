@@ -2,10 +2,8 @@ import { getCookie } from 'cookies-next';
 //import { StartPage } from 'src/pages/__dashboard/StartPage/StartPage';
 import dynamic from 'next/dynamic';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
-import { useLocation } from 'shared/hooks/useLocation';
 import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
-import { NextApiRequest } from 'next';
 import { LocationModel, UserModel } from 'shared/types/api-type';
 
 const StartPage = dynamic<PageProps>(
@@ -19,7 +17,6 @@ const StartPage = dynamic<PageProps>(
 export const getServerSideProps = (async ({ req, res }) => {
   const { authenticate, updateUser, getLocationByName, getClientIp } =
     useServices();
-  const { getCurrentLocation } = useLocation();
 
   const authToken = getCookie('authToken', { req, res });
   const authResponse = await authenticate({
