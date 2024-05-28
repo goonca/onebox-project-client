@@ -1,31 +1,18 @@
-import { LocationResponse } from 'shared/types/LocationResponse';
-import { IPLocation } from 'shared/types/IPLocation';
 import { NextApiRequest } from 'next';
-import { LocationModel } from 'shared/types/api-type';
+import { IPLocation, LocationModel } from 'shared/types/api-type';
 
 export type LocationProps = {
   getCurrentLocation: (ip: string) => Promise<IPLocation>;
-  getCitiesByName: (name: string) => Promise<LocationResponse>;
-  getCitiesNearby: (
-    lon: string,
-    lat: string,
-    distanceInKm: number
-  ) => Promise<LocationResponse>;
-  getCityByNameAndLocation: (
-    name: string,
-    lon: string,
-    lat: string
-  ) => Promise<0 | LocationModel>;
   getIp: (req: NextApiRequest) => string;
   getDistanceBetweenCitites: (from: LocationModel, to: LocationModel) => number;
 };
 
 const IPAPI_KEY = 'jNXKxf32P1D6X4lsYh7uTLR7JEPxofsHCF8SoSBHB8TzguGrO3';
 const IPAPI_URI = 'https://ipapi.co';
-
+/*
 const OPEN_DATASOFT_URI =
   'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-500/records';
-
+*/
 export const useLocation = (): LocationProps => {
   //https://ipapi.co/8.8.8.8/json/
   //https://ipapi.co/8.8.8.8/json/?key=jNXKxf32P1D6X4lsYh7uTLR7JEPxofsHCF8SoSBHB8TzguGrO3
@@ -37,7 +24,7 @@ export const useLocation = (): LocationProps => {
     return (ipAddress as string).split(',').pop() as string;
   };
 
-  const getCitiesNearby = async (
+  /*const getCitiesNearby = async (
     lon: string,
     lat: string,
     distanceInKm: number
@@ -53,9 +40,9 @@ export const useLocation = (): LocationProps => {
     response = (await rawResponse.json()) as LocationResponse;
     //console.log('getCitiesAround()', response);
     return response;
-  };
+  };*/
 
-  const getCityByNameAndLocation = async (
+  /*const getCityByNameAndLocation = async (
     name: string,
     lon: string,
     lat: string
@@ -71,7 +58,7 @@ export const useLocation = (): LocationProps => {
     response = (await rawResponse.json()) as LocationResponse;
     //console.log(`getCityByNameAndLocation(${name})`, response);
     return response?.results.length && response?.results[0];
-  };
+  };*/
 
   const getCurrentLocation = async (ip: string): Promise<IPLocation> => {
     let location: IPLocation;
@@ -86,7 +73,7 @@ export const useLocation = (): LocationProps => {
     return location;
   };
 
-  const getCitiesByName = async (name: string): Promise<LocationResponse> => {
+  /*const getCitiesByName = async (name: string): Promise<LocationResponse> => {
     let response: LocationResponse;
     const rawResponse = await fetch(
       `${OPEN_DATASOFT_URI}?where=${encodeURIComponent(
@@ -96,7 +83,7 @@ export const useLocation = (): LocationProps => {
     response = (await rawResponse.json()) as LocationResponse;
     //console.log('getCitiesByName(' + name + ')', response);
     return response;
-  };
+  };*/
 
   const getDistanceBetweenCitites = (
     from: LocationModel,
@@ -126,10 +113,7 @@ export const useLocation = (): LocationProps => {
 
   return {
     getCurrentLocation,
-    getCitiesByName,
     getIp,
-    getCitiesNearby,
-    getCityByNameAndLocation,
     getDistanceBetweenCitites
   };
 };

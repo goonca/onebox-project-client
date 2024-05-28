@@ -21,6 +21,7 @@ import React, {
 import { UserContext } from 'shared/context/UserContext';
 import { useLocation } from 'shared/hooks/useLocation';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
+import { ResponseType, useServices } from 'shared/hooks/useServices';
 import { LocationModel } from 'shared/types/api-type';
 import style from './ChangeRegionDialog.module.scss';
 
@@ -37,7 +38,8 @@ export const ChangeRegionDialog: React.FC<ChangeRegionProps> = ({
 }: ChangeRegionProps) => {
   const currentUser = useContext(UserContext);
   const { isMobile } = useMediaQuery();
-  const { getCitiesByName, getDistanceBetweenCitites } = useLocation();
+  const { getDistanceBetweenCitites } = useLocation();
+  const { getCitiesByName } = useServices();
   const [regionDialogOpened, setRegionDialogOpened] = useState<boolean>(false);
   const [cities, setCities] = useState<LocationModel[]>();
   const searchRef = useRef<HTMLInputElement>();
@@ -52,19 +54,22 @@ export const ChangeRegionDialog: React.FC<ChangeRegionProps> = ({
       setCities([]);
       return;
     }
-    getCitiesByName(searchRef.current?.value as string).then(res => {
-      const cities: LocationModel[] = res.results;
-      console.log(cities, currentUser?.location);
-      currentUser?.location &&
-        cities.map(city => {
-          city.distance = getDistanceBetweenCitites(
-            city,
-            currentUser?.location as LocationModel
-          );
-        });
 
-      setCities(cities.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0)));
-    });
+    getCitiesByName(searchRef.current?.value as string).then(
+      (res: ResponseType) => {
+        const cities = res.data as LocationModel[];
+        console.log(cities, currentUser?.location);
+        currentUser?.location &&
+          cities.map(city => {
+            city.distance = getDistanceBetweenCitites(
+              city,
+              currentUser?.location as LocationModel
+            );
+          });
+
+        setCities(cities.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0)));
+      }
+    );
   };
 
   const handleChangeRegion = (city: LocationModel) => {

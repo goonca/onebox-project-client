@@ -21,7 +21,10 @@ export type UpdatePassword = {
 
 export type ServicesType = {
   authenticate: (user: UserModel) => any;
-  saveLocation: (location: LocationModel) => any;
+  getClientIp: () => any;
+  getLocationByName: (location: LocationModel) => any;
+  getLocationNearby: (location: LocationModel) => any;
+  getCitiesByName: (name: string) => any;
   saveUser: (user: UserModel) => any;
   updateUser: (user: UserModel, token?: string) => any;
   updatePassword: (data: UpdatePassword) => any;
@@ -91,7 +94,7 @@ export const useServices = (): ServicesType => {
     return await post(uri.AUTH, user);
   };
 
-  const saveLocation = async (location: LocationModel) => {
+  /*const saveLocation = async (location: LocationModel) => {
     Array.isArray(location.alternate_names) &&
       (location.alternate_names = JSON.stringify(location.alternate_names));
     !Array.isArray(location.coordinates) &&
@@ -101,6 +104,22 @@ export const useServices = (): ServicesType => {
         coordinates: [location.coordinates.lon, location.coordinates.lat]
       });
     return await post(uri.LOCATION, location);
+  };*/
+
+  const getClientIp = async () => {
+    return await get(uri.LOCATION + '/location/current');
+  };
+
+  const getLocationNearby = async (location: LocationModel) => {
+    return await post(uri.LOCATION + '/nearby', location);
+  };
+
+  const getLocationByName = async (location: LocationModel) => {
+    return await post(uri.LOCATION + '/nearby/' + location.name, location);
+  };
+
+  const getCitiesByName = async (name: string) => {
+    return await get(uri.LOCATION + '/cities/' + name);
   };
 
   const saveUser = async (user: UserModel) => {
@@ -116,7 +135,6 @@ export const useServices = (): ServicesType => {
   };
 
   const saveNews = async (news: NewsModel) => {
-    news.location && (await saveLocation(news.location));
     return await post(uri.NEWS, news);
   };
 
@@ -136,10 +154,6 @@ export const useServices = (): ServicesType => {
     return await remove(`${uri.FILES}/${id}`);
   };
 
-  /*const deleteComponent = async (component?: ComponentModel) => {
-    return await remove(uri.COMPONENT, component);
-  };*/
-
   const logoff = async () => {
     return await post(`${uri.AUTH}/logoff`);
   };
@@ -155,7 +169,9 @@ export const useServices = (): ServicesType => {
     getNews,
     getFiles,
     deleteFile,
-    saveLocation
-    //deleteComponent
+    getLocationNearby,
+    getLocationByName,
+    getCitiesByName,
+    getClientIp
   };
 };

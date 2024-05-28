@@ -9,12 +9,10 @@ export const NewsHeader: React.FC<{ news?: NewsModel }> = props => {
   const [news, setNews] = useState<NewsModel | undefined>(props.news);
 
   useEffect(() => {
-    console.log(props.news);
     props.news && setNews(props.news);
   }, [props]);
 
   useEffect(() => {
-    console.log('newsContext', newsContext);
     newsContext && setNews(newsContext);
   }, [newsContext]);
 
