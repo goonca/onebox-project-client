@@ -2,13 +2,10 @@ import { NextApiRequest } from 'next';
 import { IPLocation, LocationModel } from 'shared/types/api-type';
 
 export type LocationProps = {
-  getCurrentLocation: (ip: string) => Promise<IPLocation>;
   getIp: (req: NextApiRequest) => string;
   getDistanceBetweenCitites: (from: LocationModel, to: LocationModel) => number;
 };
 
-const IPAPI_KEY = 'jNXKxf32P1D6X4lsYh7uTLR7JEPxofsHCF8SoSBHB8TzguGrO3';
-const IPAPI_URI = 'https://ipapi.co';
 /*
 const OPEN_DATASOFT_URI =
   'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/geonames-all-cities-with-a-population-500/records';
@@ -60,7 +57,7 @@ export const useLocation = (): LocationProps => {
     return response?.results.length && response?.results[0];
   };*/
 
-  const getCurrentLocation = async (ip: string): Promise<IPLocation> => {
+  /*const getCurrentLocation = async (ip: string): Promise<IPLocation> => {
     let location: IPLocation;
 
     const rawResponse = await fetch(
@@ -71,7 +68,7 @@ export const useLocation = (): LocationProps => {
     location = (await rawResponse.json()) as IPLocation;
 
     return location;
-  };
+  };*/
 
   /*const getCitiesByName = async (name: string): Promise<LocationResponse> => {
     let response: LocationResponse;
@@ -112,7 +109,6 @@ export const useLocation = (): LocationProps => {
   }
 
   return {
-    getCurrentLocation,
     getIp,
     getDistanceBetweenCitites
   };
