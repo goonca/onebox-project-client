@@ -25,8 +25,8 @@ export type ServicesType = {
   getLocationByName: (location: LocationModel) => any;
   getLocationNearby: (location: LocationModel) => any;
   getCitiesByName: (name: string) => any;
-  saveUser: (user: UserModel) => any;
-  updateUser: (user: UserModel, token?: string) => any;
+  saveUser: (user: UserModel, feedback?: boolean) => any;
+  updateUser: (user: UserModel, token?: string, hideFeedback?: boolean) => any;
   updatePassword: (data: UpdatePassword) => any;
   saveNews: (news: NewsModel) => any;
   getNewsById: (id: number) => any;
@@ -34,7 +34,14 @@ export type ServicesType = {
   getFiles: () => any;
   logoff: () => any;
   deleteFile: (id: number) => any;
+  saveLocation: (location: LocationModel) => any;
   //deleteComponent: (component?: ComponentModel) => any;
+};
+
+export type FecthProps = {
+  data?: any;
+  token?: string;
+  hideFeedback?: boolean;
 };
 
 export const useServices = (): ServicesType => {
@@ -52,34 +59,34 @@ export const useServices = (): ServicesType => {
     LOCATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/location`
   };
 
-  const _fetch = async (
-    method: string,
-    url: string,
-    data?: any,
-    token?: string
-  ) => {
+  const _fetch = async (method: string, url: string, props?: FecthProps) => {
     const rawResponse = await fetch(url, {
       method: method,
       //@ts-ignore
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        usertoken: token ?? currentUser?.authToken
+        usertoken: props?.token ?? currentUser?.authToken
       },
       credentials: 'include',
-      ...(data
+      ...(props?.data
         ? {
-            body: JSON.stringify(data)
+            body: JSON.stringify(props?.data)
           }
         : {})
     });
     const content = await rawResponse.json();
-    trigger(EventType.UPDATE_SNACKBAR, content);
+    !props?.hideFeedback && trigger(EventType.UPDATE_SNACKBAR, content);
     return content;
   };
 
-  const post = async (url: string, data?: unknown, token?: string) => {
-    return await _fetch('POST', url, data, token);
+  const post = async (
+    url: string,
+    data?: unknown,
+    token?: string,
+    hideFeedback?: boolean
+  ) => {
+    return await _fetch('POST', url, { data, token, hideFeedback });
   };
 
   const get = async (url: string) => {
@@ -94,7 +101,7 @@ export const useServices = (): ServicesType => {
     return await post(uri.AUTH, user);
   };
 
-  /*const saveLocation = async (location: LocationModel) => {
+  const saveLocation = async (location: LocationModel) => {
     Array.isArray(location.alternate_names) &&
       (location.alternate_names = JSON.stringify(location.alternate_names));
     !Array.isArray(location.coordinates) &&
@@ -104,7 +111,7 @@ export const useServices = (): ServicesType => {
         coordinates: [location.coordinates.lon, location.coordinates.lat]
       });
     return await post(uri.LOCATION, location);
-  };*/
+  };
 
   const getClientIp = async () => {
     return await get(uri.LOCATION + '/location/current');
@@ -126,8 +133,12 @@ export const useServices = (): ServicesType => {
     return await post(uri.USER, user);
   };
 
-  const updateUser = async (user: UserModel, token?: string) => {
-    return await post(uri.USER + '/update', user, token);
+  const updateUser = async (
+    user: UserModel,
+    token?: string,
+    hideFeedback?: boolean
+  ) => {
+    return await post(uri.USER + '/update', user, token, hideFeedback);
   };
 
   const updatePassword = async (data: UpdatePassword) => {
@@ -172,6 +183,7 @@ export const useServices = (): ServicesType => {
     getLocationNearby,
     getLocationByName,
     getCitiesByName,
-    getClientIp
+    getClientIp,
+    saveLocation
   };
 };
