@@ -2,25 +2,14 @@ import { faClose, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Button,
-  Checkbox,
   debounce,
-  FormControl,
   FormControlLabel,
-  FormLabel,
   Link as MUILink,
-  Radio,
   RadioGroup,
   Switch
 } from '@mui/material';
 import { NewsHeader } from 'components/compose/NewsHeader';
-import {
-  MouseEventHandler,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
@@ -28,7 +17,6 @@ import { useServices } from 'shared/hooks/useServices';
 import {
   ComponentModel,
   LocationModel,
-  NewsContext,
   NewsModel
 } from 'shared/types/api-type';
 import { getEmptyNews } from 'shared/utils/newsUtils';
@@ -40,7 +28,10 @@ import { EditorContext } from 'shared/context/EditorContext';
 import { EditorReturn } from 'shared/types/EditorReturn';
 import React from 'react';
 import style from './ComposeNews.module.scss';
-import { ChangeRegionDialog } from './__parts/ChangeRegionDialog/ChangeRegionDialog';
+import {
+  ChangeContextType,
+  ContextSelector
+} from './__parts/ContextSelector/ContextSelector';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -52,11 +43,10 @@ export const ComposeNews = () => {
   const [editMode, setEditMode] = useState<boolean>(true);
   const [maximized, setMaximized] = useState<boolean>(false);
   const [editingComponent, setEditingComponent] = useState<ComponentModel>();
-  const [regionDialogOpened, setRegionDialogOpened] = useState<boolean>(false);
+
   const [lastEditingComponent, setLastEditingComponent] =
     useState<ComponentModel>();
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
-  const refContext = useRef<typeof RadioGroup>(null);
 
   const editorContext = useContext(EditorContext);
 
@@ -206,14 +196,14 @@ export const ComposeNews = () => {
     e.stopPropagation();
   };
 
-  const handleChangeContext = (_: any, context: string) => {
-    news.context = parseInt(context);
-  };
+  //const handleChangeContext = (_: any, context: string) => {
+  //news.context = parseInt(context);
+  //};
 
-  const handleChangeRegion = (location: LocationModel) => {
-    setRegionDialogOpened(false);
-    console.log(location);
-    location && setNews({ ...news, location });
+  const handleChangeRegion = (props: ChangeContextType) => {
+    //console.log(location);
+    props.location && setNews({ ...news, location: props.location });
+    props.context !== undefined && setNews({ ...news, context: props.context });
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -279,59 +269,7 @@ export const ComposeNews = () => {
               <HeaderEditor updateHeader={updateHeader} news={news} />
             </div>
             <div className={style['content']}>
-              <div className={style['context']}>
-                <div className={style['header']}>
-                  <div>
-                    <h2>Context</h2>
-                  </div>
-                  <div>
-                    <MUILink onClick={() => setRegionDialogOpened(true)}>
-                      Change
-                    </MUILink>
-                  </div>
-                </div>
-                <FormControl>
-                  <RadioGroup
-                    onChange={handleChangeContext}
-                    ref={refContext}
-                    defaultValue={news.context}
-                  >
-                    <div className={`${style['level']} ${style['level-1']}`}>
-                      <FormControlLabel
-                        control={
-                          <Radio value={NewsContext.WORLD} size="small" />
-                        }
-                        label="World"
-                      />
-                    </div>
-                    <div className={`${style['level']} ${style['level-2']}`}>
-                      <h3>↳</h3>
-                      <FormControlLabel
-                        control={
-                          <Radio value={NewsContext.COUNTRY} size="small" />
-                        }
-                        label={news?.location?.country}
-                      />
-                    </div>
-                    <div className={`${style['level']} ${style['level-3']}`}>
-                      <h3>↳</h3>
-                      <FormControlLabel
-                        control={
-                          <Radio value={NewsContext.REGION} size="small" />
-                        }
-                        label={
-                          <>
-                            {news?.location?.name}{' '}
-                            <span className={style['and-region-label']}>
-                              (and region)
-                            </span>
-                          </>
-                        }
-                      />
-                    </div>
-                  </RadioGroup>
-                </FormControl>
-              </div>
+              <ContextSelector news={news} onChange={handleChangeRegion} />
             </div>
           </div>
           <div
@@ -417,11 +355,6 @@ export const ComposeNews = () => {
           </div>
         }
       </div>
-      <ChangeRegionDialog
-        open={regionDialogOpened}
-        onChange={handleChangeRegion}
-        onClose={() => setRegionDialogOpened(false)}
-      />
     </>
   );
 };

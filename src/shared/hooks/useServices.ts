@@ -56,6 +56,7 @@ export const useServices = (): ServicesType => {
     NEWS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news`,
     COMPONENT: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news/components`,
     FILES: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files`,
+    SECTION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/section`,
     LOCATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/location`
   };
 
@@ -159,6 +160,10 @@ export const useServices = (): ServicesType => {
 
   const getFiles = async () => {
     return await get(uri.FILES);
+  };
+
+  const getSections = async () => {
+    return await get(uri.SECTION);
   };
 
   const deleteFile = async (id: number) => {

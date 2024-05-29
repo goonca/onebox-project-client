@@ -112,6 +112,15 @@ export type FileModel = {
   createdAt?: Date;
 };
 
+export type SectionModel = {
+  id?: number;
+  key?: string;
+  name?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  totalNews?: number;
+};
+
 export type LocationModel = {
   geoname_id?: string;
   name?: string;
