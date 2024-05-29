@@ -24,6 +24,8 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
   const [snackBar, setSnackBar] = useState<SnackBarType | undefined>(undefined);
   const { listen } = useEvent();
 
+  console.log('props.currentUser', props.currentUser);
+
   useEffect(() => {
     const handleUpdateUser = ({ detail }: any) => {
       !!!detail.errors && setCurrentUser(detail.data);

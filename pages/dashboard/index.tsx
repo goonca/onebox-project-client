@@ -93,6 +93,7 @@ const Page = ({
     );
 
     setLoading(false);
+    console.log(currentUser);
   };
 
   useEffect(() => {
