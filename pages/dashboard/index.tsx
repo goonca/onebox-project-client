@@ -64,15 +64,15 @@ const Page = ({
 
     let location = locationResponse.data;
 
-    if (!location) {
+    console.log(location);
+
+    if (!!!location) {
       //TODO: ERROR could not find the city on public.opendatasoft.com imported database
       //with the ip data coming from https://ipapi.co/
       //(maybe raising the range in km it works??)
       //to workaround with it i'm building manually the opendatasoft object
-      console.error(
-        'ERROR could not find the city "' +
-          ipLocation.city +
-          '" on locations table'
+      console.log(
+        'could not find the city "' + ipLocation.city + '" on locations table'
       );
       location = {
         name: ipLocation.city,
