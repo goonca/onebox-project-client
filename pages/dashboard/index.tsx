@@ -98,7 +98,11 @@ const Page = (
         );
     }
 
-    setCurrentUser({ ...props.currentUser, location });
+    setCurrentUser({
+      ...props.currentUser,
+      location,
+      locationGeonameId: location.geoname_id
+    });
 
     setLoading(false);
     console.log(currentUser);
