@@ -1,5 +1,16 @@
 import moment from 'moment';
 
+const getMomentConfig = () => {
+  return {
+    sameDay: '[Today]',
+    nextDay: '[Tomorrow]',
+    nextWeek: 'dddd',
+    lastDay: '[Yesterday]',
+    lastWeek: 'DD/MM/YYYY',
+    sameElse: 'DD/MM/YYYY'
+  };
+};
+
 export type MomentType = {
   toDateTimeString: (date: any) => string;
   twoLinesDate: (date: any) => string[];
@@ -7,7 +18,7 @@ export type MomentType = {
 
 export const useMoment = () => {
   const toDateTimeString = (date: any) => {
-    return moment(date).calendar();
+    return moment(date).calendar(null, getMomentConfig());
   };
 
   const twoLinesDate = (date: any) => {

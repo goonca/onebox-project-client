@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
 import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
-import { LocationModel, UserModel } from 'shared/types/api-type';
+import { IPLocation, LocationModel, UserModel } from 'shared/types/api-type';
 import { useEffect, useState } from 'react';
 
 const StartPage = dynamic<PageProps>(
@@ -43,10 +43,15 @@ const Page = ({
   const { updateUser, getLocationByName, getClientIp } = useServices();
   const [loading, setLoading] = useState<boolean>(true);
 
+  const IPAPI_KEY = 'jNXKxf32P1D6X4lsYh7uTLR7JEPxofsHCF8SoSBHB8TzguGrO3';
+  const IPAPI_URI = 'https://ipapi.co';
+
   const getUserLocation = async () => {
     setLoading(true);
-    const ipLocationResponse = await getClientIp();
-    const ipLocation = ipLocationResponse.data;
+
+    const rawResponse = await fetch(`${IPAPI_URI}/json?key=${IPAPI_KEY}`);
+    const ipLocation = (await rawResponse.json()) as IPLocation;
+
     console.log('ipLocation', ipLocation);
     if (ipLocation.error) {
       //TODO: get from browser country
