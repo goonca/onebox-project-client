@@ -66,7 +66,7 @@ const Page = ({
 
     console.log(location);
 
-    if (!!!location) {
+    if (!!location && Object.values(location).length === 0) {
       //TODO: ERROR could not find the city on public.opendatasoft.com imported database
       //with the ip data coming from https://ipapi.co/
       //(maybe raising the range in km it works??)
