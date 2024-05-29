@@ -1,6 +1,4 @@
 import { getCookie } from 'cookies-next';
-//import { StartPage } from 'src/pages/__dashboard/StartPage/StartPage';
-import dynamic from 'next/dynamic';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
 import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
@@ -54,58 +52,56 @@ const Page = (
     const rawResponse = await fetch(`${IPAPI_URI}/json?key=${IPAPI_KEY}`);
     const ipLocation = (await rawResponse.json()) as IPLocation;
 
-    console.log('ipLocation', ipLocation);
-    if (ipLocation.error) {
-      //TODO: get from browser country
-    }
-    const locationResponse = await getLocationByName({
-      name: ipLocation.city,
-      longitude: ipLocation.longitude.toString(),
-      latitude: ipLocation.latitude.toString()
-    });
-
-    let location = locationResponse.data;
-
-    console.log(location);
-
-    if (!!!location.geoname_id) {
-      //TODO: ERROR could not find the city on public.opendatasoft.com imported database
-      //with the ip data coming from https://ipapi.co/
-      //(maybe raising the range in km it works??)
-      //to workaround with it i'm building manually the opendatasoft object
-      console.log(
-        'could not find the city "' + ipLocation.city + '" on locations table'
-      );
-      location = {
-        geoname_id: `X_${Math.random().toString(36).substr(2)}`,
+    if (ipLocation.city != currentUser.location?.name) {
+      if (ipLocation.error) {
+        //TODO: get from browser country
+      }
+      const locationResponse = await getLocationByName({
         name: ipLocation.city,
-        country: ipLocation.country_name,
         longitude: ipLocation.longitude.toString(),
-        latitude: ipLocation.latitude.toString(),
-        coordinates: { lon: ipLocation.longitude, lat: ipLocation.latitude }
-      } as LocationModel;
+        latitude: ipLocation.latitude.toString()
+      });
 
-      saveLocation(location);
-      console.log('saved location', location);
-    } else {
-      currentUser &&
-        updateUser(
-          {
-            locationGeonameId: location.geoname_id
-          } as UserModel,
-          currentUser.authToken,
-          true
+      let location = locationResponse.data;
+
+      if (!!!location.geoname_id) {
+        //TODO: ERROR could not find the city on public.opendatasoft.com imported database
+        //with the ip data coming from https://ipapi.co/
+        //(maybe raising the range in km it works??)
+        //to workaround with it i'm building manually the opendatasoft object
+        console.debug(
+          'could not find the city "' + ipLocation.city + '" on locations table'
         );
-    }
+        location = {
+          geoname_id: `X_${Math.random().toString(36).substr(2)}`,
+          name: ipLocation.city,
+          country: ipLocation.country_name,
+          longitude: ipLocation.longitude.toString(),
+          latitude: ipLocation.latitude.toString(),
+          coordinates: { lon: ipLocation.longitude, lat: ipLocation.latitude }
+        } as LocationModel;
 
-    setCurrentUser({
-      ...props.currentUser,
-      location,
-      locationGeonameId: location.geoname_id
-    });
+        saveLocation(location);
+        console.debug('saved location', location);
+      } else {
+        currentUser &&
+          updateUser(
+            {
+              locationGeonameId: location.geoname_id
+            } as UserModel,
+            currentUser.authToken,
+            true
+          );
+      }
+      setCurrentUser({
+        ...props.currentUser,
+        location,
+        locationGeonameId: location.geoname_id
+      });
+    }
 
     setLoading(false);
-    console.log(currentUser);
+    console.debug(currentUser);
   };
 
   useEffect(() => {
