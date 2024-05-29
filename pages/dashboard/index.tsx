@@ -6,14 +6,15 @@ import { useServices } from 'shared/hooks/useServices';
 import { PageProps } from 'shared/types/PagePropsType';
 import { IPLocation, LocationModel, UserModel } from 'shared/types/api-type';
 import { useEffect, useState } from 'react';
+import { StartPage } from 'pages/__dashboard/StartPage/StartPage';
 
-const StartPage = dynamic<PageProps>(
+/*const StartPage = dynamic<PageProps>(
   () =>
     import('src/pages/__dashboard/StartPage/StartPage').then(
       mod => mod.StartPage
     ),
   { ssr: false }
-);
+);*/
 
 export const getServerSideProps = (async ({ req, res }) => {
   const { authenticate } = useServices();
