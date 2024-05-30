@@ -1,0 +1,55 @@
+@import '~/src/shared/style/variables.scss';
+
+.section-selector {
+  @include dashboard-section-header;
+  padding: $space-3;
+
+  .header {
+    margin-bottom: $space-3;
+
+    a {
+      font-size: small;
+    }
+
+    h2 {
+      font-size: large;
+      margin-bottom: 0;
+    }
+  }
+
+  [class*='MuiInputBase-root'] {
+    font-size: small;
+    width: 100%;
+  }
+
+  .wrapper {
+    margin-top: $space-3;
+
+    .tile {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+      margin: 5px;
+      font-size: small;
+      width: fit-content;
+      cursor: default;
+
+      /*&:hover {
+        .checkbox {
+          width: 10px;
+        }
+      }*/
+
+      .checkbox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid white;
+        width: 15px;
+        transition: width 0.3s;
+        border-radius: 3px;
+        font-weight: bold;
+      }
+    }
+  }
+}

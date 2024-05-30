@@ -17,7 +17,8 @@ import { useServices } from 'shared/hooks/useServices';
 import {
   ComponentModel,
   LocationModel,
-  NewsModel
+  NewsModel,
+  SectionModel
 } from 'shared/types/api-type';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 
@@ -32,6 +33,7 @@ import {
   ChangeContextType,
   ContextSelector
 } from './__parts/ContextSelector/ContextSelector';
+import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
 
 export const ComposeNews = () => {
   const { id } = useParams();
@@ -162,7 +164,6 @@ export const ComposeNews = () => {
   };
 
   const changeComponentProps = (changes: EditorReturn) => {
-    console.log('components', news.components);
     if (!editingComponent) return;
 
     const _editingComponent: ComponentModel = {
@@ -181,29 +182,31 @@ export const ComposeNews = () => {
       return component;
     });
 
-    //console.log('_components', _components);
-    //console.log('status', news.components, _editingComponent);
     onComponentsChange(_components ?? []);
   };
 
   const onEdit = (component?: ComponentModel) => {
     !!component && setLastEditingComponent(component);
     setEditingComponent(component);
-    //console.log(editingComponent?.position, component?.position);
   };
 
   const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
-  //const handleChangeContext = (_: any, context: string) => {
-  //news.context = parseInt(context);
-  //};
-
   const handleChangeRegion = (props: ChangeContextType) => {
-    //console.log(location);
     props.location && setNews({ ...news, location: props.location });
     props.context !== undefined && setNews({ ...news, context: props.context });
+  };
+
+  const handleChangeSection = (section: SectionModel) => {
+    console.log(section.id, news.sectionId);
+    if (section.id == news.sectionId) {
+      setNews({ ...news, section: undefined, sectionId: undefined });
+      return;
+    }
+
+    setNews({ ...news, section, sectionId: section.id });
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -270,6 +273,9 @@ export const ComposeNews = () => {
             </div>
             <div className={style['content']}>
               <ContextSelector news={news} onChange={handleChangeRegion} />
+            </div>
+            <div className={style['content']}>
+              <SectionSelector news={news} onChange={handleChangeSection} />
             </div>
           </div>
           <div

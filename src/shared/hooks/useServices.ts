@@ -9,7 +9,7 @@ import {
 import { EventType, useEvent } from './useEvent';
 
 export type ResponseType = {
-  data?: object;
+  data?: any;
   status?: RequestStatus;
 };
 
@@ -32,6 +32,7 @@ export type ServicesType = {
   getNewsById: (id: number) => any;
   getNews: () => any;
   getFiles: () => any;
+  getSections: () => any;
   logoff: () => any;
   deleteFile: (id: number) => any;
   saveLocation: (location: LocationModel) => any;
@@ -189,6 +190,7 @@ export const useServices = (): ServicesType => {
     getLocationByName,
     getCitiesByName,
     getClientIp,
-    saveLocation
+    saveLocation,
+    getSections
   };
 };

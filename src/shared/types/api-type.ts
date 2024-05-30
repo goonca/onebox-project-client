@@ -70,6 +70,8 @@ export type NewsModel = {
   location?: LocationModel;
   locationGeonameId?: string;
   context?: NewsContext;
+  sectionId?: number;
+  section?: SectionModel;
 };
 
 export type ComponentModel = {
