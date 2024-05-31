@@ -16,7 +16,9 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
   const titleRef = useRef<HTMLInputElement>();
   const headlineRef = useRef<HTMLInputElement>();
   const showAuthorRef = useRef<HTMLInputElement>();
-  const showDaterRef = useRef<HTMLInputElement>();
+  const showDateRef = useRef<HTMLInputElement>();
+  const showSectionRef = useRef<HTMLInputElement>();
+  const showContextRef = useRef<HTMLInputElement>();
 
   const _updateHeader = () => {
     updateHeader &&
@@ -24,13 +26,21 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
         title: titleRef.current?.value,
         headline: headlineRef.current?.value,
         showAuthor: showAuthorRef.current?.checked,
-        showDate: showDaterRef.current?.checked
+        showDate: showDateRef.current?.checked,
+        showSection: showSectionRef.current?.checked,
+        showContext: showContextRef.current?.checked
       });
   };
 
   return (
     <>
       <div className={style['header-editor']}>
+        <div className={style['header']}>
+          <div>
+            <h2>Header</h2>
+          </div>
+        </div>
+
         <TextField
           inputRef={titleRef}
           label="Title"
@@ -63,13 +73,35 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
           <FormControlLabel
             control={
               <Switch
-                inputRef={showDaterRef}
+                inputRef={showDateRef}
                 checked={news?.showDate}
                 size="small"
                 onChange={() => _updateHeader()}
               />
             }
             label="Show date"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                inputRef={showContextRef}
+                checked={news?.showContext}
+                size="small"
+                onChange={() => _updateHeader()}
+              />
+            }
+            label="Show context"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                inputRef={showSectionRef}
+                checked={news?.showSection}
+                size="small"
+                onChange={() => _updateHeader()}
+              />
+            }
+            label="Show section"
           />
         </FormGroup>
       </div>

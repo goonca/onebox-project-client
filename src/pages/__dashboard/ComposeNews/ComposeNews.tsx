@@ -200,7 +200,7 @@ export const ComposeNews = () => {
   };
 
   const handleChangeSection = (section: SectionModel) => {
-    console.log(section.id, news.sectionId);
+    console.log(news.sectionId);
     if (section.id == news.sectionId) {
       setNews({ ...news, section: undefined, sectionId: undefined });
       return;

@@ -1,7 +1,7 @@
 import style from './SectionSelector.module.scss';
 import { OutlinedInput } from '@mui/material';
 import { NewsModel, SectionModel } from 'shared/types/api-type';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { ResponseType, useServices } from 'shared/hooks/useServices';
@@ -46,7 +46,7 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
     getSections().then((response: ResponseType) => {
       setSections(getFilteredSections(response.data));
     });
-  });
+  }, []);
 
   return (
     <>

@@ -1,6 +1,11 @@
 @import '~/src/shared/style/variables.scss';
 
 .news-header {
+  .top {
+    display: flex;
+    flex-direction: row;
+  }
+
   h1 {
     margin-bottom: 0;
     font-weight: initial;

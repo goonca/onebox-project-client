@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { NewsContext } from 'shared/context/NewsContext';
 import { NewsModel } from 'shared/types/api-type';
+import { Badge } from '../Badge';
 
 import style from './NewsHeader.module.scss';
 
@@ -19,6 +20,9 @@ export const NewsHeader: React.FC<{ news?: NewsModel }> = props => {
   return (
     <>
       <header className={style['news-header']} data-component="news-header">
+        <div className={style['top']}>
+          {news?.showSection && <Badge section={news?.section} />}
+        </div>
         <h1 className={style.bagde}>{news?.title}</h1>
         {news?.headline && <p>{news?.headline}</p>}
         <div>

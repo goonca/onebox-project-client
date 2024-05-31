@@ -1,24 +1,40 @@
+import { useEffect, useState } from 'react';
+import { SectionModel } from 'shared/types/api-type';
 import tinycolor from 'tinycolor2';
 
 import style from './Badge.module.scss';
 
 export type BadgeProps = {
-  color?: string;
-  label?: string;
+  section?: SectionModel;
 };
 
-export const Badge = (props: BadgeProps) => {
-  const colors = {
-    color: props.color,
-    backgroundColor: tinycolor(props.color).lighten(40).toString()
-  };
+export const Badge: React.FC<BadgeProps> = (props: BadgeProps) => {
+  const [section, setSection] = useState(props.section);
 
-  const defaultLabel: string = 'Badge';
+  const colors = (_section?: SectionModel) => ({
+    color: _section?.primaryColor ?? 'gray',
+    backgroundColor:
+      _section?.secondaryColor ??
+      (_section?.primaryColor
+        ? tinycolor(_section?.primaryColor).lighten(43).toString()
+        : '#efefef')
+  });
+
+  const defaultLabel: string = 'section';
+
+  useEffect(() => {
+    console.log('chanhged', props.section);
+    setSection(props.section);
+  }, [props]);
 
   return (
     <>
-      <label data-component="badge" className={style['badge']} style={colors}>
-        {props.label ?? defaultLabel}
+      <label
+        data-component="badge"
+        className={style['badge']}
+        style={colors(section)}
+      >
+        {section?.name ?? section?.key ?? defaultLabel}
       </label>
     </>
   );

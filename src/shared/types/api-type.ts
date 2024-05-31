@@ -63,9 +63,11 @@ export type NewsModel = {
   showAuthor?: boolean;
   showBadge?: boolean;
   showDate?: boolean;
+  showContext?: boolean;
+  showSection?: boolean;
   userId?: number;
   publishedAt?: Date;
-  status?: NewsStatus;
+  draftId?: number;
   components?: ComponentModel[];
   location?: LocationModel;
   locationGeonameId?: string;
