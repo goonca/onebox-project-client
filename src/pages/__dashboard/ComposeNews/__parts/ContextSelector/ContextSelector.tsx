@@ -40,7 +40,6 @@ export const ContextSelector: React.FC<ContextSelectorProps> = (
   };
 
   useEffect(() => {
-    console.log(props.news);
     setNews(props.news);
   }, [props]);
 

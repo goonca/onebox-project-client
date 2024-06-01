@@ -115,10 +115,12 @@ export const FigureEditor = (props: ComponentEditorProps) => {
   };
 
   useEffect(() => {
+    //console.log(props.component, comp.current);
     refCaption.current &&
       (refCaption.current.value = props.component?.caption ?? '');
+    comp.current = props.component ?? {};
     setComponent(props.component as ComponentModel);
-  }, [props.component?.id]);
+  }, [props.component?.id, props.component?.tempId]);
 
   return (
     <>

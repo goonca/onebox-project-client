@@ -45,6 +45,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
       position,
       tempId: Math.random().toString(36).substr(2)
     });
+    console.log(components);
 
     props.onChange && props.onChange(components);
   };

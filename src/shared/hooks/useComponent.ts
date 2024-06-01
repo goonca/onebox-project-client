@@ -66,6 +66,13 @@ export const useComponent = () => {
     return components
       .reduce((accumulator: ComponentModel[], current: ComponentModel) => {
         let isInvalid = accumulator.find(item => {
+          /*console.log(
+            item,
+            current,
+            item.id && item.id === current.id,
+            item.tempId && item.tempId === current.tempId,
+            !!!current.type
+          );*/
           return (
             (item.id && item.id === current.id) ||
             (item.tempId && item.tempId === current.tempId) ||

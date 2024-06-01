@@ -23,7 +23,6 @@ export const Badge: React.FC<BadgeProps> = (props: BadgeProps) => {
   const defaultLabel: string = 'section';
 
   useEffect(() => {
-    console.log('chanhged', props.section);
     setSection(props.section);
   }, [props]);
 

@@ -43,6 +43,7 @@ export const TextEditor = (props: ComponentEditorProps) => {
   useEffect(() => {
     //console.log(props.component);
     //mdEditorRef.current?.reset(props.component?.longText);
+    comp.current = props.component ?? {};
     setComponent(props.component as ComponentModel);
   }, [props.component?.id]);
 

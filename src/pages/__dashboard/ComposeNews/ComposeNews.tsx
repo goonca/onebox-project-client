@@ -135,21 +135,25 @@ export const ComposeNews = () => {
   };
 
   const normalizeComponents = (comps?: ComponentModel[]) => {
-    if (comps && news.components) {
-      return getValidComponents(
-        comps.map((comp, i) => {
-          return !!comp.type
-            ? { ...comp, position: i }
-            : {
-                ...news.components?.find(
-                  c => c.id == comp.id || c.tempId == comp.tempId
-                ),
-                position: comp.position
-              };
-        })
-      );
-    }
+    if (!comps) return [];
+    const mappedComps = comps.map((comp, i) => {
+      return !!comp.type
+        ? { ...comp, position: i }
+        : {
+            ...news.components?.find(
+              c => c.id == comp.id || c.tempId == comp.tempId
+            ),
+            position: comp.position
+          };
+    });
 
+    //console.log('mappedComps', mappedComps);
+
+    if (comps && news.components) {
+      //console.log('valids', getValidComponents(mappedComps));
+      return getValidComponents(mappedComps);
+    }
+    //console.log('after', comps);
     return comps;
   };
 
@@ -200,7 +204,6 @@ export const ComposeNews = () => {
   };
 
   const handleChangeSection = (section: SectionModel) => {
-    console.log(news.sectionId);
     if (section.id == news.sectionId) {
       setNews({ ...news, section: undefined, sectionId: undefined });
       return;

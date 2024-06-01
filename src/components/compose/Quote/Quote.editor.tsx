@@ -49,6 +49,7 @@ export const QuoteEditor = (props: ComponentEditorProps) => {
   useEffect(() => {
     refTextarea.current &&
       (refTextarea.current.value = props.component?.longText ?? '');
+    comp.current = props.component ?? {};
     setComponent(props.component as ComponentModel);
   }, [props.component?.id]);
 
