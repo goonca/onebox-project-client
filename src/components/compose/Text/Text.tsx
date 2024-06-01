@@ -4,7 +4,7 @@ import { ComponentModel } from 'shared/types/api-type';
 import style from './Text.module.scss';
 
 export const Text: React.FC<ComponentModel> = (props: ComponentModel) => {
-  const defaultText: string = `Text component accepts <strong>markdown</strong> markup language.`;
+  const defaultText: string = `<p>Text component accepts <strong>markdown</strong> markup language.</p>`;
   return (
     <>
       <div

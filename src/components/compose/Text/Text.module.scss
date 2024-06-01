@@ -10,6 +10,10 @@
   width: 100%;
   max-width: 1000px;
 
+  * {
+    box-sizing: border-box;
+  }
+
   .markdown-editor {
     flex-grow: 10;
     padding: 0 0 15px 15px;

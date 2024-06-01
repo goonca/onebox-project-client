@@ -21,10 +21,14 @@
   padding: $space-3;
   max-width: 800px;
 
+  * {
+    box-sizing: border-box;
+  }
+
   .content {
     display: flex;
     flex-direction: row;
-    column-gap: 65px;
+    column-gap: 60px;
 
     .details {
       flex-grow: 10;
