@@ -9,7 +9,8 @@ export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
 export enum NewsStatus {
   CREATED,
-  PUBLISHED
+  PUBLISHED,
+  INACTIVE
 }
 
 export enum NewsContext {
@@ -57,7 +58,9 @@ export type NewsModel = {
   title?: string;
   headline?: string;
   cover?: string;
+  status?: NewsStatus;
   user?: UserModel;
+  publishedUrl?: string;
   createdAt?: Date;
   updatedAt?: Date;
   showAuthor?: boolean;

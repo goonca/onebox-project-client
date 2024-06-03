@@ -4,6 +4,19 @@
   .top {
     display: flex;
     flex-direction: row;
+
+    .context {
+      width: 100%;
+      text-align: right;
+
+      span {
+        background-color: darken(darkgrey, 30);
+        font-size: small;
+        color: #efefef;
+        padding: 2px 15px;
+        border-radius: 30px;
+      }
+    }
   }
 
   h1 {

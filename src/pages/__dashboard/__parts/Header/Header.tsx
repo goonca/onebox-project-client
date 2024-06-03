@@ -1,4 +1,5 @@
 import { AccountCircle } from '@mui/icons-material';
+import { Avatar } from 'components/global/Avatar/Avatar';
 import { useContext, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 
@@ -20,17 +21,7 @@ export const Header = () => {
         <label>{currentUser?.username}</label>
 
         <div className={style['avatar']}>
-          {(showAvatar || !!!currentUser?.avatar) && <AccountCircle />}
-
-          <img
-            src={
-              !!currentUser?.avatar
-                ? `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${currentUser?.avatar}`
-                : undefined
-            }
-            style={{ visibility: !!currentUser?.avatar ? 'visible' : 'hidden' }}
-            onLoad={handleAvatarOnload}
-          />
+          <Avatar user={currentUser ?? {}} />
         </div>
       </div>
     </>

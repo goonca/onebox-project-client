@@ -30,7 +30,9 @@ export type ServicesType = {
   updatePassword: (data: UpdatePassword) => any;
   saveNews: (news: NewsModel) => any;
   getNewsById: (id: number) => any;
+  getNewsByUrl: (url: string) => any;
   getNews: () => any;
+  publishNews: (id: number) => any;
   getFiles: () => any;
   getSections: () => any;
   logoff: () => any;
@@ -151,8 +153,16 @@ export const useServices = (): ServicesType => {
     return await post(uri.NEWS, news);
   };
 
+  const publishNews = async (id: number) => {
+    return await post(`${uri.NEWS}/publish/${id}`);
+  };
+
   const getNewsById = async (id: number) => {
     return await get(`${uri.NEWS}/${id}`);
+  };
+
+  const getNewsByUrl = async (url: string) => {
+    return await get(`${uri.NEWS}/published/${url}`);
   };
 
   const getNews = async () => {
@@ -180,9 +190,11 @@ export const useServices = (): ServicesType => {
     saveUser,
     logoff,
     saveNews,
+    publishNews,
     updateUser,
     updatePassword,
     getNewsById,
+    getNewsByUrl,
     getNews,
     getFiles,
     deleteFile,

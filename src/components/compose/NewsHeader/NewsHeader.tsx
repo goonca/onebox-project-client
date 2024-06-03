@@ -21,7 +21,19 @@ export const NewsHeader: React.FC<{ news?: NewsModel }> = props => {
     <>
       <header className={style['news-header']} data-component="news-header">
         <div className={style['top']}>
-          {news?.showSection && <Badge section={news?.section} />}
+          {!!news?.showSection && <Badge section={news?.section} />}
+          {!!news?.showContext && (
+            <div className={style['context']}>
+              {news.location && (
+                <span>
+                  {news.context == 0
+                    ? 'World'
+                    : news.location[news.context == 1 ? 'country' : 'name']}
+                  {news.context == 2 && ' and region'}
+                </span>
+              )}
+            </div>
+          )}
         </div>
         <h1 className={style.bagde}>{news?.title}</h1>
         {news?.headline && <p>{news?.headline}</p>}

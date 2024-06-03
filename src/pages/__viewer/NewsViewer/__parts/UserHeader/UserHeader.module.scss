@@ -1,0 +1,23 @@
+@import '~/src/shared/style/variables.scss';
+
+$width: 950px;
+
+.user-header {
+  padding-bottom: 10px;
+  padding-left: 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  color: #444444;
+
+  .detils {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h3,
+    p {
+      margin: 0;
+    }
+  }
+}

@@ -78,12 +78,15 @@ $family-helv: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI',
   > .header {
     display: flex;
     margin-bottom: $space-5;
+    align-items: center;
+    justify-content: center;
 
     h2 {
       font-family: $family-sans;
       font-weight: 400;
       color: #43425d;
       margin: 0;
+
       a {
         //text-decoration: none;
         text-decoration-thickness: 1px;

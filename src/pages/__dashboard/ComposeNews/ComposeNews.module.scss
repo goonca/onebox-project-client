@@ -3,6 +3,19 @@
 .compose-news {
   @include dashboard-section-header;
 
+  .header {
+    .header-published-icon {
+      white-space: nowrap;
+      font-size: 12px;
+      margin: auto;
+
+      a {
+        text-decoration: none;
+        margin-right: 10px;
+      }
+    }
+  }
+
   .draft-message {
     border: 1px solid darken($color: $warning-color, $amount: 40);
     background-color: $warning-color;

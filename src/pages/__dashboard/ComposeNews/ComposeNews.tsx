@@ -1,11 +1,15 @@
-import { faClose, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowUpRightFromSquare,
+  faClose,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  Alert,
   Button,
   debounce,
   FormControlLabel,
   Link as MUILink,
-  RadioGroup,
   Switch
 } from '@mui/material';
 import { NewsHeader } from 'components/compose/NewsHeader';
@@ -14,12 +18,7 @@ import { Link, useParams } from 'react-router-dom';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { useServices } from 'shared/hooks/useServices';
-import {
-  ComponentModel,
-  LocationModel,
-  NewsModel,
-  SectionModel
-} from 'shared/types/api-type';
+import { ComponentModel, NewsModel, SectionModel } from 'shared/types/api-type';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 
 import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
@@ -34,14 +33,16 @@ import {
   ContextSelector
 } from './__parts/ContextSelector/ContextSelector';
 import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
+import { ConfirmDialog } from '../__parts/ConfirmDialog/ConfirmDialog';
 
 export const ComposeNews = () => {
   const { id } = useParams();
   const currentUser = useContext(UserContext);
-  const { saveNews, getNewsById } = useServices();
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showDraftMessage, setShowDraftMessage] = useState<boolean>(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState<boolean>(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(true);
   const [maximized, setMaximized] = useState<boolean>(false);
   const [editingComponent, setEditingComponent] = useState<ComponentModel>();
@@ -51,6 +52,7 @@ export const ComposeNews = () => {
   const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
 
   const editorContext = useContext(EditorContext);
+  const { saveNews, getNewsById, publishNews } = useServices();
 
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
@@ -80,6 +82,7 @@ export const ComposeNews = () => {
       if (draft) {
         setNews(draft);
         setShowDraftMessage(true);
+        setHasUnsavedChanges(true);
       } else {
         setNews(news);
       }
@@ -107,6 +110,7 @@ export const ComposeNews = () => {
       initialise(resNews.id?.toString() ?? 'undefined');
       //removeLocalStorage();
       hideDraftMessage();
+      setHasUnsavedChanges(false);
       !news.id &&
         history.replaceState(
           {},
@@ -160,6 +164,7 @@ export const ComposeNews = () => {
   const discardDraft = () => {
     removeLocalStorage();
     hideDraftMessage();
+    setHasUnsavedChanges(false);
     getCurrentNews(id as unknown as number);
   };
 
@@ -212,6 +217,15 @@ export const ComposeNews = () => {
     setNews({ ...news, section, sectionId: section.id });
   };
 
+  const handlePublishClick = () => {
+    const draft: NewsModel = getLocalStorage() as NewsModel;
+    draft && setHasUnsavedChanges(true);
+    setShowConfirmDialog(true);
+  };
+  const handleConfirmPublish = () => {
+    news.id && publishNews(news.id as number);
+  };
+
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
     setEditingComponent(undefined);
   };
@@ -230,10 +244,21 @@ export const ComposeNews = () => {
         <div className={style['header']}>
           <div>
             <h2>
-              <Link to="../news">News</Link> / Compose News
+              <Link to="../news">News</Link> / {news.id ?? 'Compose News'}
             </h2>
           </div>
           <div>
+            {news.publishedUrl && (
+              <span className={style['header-published-icon']}>
+                <MUILink
+                  href={document.location.origin + '/news/' + news.publishedUrl}
+                  target="_blank"
+                >
+                  published &nbsp;
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                </MUILink>
+              </span>
+            )}
             <Button
               variant="contained"
               size="small"
@@ -247,9 +272,14 @@ export const ComposeNews = () => {
               href={document.location.origin + '/viewer?id=' + news.id}
               target="_blank"
             >
-              View
+              View draft
             </Button>
-            <Button variant="contained" size="small" data-dark>
+            <Button
+              variant="contained"
+              size="small"
+              data-dark
+              onClick={handlePublishClick}
+            >
               Publish
             </Button>
           </div>
@@ -364,6 +394,25 @@ export const ComposeNews = () => {
           </div>
         }
       </div>
+      <ConfirmDialog
+        headerText="Publish news"
+        bodyText={
+          <span>
+            {hasUnsavedChanges && (
+              <Alert severity="warning" color="warning">
+                <strong>You have unsaved changes.</strong>
+                <br />
+                What you see might not be what is being published.
+              </Alert>
+            )}
+            <p>Confirm publishing this news?</p>
+          </span>
+        }
+        confirmText="Publish it!"
+        open={showConfirmDialog}
+        onCornfirm={handleConfirmPublish}
+        onCancel={() => setShowConfirmDialog(false)}
+      />
     </>
   );
 };

@@ -8,7 +8,7 @@ const NewsHorizontal = (props: NewsCoverType) => {
   const titleStyle =
     props.badge && props.badgeType === 'titled'
       ? {
-          borderLeft: '5px solid ' + props.badge.color,
+          borderLeft: '5px solid ' + props.badge.section?.primaryColor,
           paddingLeft: '5px'
         }
       : {};
