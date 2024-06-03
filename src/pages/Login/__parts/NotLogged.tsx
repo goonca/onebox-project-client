@@ -24,8 +24,12 @@ export const NotLogged = () => {
 
   const mangeUser = () => {
     const user = {
-      username: usernameRef.current?.value,
-      password: passwordRef.current?.value,
+      username: !!usernameRef.current?.value
+        ? usernameRef.current?.value
+        : undefined,
+      password: !!passwordRef.current?.value
+        ? passwordRef.current?.value
+        : undefined,
       email: !!emailRef.current?.value ? emailRef.current?.value : undefined
     };
     const response = firstTime ? createUser(user) : authenticateUser(user);
@@ -36,6 +40,7 @@ export const NotLogged = () => {
       }
     });
   };
+
   return (
     <>
       <div className={style['not-logged']}>
@@ -62,7 +67,6 @@ export const NotLogged = () => {
           )}
           <div className={style['form-controls']}>
             <Button
-              type="submit"
               data-dark
               variant={firstTime ? 'outlined' : 'contained'}
               onClick={() => mangeUser()}
