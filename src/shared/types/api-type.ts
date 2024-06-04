@@ -195,9 +195,11 @@ export type IPLocation = {
 };
 
 export type StatisticsModel = {
+  id?: number;
   type?: StatisticsType;
   clientIp?: string;
   newsId?: number;
+  viewerTime?: number;
   locationGeonameId?: string;
   location?: LocationModel;
 };
