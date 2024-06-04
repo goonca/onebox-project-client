@@ -5,6 +5,12 @@ import { PageProps } from 'shared/types/PagePropsType';
 import { IPLocation, LocationModel, UserModel } from 'shared/types/api-type';
 import { useEffect, useState } from 'react';
 import { StartPage } from 'pages/__dashboard/StartPage/StartPage';
+import {
+  ClientLocation,
+  IPAPI_KEY,
+  IPAPI_URI,
+  useLocation
+} from 'shared/hooks/useLocation';
 
 /*const StartPage = dynamic<PageProps>(
   () =>
@@ -42,9 +48,7 @@ const Page = (
   const { updateUser, getLocationByName, saveLocation } = useServices();
   const [loading, setLoading] = useState<boolean>(true);
   const [currentUser, setCurrentUser] = useState<UserModel>(props.currentUser);
-
-  const IPAPI_KEY = 'jNXKxf32P1D6X4lsYh7uTLR7JEPxofsHCF8SoSBHB8TzguGrO3';
-  const IPAPI_URI = 'https://ipapi.co';
+  const { getClientLocation } = useLocation();
 
   const getUserLocation = async () => {
     setLoading(true);
@@ -56,47 +60,26 @@ const Page = (
       if (ipLocation.error) {
         //TODO: get from browser country
       }
-      const locationResponse = await getLocationByName({
-        name: ipLocation.city,
-        longitude: ipLocation.longitude.toString(),
-        latitude: ipLocation.latitude.toString()
-      });
 
-      let location = locationResponse.data;
+      let { geoLocation: location } = (await getClientLocation(
+        ipLocation
+      )) as ClientLocation;
 
-      if (!!!location.geoname_id) {
-        //TODO: ERROR could not find the city on public.opendatasoft.com imported database
-        //with the ip data coming from https://ipapi.co/
-        //(maybe raising the range in km it works??)
-        //to workaround with it i'm building manually the opendatasoft object
-        console.debug(
-          'could not find the city "' + ipLocation.city + '" on locations table'
-        );
-        location = {
-          geoname_id: `X_${Math.random().toString(36).substr(2)}`,
-          name: ipLocation.city,
-          country: ipLocation.country_name,
-          longitude: ipLocation.longitude.toString(),
-          latitude: ipLocation.latitude.toString(),
-          coordinates: { lon: ipLocation.longitude, lat: ipLocation.latitude }
-        } as LocationModel;
-
-        saveLocation(location);
-        console.debug('saved location', location);
-      } else {
+      if (!!location?.geoname_id) {
         currentUser &&
           updateUser(
             {
-              locationGeonameId: location.geoname_id
+              locationGeonameId: location?.geoname_id
             } as UserModel,
             currentUser.authToken,
             true
           );
       }
+
       setCurrentUser({
         ...props.currentUser,
         location,
-        locationGeonameId: location.geoname_id
+        locationGeonameId: location?.geoname_id
       });
     }
 

@@ -4,6 +4,7 @@ import {
   LocationModel,
   NewsModel,
   RequestStatus,
+  StatisticsModel,
   UserModel
 } from 'shared/types/api-type';
 import { EventType, useEvent } from './useEvent';
@@ -33,6 +34,9 @@ export type ServicesType = {
   getNewsByUrl: (url: string) => any;
   getNews: () => any;
   publishNews: (id: number) => any;
+  insertStatistic: (statistics: StatisticsModel) => any;
+  getStatisticByNews: (id: number) => any;
+  getStatisticByUser: (id: number) => any;
   getFiles: () => any;
   getSections: () => any;
   logoff: () => any;
@@ -60,7 +64,8 @@ export const useServices = (): ServicesType => {
     COMPONENT: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/news/components`,
     FILES: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files`,
     SECTION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/section`,
-    LOCATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/location`
+    LOCATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/location`,
+    STATISTICS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/statistics`
   };
 
   const _fetch = async (method: string, url: string, props?: FecthProps) => {
@@ -185,6 +190,18 @@ export const useServices = (): ServicesType => {
     return await post(`${uri.AUTH}/logoff`);
   };
 
+  const insertStatistic = async (statistics: StatisticsModel) => {
+    return await post(`${uri.STATISTICS}`, statistics);
+  };
+
+  const getStatisticByNews = async (id: number) => {
+    return await get(`${uri.STATISTICS}/news/${id}`);
+  };
+
+  const getStatisticByUser = async (id: number) => {
+    return await get(`${uri.STATISTICS}/user/${id}`);
+  };
+
   return {
     authenticate,
     saveUser,
@@ -203,6 +220,9 @@ export const useServices = (): ServicesType => {
     getCitiesByName,
     getClientIp,
     saveLocation,
-    getSections
+    getSections,
+    insertStatistic,
+    getStatisticByNews,
+    getStatisticByUser
   };
 };

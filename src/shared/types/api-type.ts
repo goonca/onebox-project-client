@@ -31,6 +31,10 @@ export enum RequestStatus {
   FAILED
 }
 
+export enum StatisticsType {
+  NEWS_VIEW
+}
+
 export type UserModel = {
   id?: number;
   name?: string;
@@ -188,4 +192,12 @@ export type IPLocation = {
   asn: string;
   org: string;
   error?: string;
+};
+
+export type StatisticsModel = {
+  type?: StatisticsType;
+  clientIp?: string;
+  newsId?: number;
+  locationGeonameId?: string;
+  location?: LocationModel;
 };
