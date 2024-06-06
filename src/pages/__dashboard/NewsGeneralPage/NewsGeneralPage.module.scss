@@ -1,0 +1,65 @@
+@import '~/src/shared/style/variables.scss';
+
+.news-general-page {
+  .content-box {
+    background-color: white;
+    box-shadow: $shadow-tiny;
+    border-radius: $block-radius;
+    color: #666666;
+  }
+
+  h1 {
+    margin-bottom: $space-1;
+    margin-top: $space-3;
+    color: rgb(37, 37, 37);
+  }
+
+  .header-published-icon {
+    white-space: nowrap;
+    font-size: 14px;
+    margin: auto;
+
+    a {
+      text-decoration: none;
+      margin-right: 10px;
+      color: #1976d2;
+    }
+  }
+
+  .info-block {
+    margin-top: 20px;
+    margin-bottom: -30px;
+
+    [class*='MuiAlert-colorInfo'] {
+      border: 1px solid darken($color: #e5f6fd, $amount: 20);
+    }
+  }
+
+  .top-block {
+    display: flex;
+    flex-direction: row;
+    gap: $space-4;
+    margin-top: 50px;
+
+    .content {
+      width: 15%;
+      padding: 20px;
+
+      &.news-content {
+        width: 30%;
+        background-color: #44415d;
+
+        label,
+        h1 {
+          color: white;
+        }
+      }
+
+      label {
+        color: black;
+        opacity: 0.5;
+        font-size: 12px;
+      }
+    }
+  }
+}

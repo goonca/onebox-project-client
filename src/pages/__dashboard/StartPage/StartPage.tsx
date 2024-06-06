@@ -14,6 +14,7 @@ import { Alert, Snackbar } from '@mui/material';
 import { SnackBarType } from 'shared/types/SnackBarType';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
 import style from './StartPage.module.scss';
+import { NewsDetailsPage } from '../NewsDetailsPage/NewsDetailsPage';
 
 export const StartPage: React.FC<PageProps> = (props: PageProps) => {
   const [currentUser, setCurrentUser] = useState<UserModel | undefined>(
@@ -57,8 +58,8 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
                 <Route index element={<NewsPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="news" element={<NewsPage />} />
-                <Route path="news/compose/" element={<ComposeNews />} />
-                <Route path="news/compose/:id" element={<ComposeNews />} />
+                <Route path="news/compose/" element={<NewsDetailsPage />} />
+                <Route path="news/compose/:id" element={<NewsDetailsPage />} />
                 <Route path="files" element={<FilesPage />} />
               </Route>
             </Routes>

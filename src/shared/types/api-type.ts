@@ -9,8 +9,10 @@ export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
 export enum NewsStatus {
   CREATED,
+  SHARED,
   PUBLISHED,
-  INACTIVE
+  INACTIVE,
+  EMPTY
 }
 
 export enum NewsContext {
@@ -202,4 +204,11 @@ export type StatisticsModel = {
   viewerTime?: number;
   locationGeonameId?: string;
   location?: LocationModel;
+};
+
+export type NewsStatistics = {
+  totalViewers: number;
+  uniqueViewers: number;
+  avgViewingTime: number;
+  news: NewsModel;
 };

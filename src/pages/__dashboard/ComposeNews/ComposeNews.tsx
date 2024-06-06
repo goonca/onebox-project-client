@@ -13,8 +13,7 @@ import {
   Switch
 } from '@mui/material';
 import { NewsHeader } from 'components/compose/NewsHeader';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { useServices } from 'shared/hooks/useServices';
@@ -35,8 +34,12 @@ import {
 import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
 import { ConfirmDialog } from '../__parts/ConfirmDialog/ConfirmDialog';
 
-export const ComposeNews = () => {
-  const { id } = useParams();
+export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
+  id,
+  news: initialNews
+}) => {
+  //const { id } = useParams();
+  id = (initialNews ? initialNews.id : id) as number;
   const currentUser = useContext(UserContext);
   const [componentsOpened, setComponentsOpened] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,7 +52,9 @@ export const ComposeNews = () => {
 
   const [lastEditingComponent, setLastEditingComponent] =
     useState<ComponentModel>();
-  const [news, setNews] = useState<NewsModel>(getEmptyNews(currentUser, id));
+  const [news, setNews] = useState<NewsModel>(
+    initialNews ?? getEmptyNews(currentUser, id)
+  );
 
   const editorContext = useContext(EditorContext);
   const { saveNews, getNewsById, publishNews } = useServices();
@@ -68,25 +73,25 @@ export const ComposeNews = () => {
 
   const getCurrentNews = useCallback((id: number) => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
-    setLoading(true);
+    if (draft) {
+      setNews(draft);
+      setShowDraftMessage(true);
+      setHasUnsavedChanges(true);
+    } else if (!initialNews) {
+      setLoading(true);
 
-    getNewsById(id).then((r: any) => {
-      setLoading(false);
-      const news: NewsModel = id
-        ? /*{
+      getNewsById(id).then((r: any) => {
+        setLoading(false);
+        const news: NewsModel = id
+          ? /*{
             ...r?.data.news,
             components: r?.data.components
           }*/ r?.data
-        : getEmptyNews(currentUser, id);
+          : getEmptyNews(currentUser, id);
 
-      if (draft) {
-        setNews(draft);
-        setShowDraftMessage(true);
-        setHasUnsavedChanges(true);
-      } else {
         setNews(news);
-      }
-    });
+      });
+    }
   }, []);
 
   const updateHeader = (header?: NewsModel) => {
@@ -241,14 +246,24 @@ export const ComposeNews = () => {
   return (
     <>
       <div className={style['compose-news']} onMouseDown={closeEditor}>
+        {showDraftMessage && (
+          <>
+            <Alert severity="warning" color="warning">
+              <div className={style['draft-message']}>
+                <p>There are unsaved changes for this draft</p>
+                <span>
+                  <MUILink onClick={hideDraftMessage}>Keep changes</MUILink>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;
+                  <MUILink onClick={discardDraft}>Discard changes</MUILink>
+                </span>
+              </div>
+            </Alert>
+          </>
+        )}
         <div className={style['header']}>
+          <div></div>
           <div>
-            <h2>
-              <Link to="../news">News</Link> / {news.id ?? 'Compose News'}
-            </h2>
-          </div>
-          <div>
-            {news.publishedUrl && (
+            {/*news.publishedUrl && (
               <span className={style['header-published-icon']}>
                 <MUILink
                   href={document.location.origin + '/news/' + news.publishedUrl}
@@ -258,7 +273,7 @@ export const ComposeNews = () => {
                   <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                 </MUILink>
               </span>
-            )}
+            )*/}
             <Button
               variant="contained"
               size="small"
@@ -284,21 +299,7 @@ export const ComposeNews = () => {
             </Button>
           </div>
         </div>
-        {showDraftMessage && (
-          <div className={style['draft-message']}>
-            <span>
-              <Button onClick={hideDraftMessage}>
-                <FontAwesomeIcon icon={faClose} />
-              </Button>
-            </span>
-            <p>There are unsaved changes for this draft</p>
-            <span>
-              <MUILink onClick={hideDraftMessage}>Keep changes</MUILink>
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              <MUILink onClick={discardDraft}>Discard changes</MUILink>
-            </span>
-          </div>
-        )}
+
         <div className={style['wrapper']}>
           <div className={style['left-side']}>
             <div className={style['content']}>

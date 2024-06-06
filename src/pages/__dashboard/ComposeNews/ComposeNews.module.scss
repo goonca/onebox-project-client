@@ -16,13 +16,24 @@
     }
   }
 
+  [class*='MuiAlert-colorWarning'] {
+    border: 1px solid darken($color: #fff4e5, $amount: 15);
+    margin-bottom: 20px;
+    [class*='MuiAlert-icon'] {
+      align-items: center;
+      margin-right: 0;
+    }
+
+    [class*='MuiAlert-message'] {
+      width: 100%;
+    }
+  }
+
   .draft-message {
-    border: 1px solid darken($color: $warning-color, $amount: 40);
-    background-color: $warning-color;
     border-radius: 3px;
-    margin-bottom: $space-4;
+    //margin-bottom: $space-4;
     padding: $space-1 $space-3;
-    font-size: 12px;
+    //font-size: 12px;
     display: flex;
     flex-direction: row;
     column-gap: $space-2;

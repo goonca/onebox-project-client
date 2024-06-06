@@ -38,6 +38,7 @@ export type ServicesType = {
   addViewerTime: (id: number, time: number) => Promise<any>;
   getStatisticByNews: (id: number) => any;
   getStatisticByUser: (id: number) => any;
+  getGeneralStatistics: (id: number) => any;
   getFiles: () => any;
   getSections: () => any;
   logoff: () => any;
@@ -202,6 +203,9 @@ export const useServices = (): ServicesType => {
   const getStatisticByUser = async (id: number) => {
     return await get(`${uri.STATISTICS}/user/${id}`);
   };
+  const getGeneralStatistics = async (id: number) => {
+    return await get(`${uri.STATISTICS}/news/${id}/general`);
+  };
 
   const addViewerTime = (id: number, time: number) => {
     return post(`${uri.STATISTICS}/log/${id}`, { time });
@@ -229,6 +233,7 @@ export const useServices = (): ServicesType => {
     insertStatistic,
     getStatisticByNews,
     getStatisticByUser,
+    getGeneralStatistics,
     addViewerTime
   };
 };

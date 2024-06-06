@@ -1,0 +1,10 @@
+@import '~/src/shared/style/variables.scss';
+
+.news-details-page {
+  @include dashboard-section-header;
+
+  [class*='MuiTabPanel-root'] {
+    padding: 0;
+    padding-top: 20px;
+  }
+}
