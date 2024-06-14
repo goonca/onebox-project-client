@@ -11,14 +11,30 @@ const getMomentConfig = () => {
   };
 };
 
+const getMomentConfigWithTime = () => {
+  return {
+    sameDay: '[Today] HH:MM',
+    nextDay: '[Tomorrow] HH:MM',
+    nextWeek: 'dddd HH:MM',
+    lastDay: '[Yesterday] HH:MM',
+    lastWeek: 'DD/MM/YYYY HH:MM',
+    sameElse: 'DD/MM/YYYY HH:MM'
+  };
+};
+
 export type MomentType = {
   toDateTimeString: (date: any) => string;
+  toDateString: (date: any) => string;
   twoLinesDate: (date: any) => string[];
 };
 
 export const useMoment = () => {
-  const toDateTimeString = (date: any) => {
+  const toDateString = (date: any) => {
     return moment(date).calendar(null, getMomentConfig());
+  };
+
+  const toDateTimeString = (date: any) => {
+    return moment(date).calendar(null, getMomentConfigWithTime());
   };
 
   const twoLinesDate = (date: any) => {
@@ -29,5 +45,5 @@ export const useMoment = () => {
     ];
   };
 
-  return { toDateTimeString, twoLinesDate };
+  return { toDateTimeString, twoLinesDate, toDateString };
 };

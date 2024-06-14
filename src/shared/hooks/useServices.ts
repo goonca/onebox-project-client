@@ -196,8 +196,14 @@ export const useServices = (): ServicesType => {
     return await post(`${uri.STATISTICS}`, statistics);
   };
 
-  const getStatisticByNews = async (id: number) => {
-    return await get(`${uri.STATISTICS}/news/${id}`);
+  const getStatisticByNews = async (
+    id: number,
+    page: number = 0,
+    pageSize: number = 99
+  ) => {
+    return await get(
+      `${uri.STATISTICS}/news/${id}?page=${page}&pageSize=${pageSize}`
+    );
   };
 
   const getStatisticByUser = async (id: number) => {

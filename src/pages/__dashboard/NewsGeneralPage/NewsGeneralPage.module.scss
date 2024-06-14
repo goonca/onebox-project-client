@@ -43,15 +43,44 @@
 
     .content {
       width: 15%;
-      padding: 20px;
+      padding: $space-4;
 
       &.news-content {
+        padding: 0;
         width: 30%;
-        background-color: #44415d;
 
-        label,
-        h1 {
-          color: white;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 5;
+
+        .shared-with {
+          border: 1px solid #b0aec1;
+          background-color: #e3e2ef;
+          flex-grow: 1;
+
+          a {
+            font-size: 12px;
+            text-decoration: none;
+          }
+          //color: rgb(37, 37, 37);
+        }
+
+        .other-inf {
+          background-color: #44415d;
+          flex-grow: 1;
+          margin-left: -25px;
+          display: flex;
+          flex-direction: column;
+          gap: $space-2;
+
+          label {
+            color: white;
+          }
+          h1 {
+            color: white;
+            font-size: 16px;
+            margin: 0;
+          }
         }
       }
 
@@ -60,6 +89,25 @@
         opacity: 0.5;
         font-size: 12px;
       }
+    }
+  }
+
+  .viewers-block {
+    margin-top: 20px;
+    padding: $space-4;
+    display: flex;
+    flex-direction: row;
+
+    h1 {
+      font-size: 16px;
+    }
+
+    .map {
+      flex-grow: 1;
+    }
+
+    .list {
+      flex-grow: 1;
     }
   }
 }

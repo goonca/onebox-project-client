@@ -204,6 +204,7 @@ export type StatisticsModel = {
   viewerTime?: number;
   locationGeonameId?: string;
   location?: LocationModel;
+  createdAt?: Date;
 };
 
 export type NewsStatistics = {

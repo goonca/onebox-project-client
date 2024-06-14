@@ -246,20 +246,6 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
   return (
     <>
       <div className={style['compose-news']} onMouseDown={closeEditor}>
-        {showDraftMessage && (
-          <>
-            <Alert severity="warning" color="warning">
-              <div className={style['draft-message']}>
-                <p>There are unsaved changes for this draft</p>
-                <span>
-                  <MUILink onClick={hideDraftMessage}>Keep changes</MUILink>
-                  &nbsp;&nbsp;|&nbsp;&nbsp;
-                  <MUILink onClick={discardDraft}>Discard changes</MUILink>
-                </span>
-              </div>
-            </Alert>
-          </>
-        )}
         <div className={style['header']}>
           <div></div>
           <div>
@@ -299,7 +285,20 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
             </Button>
           </div>
         </div>
-
+        {showDraftMessage && (
+          <>
+            <Alert severity="warning" color="warning">
+              <div className={style['draft-message']}>
+                <p>There are unsaved changes for this draft</p>
+                <span>
+                  <MUILink onClick={hideDraftMessage}>Keep changes</MUILink>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;
+                  <MUILink onClick={discardDraft}>Discard changes</MUILink>
+                </span>
+              </div>
+            </Alert>
+          </>
+        )}
         <div className={style['wrapper']}>
           <div className={style['left-side']}>
             <div className={style['content']}>

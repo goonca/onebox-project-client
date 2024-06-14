@@ -4,7 +4,11 @@ import { Box, Tab } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useServices } from 'shared/hooks/useServices';
-import { NewsModel, NewsStatistics } from 'shared/types/api-type';
+import {
+  NewsModel,
+  NewsStatistics,
+  StatisticsModel
+} from 'shared/types/api-type';
 
 import { ComposeNews } from '../ComposeNews/ComposeNews';
 import { NewsGeneralPage } from '../NewsGeneralPage/NewsGeneralPage';
@@ -20,7 +24,8 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   const { id } = useParams();
   const [value, setValue] = useState('1');
   const [statistics, setStatistics] = useState<NewsStatistics>();
-  const { getGeneralStatistics } = useServices();
+  const [hits, setHits] = useState<StatisticsModel[]>();
+  const { getGeneralStatistics, getStatisticByNews } = useServices();
 
   const getGenerals = useCallback((id: number) => {
     getGeneralStatistics(id).then((r: any) => {
@@ -28,13 +33,22 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
       setStatistics(_statistics);
     });
   }, []);
+  const getHits = () => {
+    getStatisticByNews(parseInt(id as string))
+      .then((res: any) => {
+        console.log(res);
+        setHits(res.data);
+      })
+      .catch(console.error);
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    return getGenerals(id as unknown as number);
+    getHits();
+    getGenerals(id as unknown as number);
   }, []);
   return (
     <>
@@ -59,7 +73,7 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
                 </TabList>
               </Box>
               <TabPanel value="1">
-                <NewsGeneralPage statistics={statistics} />
+                <NewsGeneralPage statistics={statistics} hits={hits} />
               </TabPanel>
               <TabPanel value="2">
                 <ComposeNews news={statistics?.news} />
