@@ -15,6 +15,13 @@ import { hostname } from 'os';
 export type NewsGeneralPageProps = {
   statistics: NewsStatistics;
   hits?: StatisticsModel[];
+  pageStatus?: PageStatus;
+  onPageChange?: (page: number) => void;
+};
+
+export type PageStatus = {
+  currentPage: number;
+  pages: number;
 };
 
 export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
@@ -22,10 +29,26 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
 ) => {
   const { toDateTimeString, twoLinesDate } = useMoment();
   const [hits, setHits] = useState<StatisticsModel[]>();
+  const [pageStatus, setPageStatus] = useState<PageStatus>(
+    props.pageStatus ?? {
+      currentPage: 0,
+      pages: 0
+    }
+  );
+
+  const handleChangePage = (add: boolean) => {
+    props.onPageChange &&
+      props.onPageChange(pageStatus.currentPage + (add ? +1 : -1));
+  };
 
   useEffect(() => {
     setHits(props.hits);
   }, [props.hits]);
+
+  useEffect(() => {
+    props.pageStatus && setPageStatus(props.pageStatus);
+  }, [props.pageStatus]);
+
   return (
     <>
       <div className={style['news-general-page']}>
@@ -116,14 +139,14 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
           </div>
           <div className={style['list']}>
             <h1>Last viewers</h1>
-            <table>
+            <table cellSpacing={0}>
               <thead>
                 <tr>
                   <th></th>
                   <th>location</th>
-                  <th>viewing time</th>
+                  <th className={style['text-right']}>time</th>
                   <th>ip</th>
-                  <th>date</th>
+                  <th className={style['text-right']}>date</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,12 +160,27 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
                         />
                       </td>
                       <td>{hit.location?.name}</td>
-                      <td>{hit.viewerTime}s</td>
-                      <td>{hit.clientIp}</td>
-                      <td>{twoLinesDate(hit.createdAt).join(' ')}</td>
+                      <td className={style['text-right']}>{hit.viewerTime}s</td>
+                      <td>{hit.clientIp?.substring(0, 18)}</td>
+                      <td className={style['text-right']}>
+                        {twoLinesDate(hit.createdAt).map(dt => (
+                          <div>{dt}</div>
+                        ))}
+                      </td>
                     </tr>
                   ))}
               </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan={5}>
+                    <Link onClick={() => handleChangePage(false)}>≪Prev</Link>
+                    &nbsp;&nbsp;page {pageStatus.currentPage + 1}
+                    &nbsp;of&nbsp;
+                    {pageStatus.pages}&nbsp;&nbsp;
+                    <Link onClick={() => handleChangePage(true)}>Next≫</Link>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>

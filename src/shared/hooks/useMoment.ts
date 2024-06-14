@@ -13,12 +13,12 @@ const getMomentConfig = () => {
 
 const getMomentConfigWithTime = () => {
   return {
-    sameDay: '[Today] HH:MM',
-    nextDay: '[Tomorrow] HH:MM',
+    sameDay: '[Today] HH:mm',
+    nextDay: '[Tomorrow] HH:mm',
     nextWeek: 'dddd HH:MM',
-    lastDay: '[Yesterday] HH:MM',
-    lastWeek: 'DD/MM/YYYY HH:MM',
-    sameElse: 'DD/MM/YYYY HH:MM'
+    lastDay: '[Yesterday] HH:mm',
+    lastWeek: 'DD/MM/YYYY HH:mm',
+    sameElse: 'DD/MM/YYYY HH:mm'
   };
 };
 

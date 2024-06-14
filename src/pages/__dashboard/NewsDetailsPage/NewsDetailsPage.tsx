@@ -5,17 +5,26 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useServices } from 'shared/hooks/useServices';
 import {
+  LocationModel,
   NewsModel,
   NewsStatistics,
   StatisticsModel
 } from 'shared/types/api-type';
 
 import { ComposeNews } from '../ComposeNews/ComposeNews';
-import { NewsGeneralPage } from '../NewsGeneralPage/NewsGeneralPage';
+import {
+  NewsGeneralPage,
+  PageStatus
+} from '../NewsGeneralPage/NewsGeneralPage';
 import style from './NewsDetailsPage.module.scss';
 
 type NewsDetailsPageProps = {
   type?: string;
+};
+
+type GroupedHits = {
+  hits: number;
+  location: LocationModel;
 };
 
 export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
@@ -25,7 +34,17 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   const [value, setValue] = useState('1');
   const [statistics, setStatistics] = useState<NewsStatistics>();
   const [hits, setHits] = useState<StatisticsModel[]>();
-  const { getGeneralStatistics, getStatisticByNews } = useServices();
+  const [groupedHits, setGroupedHits] = useState<GroupedHits[]>();
+  const [pageStatus, setPageStatus] = useState<PageStatus>({
+    currentPage: 0,
+    pages: 1
+  });
+  const {
+    getGeneralStatistics,
+    getStatisticByNews,
+    getGroupedStatisticsByNews
+  } = useServices();
+  const PAGE_SIZE = 5;
 
   const getGenerals = useCallback((id: number) => {
     getGeneralStatistics(id).then((r: any) => {
@@ -33,21 +52,37 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
       setStatistics(_statistics);
     });
   }, []);
-  const getHits = () => {
-    getStatisticByNews(parseInt(id as string))
+  const getHits = (page: number) => {
+    getStatisticByNews(parseInt(id as string), page, PAGE_SIZE)
       .then((res: any) => {
-        console.log(res);
         setHits(res.data);
+        setPageStatus({ currentPage: page, pages: res.pages });
       })
       .catch(console.error);
   };
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const getGroupedHits = () => {
+    getGroupedStatisticsByNews(parseInt(id as string), 'location.name')
+      .then((res: any) => {
+        setGroupedHits(res.data);
+        console.log(res.data);
+      })
+      .catch(console.error);
+  };
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
+  const handleChangeHitsPage = (page: number) => {
+    const newPage = Math.max(Math.min(page, pageStatus.pages), 0);
+    console.log(newPage);
+    getHits(newPage);
+  };
+
   useEffect(() => {
-    getHits();
+    getHits(pageStatus.currentPage);
+    getGroupedHits();
     getGenerals(id as unknown as number);
   }, []);
   return (
@@ -65,7 +100,7 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
             <TabContext value={value}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList
-                  onChange={handleChange}
+                  onChange={handleChangeTab}
                   aria-label="lab API tabs example"
                 >
                   <Tab label="Details" value="1" />
@@ -73,7 +108,12 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
                 </TabList>
               </Box>
               <TabPanel value="1">
-                <NewsGeneralPage statistics={statistics} hits={hits} />
+                <NewsGeneralPage
+                  statistics={statistics}
+                  hits={hits}
+                  pageStatus={pageStatus}
+                  onPageChange={handleChangeHitsPage}
+                />
               </TabPanel>
               <TabPanel value="2">
                 <ComposeNews news={statistics?.news} />

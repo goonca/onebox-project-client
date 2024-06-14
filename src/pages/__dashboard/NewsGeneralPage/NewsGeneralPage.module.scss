@@ -1,5 +1,7 @@
 @import '~/src/shared/style/variables.scss';
 
+$table-color: #f5f6fa;
+
 .news-general-page {
   .content-box {
     background-color: white;
@@ -97,17 +99,73 @@
     padding: $space-4;
     display: flex;
     flex-direction: row;
-
+    min-height: 340px;
+    margin-bottom: $space-5;
     h1 {
       font-size: 16px;
+      margin-bottom: $space-5;
     }
 
     .map {
-      flex-grow: 1;
+      width: 50%;
     }
 
     .list {
-      flex-grow: 1;
+      width: 50%;
+
+      table {
+        font-size: 11px;
+        width: 100%;
+
+        th {
+          background-color: $table-color;
+          color: darken($color: $table-color, $amount: 20);
+          &:first-of-type {
+            border-top-left-radius: 10px;
+          }
+          &:last-of-type {
+            border-top-right-radius: 10px;
+          }
+        }
+        thead,
+        tbody {
+          th,
+          td {
+            padding: 4px 13px;
+            height: 30px;
+            border-bottom: 1px solid $table-color;
+            &:first-of-type {
+              border-left: 1px solid $table-color;
+            }
+            &:last-of-type {
+              border-right: 1px solid $table-color;
+            }
+          }
+        }
+
+        thead {
+          text-transform: uppercase;
+
+          th {
+            text-align: left;
+          }
+        }
+
+        tfoot {
+          td {
+            text-align: right;
+            padding: $space-2;
+
+            a {
+              text-decoration: none;
+            }
+          }
+        }
+
+        .text-right {
+          text-align: right;
+        }
+      }
     }
   }
 }
