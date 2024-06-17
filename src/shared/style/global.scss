@@ -99,3 +99,11 @@ input[type='number']::-webkit-inner-spin-button {
 .editor-statusbar {
   display: none;
 }*/
+
+//************ Open Layers **********//
+.map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}

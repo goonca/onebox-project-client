@@ -99,8 +99,10 @@ $table-color: #f5f6fa;
     padding: $space-4;
     display: flex;
     flex-direction: row;
+    gap: 20px;
     min-height: 340px;
     margin-bottom: $space-5;
+
     h1 {
       font-size: 16px;
       margin-bottom: $space-5;

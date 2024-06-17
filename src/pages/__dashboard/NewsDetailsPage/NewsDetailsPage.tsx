@@ -13,6 +13,7 @@ import {
 
 import { ComposeNews } from '../ComposeNews/ComposeNews';
 import {
+  GroupedHits,
   NewsGeneralPage,
   PageStatus
 } from '../NewsGeneralPage/NewsGeneralPage';
@@ -20,11 +21,6 @@ import style from './NewsDetailsPage.module.scss';
 
 type NewsDetailsPageProps = {
   type?: string;
-};
-
-type GroupedHits = {
-  hits: number;
-  location: LocationModel;
 };
 
 export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
@@ -111,6 +107,7 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
                 <NewsGeneralPage
                   statistics={statistics}
                   hits={hits}
+                  groupedHits={groupedHits}
                   pageStatus={pageStatus}
                   onPageChange={handleChangeHitsPage}
                 />

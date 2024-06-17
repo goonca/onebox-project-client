@@ -2,6 +2,7 @@ import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Link } from '@mui/material';
 import {
+  LocationModel,
   NewsStatistics,
   NewsStatus,
   StatisticsModel
@@ -11,10 +12,12 @@ import style from './NewsGeneralPage.module.scss';
 import { useServices } from 'shared/hooks/useServices';
 import { useEffect, useState } from 'react';
 import { hostname } from 'os';
+import { StatisticsMap } from './__parts/StatisticsMap/StatisticsMap';
 
 export type NewsGeneralPageProps = {
   statistics: NewsStatistics;
   hits?: StatisticsModel[];
+  groupedHits?: GroupedHits[];
   pageStatus?: PageStatus;
   onPageChange?: (page: number) => void;
 };
@@ -24,11 +27,17 @@ export type PageStatus = {
   pages: number;
 };
 
+export type GroupedHits = {
+  hits: number;
+  location: LocationModel;
+};
+
 export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
   props: NewsGeneralPageProps
 ) => {
   const { toDateTimeString, twoLinesDate } = useMoment();
   const [hits, setHits] = useState<StatisticsModel[]>();
+  const [groupedHits, setGroupedHits] = useState<GroupedHits[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>(
     props.pageStatus ?? {
       currentPage: 0,
@@ -48,6 +57,10 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
   useEffect(() => {
     props.pageStatus && setPageStatus(props.pageStatus);
   }, [props.pageStatus]);
+
+  useEffect(() => {
+    setGroupedHits(props.groupedHits);
+  }, [props.groupedHits]);
 
   return (
     <>
@@ -136,6 +149,9 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
         >
           <div className={style['map']}>
             <h1>Statistics</h1>
+            <div>
+              <StatisticsMap groupedHits={props.groupedHits} />
+            </div>
           </div>
           <div className={style['list']}>
             <h1>Last viewers</h1>
@@ -163,8 +179,8 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
                       <td className={style['text-right']}>{hit.viewerTime}s</td>
                       <td>{hit.clientIp?.substring(0, 18)}</td>
                       <td className={style['text-right']}>
-                        {twoLinesDate(hit.createdAt).map(dt => (
-                          <div>{dt}</div>
+                        {twoLinesDate(hit.createdAt).map((dt, i) => (
+                          <div key={i}>{dt}</div>
                         ))}
                       </td>
                     </tr>
