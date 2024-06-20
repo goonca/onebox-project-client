@@ -28,7 +28,9 @@
     "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.9.0",
     "@sentry/nextjs": "^8",
+    "add": "^2.0.6",
     "axios": "^0.27.2",
+    "chart.js": "^4.4.3",
     "codemirror": "5",
     "cookies-next": "^4.1.1",
     "dotenv": "^16.4.5",
@@ -39,6 +41,7 @@
     "ol": "^9.2.4",
     "path": "^0.12.7",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-markdown": "^9.0.1",
@@ -46,7 +49,8 @@
     "react-router-dom": "^6.23.0",
     "sass": "^1.57.1",
     "simplemde": "^1.11.2",
-    "tinycolor2": "^1.6.0"
+    "tinycolor2": "^1.6.0",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",

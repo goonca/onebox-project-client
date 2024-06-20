@@ -63,7 +63,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
             control={
               <Switch
                 inputRef={showAuthorRef}
-                checked={news?.showAuthor}
+                checked={!!news?.showAuthor}
                 size="small"
                 onChange={() => _updateHeader()}
               />
@@ -74,7 +74,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
             control={
               <Switch
                 inputRef={showDateRef}
-                checked={news?.showDate}
+                checked={!!news?.showDate}
                 size="small"
                 onChange={() => _updateHeader()}
               />
@@ -85,7 +85,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
             control={
               <Switch
                 inputRef={showContextRef}
-                checked={news?.showContext}
+                checked={!!news?.showContext}
                 size="small"
                 onChange={() => _updateHeader()}
               />
@@ -96,7 +96,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
             control={
               <Switch
                 inputRef={showSectionRef}
-                checked={news?.showSection}
+                checked={!!news?.showSection}
                 size="small"
                 onChange={() => _updateHeader()}
               />

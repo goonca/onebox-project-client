@@ -8,8 +8,7 @@ export type FigureFitType =
 export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
 export enum NewsStatus {
-  CREATED,
-  SHARED,
+  DRAFT,
   PUBLISHED,
   INACTIVE,
   EMPTY

@@ -13,7 +13,8 @@ import {
 
 import { ComposeNews } from '../ComposeNews/ComposeNews';
 import {
-  GroupedHits,
+  ChartHit,
+  GroupedHit,
   NewsGeneralPage,
   PageStatus
 } from '../NewsGeneralPage/NewsGeneralPage';
@@ -30,7 +31,8 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   const [value, setValue] = useState('1');
   const [statistics, setStatistics] = useState<NewsStatistics>();
   const [hits, setHits] = useState<StatisticsModel[]>();
-  const [groupedHits, setGroupedHits] = useState<GroupedHits[]>();
+  const [groupedHits, setGroupedHits] = useState<GroupedHit[]>();
+  const [chartHits, setChartHits] = useState<ChartHit[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>({
     currentPage: 0,
     pages: 1
@@ -66,19 +68,29 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
       .catch(console.error);
   };
 
+  const getChartHits = () => {
+    getGroupedStatisticsByNews(parseInt(id as string), 'statistics.createdAt')
+      .then((res: any) => {
+        setChartHits(res.data);
+        console.log(res.data);
+      })
+      .catch(console.error);
+  };
+
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
   const handleChangeHitsPage = (page: number) => {
     const newPage = Math.max(Math.min(page, pageStatus.pages), 0);
-    console.log(newPage);
+    //console.log(newPage);
     getHits(newPage);
   };
 
   useEffect(() => {
     getHits(pageStatus.currentPage);
     getGroupedHits();
+    getChartHits();
     getGenerals(id as unknown as number);
   }, []);
   return (
@@ -108,6 +120,7 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
                   statistics={statistics}
                   hits={hits}
                   groupedHits={groupedHits}
+                  chartHits={chartHits}
                   pageStatus={pageStatus}
                   onPageChange={handleChangeHitsPage}
                 />

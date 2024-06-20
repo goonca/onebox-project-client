@@ -1,37 +1,34 @@
 import 'ol/ol.css';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Feature, Map, View } from 'ol';
 import { Tile } from 'ol/layer';
 import { OSM } from 'ol/source';
-import { GroupedHits } from '../../NewsGeneralPage';
+import { GroupedHit } from '../../NewsGeneralPage';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
-import { Geometry, Point } from 'ol/geom';
-import KML from 'ol/format/KML.js';
-import StadiaMaps from 'ol/source/StadiaMaps.js';
+import { Point } from 'ol/geom';
 import { Circle as CircleStyle, Fill, Stroke } from 'ol/style.js';
-import { Tile as TileLayer } from 'ol/layer.js';
 
 import style from './StatisticsMap.module.scss';
 import { fromLonLat } from 'ol/proj';
+import { UserContext } from 'shared/context/UserContext';
 
 export type StatisticsMapProps = {
-  groupedHits?: GroupedHits[];
+  groupedHits?: GroupedHit[];
 };
 
 export const StatisticsMap = (props: StatisticsMapProps) => {
+  //const currentUser = useContext(UserContext);
   const mapRef = useRef<HTMLDivElement | null>(null);
-  const [bounderies, setBounderies] = useState<{ max: number; min: number }>();
   const styleCache: any = {};
   const styleFunction = function (feature: any) {
     // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
     // standards-violating <magnitude> tag in each Placemark.  We extract it from
     // the Placemark's name instead.
-    console.log(feature.get('hits'));
-    const magnitude = (1 / 6) * feature.get('hits');
-    const radius = 5 + 20 * (1 * magnitude);
+    //console.log(feature.get('hits'));
+    const percentual = (1 / 6) * feature.get('hits');
+    const radius = Math.min(5 + 10 * percentual, 25);
     let style = styleCache[radius];
     if (!style) {
       style = new Style({
@@ -57,10 +54,6 @@ export const StatisticsMap = (props: StatisticsMapProps) => {
     const features = [];
     if (props.groupedHits) {
       const sorted = props.groupedHits.sort((a, b) => b.hits - a.hits);
-      setBounderies({
-        max: [...sorted].shift()?.hits ?? 0,
-        min: [...sorted].pop()?.hits ?? 0
-      });
 
       for (let i = 0; i < props.groupedHits.length; ++i) {
         const hit = props.groupedHits[i];
@@ -91,7 +84,7 @@ export const StatisticsMap = (props: StatisticsMapProps) => {
     const mapObj = new Map({
       //layers: [vector],
       view: new View({
-        center: [-11000000, 4600000]
+        center: [0, 0]
       }),
       target: mapRef.current,
       layers: [new Tile({ source: new OSM() }), vector]

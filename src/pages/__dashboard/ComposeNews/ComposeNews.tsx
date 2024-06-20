@@ -73,13 +73,14 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
 
   const getCurrentNews = useCallback((id: number) => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
+    console.log(draft);
     if (draft) {
       setNews(draft);
       setShowDraftMessage(true);
       setHasUnsavedChanges(true);
-    } else if (!initialNews) {
+    } else if (!initialNews || true) {
       setLoading(true);
-
+      console.log(getNewsById);
       getNewsById(id).then((r: any) => {
         setLoading(false);
         const news: NewsModel = id
@@ -104,6 +105,7 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
   };
 
   const createNews = useCallback((news: NewsModel) => {
+    console.log(news);
     const response = saveNews({
       ...news,
       locationGeonameId: news?.location?.geoname_id
@@ -130,7 +132,7 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
   };
 
   const onComponentsChange = (components?: ComponentModel[]) => {
-    //console.log('before ordered', components);
+    console.log('before ordered', components);
     /*const orderedComp = components?.map((component, position) => {
       return { ...component, position };
     });*/
@@ -138,7 +140,7 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
     //console.log(orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
     _news.cover = (components?.find(c => !!c.isCover) || {}).key;
-    //console.log(_news.components);
+    console.log(_news.components);
     setNews(_news);
     saveDraft(_news);
   };
@@ -162,7 +164,7 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
       //console.log('valids', getValidComponents(mappedComps));
       return getValidComponents(mappedComps);
     }
-    //console.log('after', comps);
+    console.log('after', comps);
     return comps;
   };
 
