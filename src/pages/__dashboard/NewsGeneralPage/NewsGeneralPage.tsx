@@ -149,7 +149,7 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
             <Alert severity="info" color="info">
               <strong>This news is not published yet.</strong>
               <br />
-              Publish it to start seeing it's props.statistics.
+              Publish it to start seeing it's statistics.
             </Alert>
           </div>
         )}

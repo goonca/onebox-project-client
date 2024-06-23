@@ -42,7 +42,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   };
 
   useEffect(() => {
-    console.log('changed');
     setOpened(!!open);
   }, [open]);
 

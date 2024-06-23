@@ -1,0 +1,39 @@
+@import '~/src/shared/style/variables.scss';
+
+.change-user-dialog {
+  .wrapper {
+    padding: $space-2;
+    min-width: 500px;
+    height: 300px;
+
+    .search-input {
+      div[class*='MuiInputBase-root'] {
+        border-radius: 30px;
+        background-color: white;
+        width: 100%;
+      }
+    }
+
+    .grid-header {
+      font-size: smaller;
+      text-align: right;
+      margin: 15px 30px;
+      padding-right: 10px;
+      border-bottom: 1px solid darken($dashboard-background, 10);
+      color: darken($dashboard-background, 30);
+      font-style: italic;
+    }
+  }
+  .dialog-actions {
+    justify-content: center;
+    border-top: 1px solid lightgray;
+  }
+}
+
+@media screen and (max-width: $screen-sm) {
+  .change-region-dialog {
+    .wrapper {
+      min-width: initial;
+    }
+  }
+}

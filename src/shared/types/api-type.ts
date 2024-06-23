@@ -10,6 +10,7 @@ export type ComponentType = 'Figure' | 'Quote' | 'Text';
 export enum NewsStatus {
   DRAFT,
   PUBLISHED,
+  SHARED,
   INACTIVE,
   EMPTY
 }

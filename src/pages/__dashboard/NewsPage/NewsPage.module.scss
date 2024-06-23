@@ -141,6 +141,7 @@ $hovered-border: lighten(
                 flex-direction: column;
                 border-left: 1px solid #efefef;
                 padding-left: $space-2;
+                width: 125px;
 
                 > div {
                   flex-grow: 1;
@@ -232,6 +233,7 @@ $hovered-border: lighten(
                   border-top: 1px solid #efefef;
                   border-left: initial;
                   padding-left: initial;
+                  width: initial;
 
                   > div {
                     flex-grow: 1;

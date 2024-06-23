@@ -27,6 +27,7 @@ export type ServicesType = {
   getLocationNearby: (location: LocationModel) => any;
   getCitiesByName: (name: string) => any;
   saveUser: (user: UserModel, feedback?: boolean) => any;
+  listUsersByNameOrUsername: (nameOrUsername: string) => any;
   updateUser: (user: UserModel, token?: string, hideFeedback?: boolean) => any;
   updatePassword: (data: UpdatePassword) => any;
   saveNews: (news: NewsModel) => any;
@@ -145,6 +146,10 @@ export const useServices = (): ServicesType => {
     return await post(uri.USER, user);
   };
 
+  const listUsersByNameOrUsername = async (nameOrUsername: string) => {
+    return await get(`${uri.USER}?nameOrUsername=${nameOrUsername}`);
+  };
+
   const updateUser = async (
     user: UserModel,
     token?: string,
@@ -225,6 +230,7 @@ export const useServices = (): ServicesType => {
   return {
     authenticate,
     saveUser,
+    listUsersByNameOrUsername,
     logoff,
     saveNews,
     publishNews,

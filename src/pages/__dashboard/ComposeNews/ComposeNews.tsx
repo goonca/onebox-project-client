@@ -34,10 +34,11 @@ import {
 import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
 import { ConfirmDialog } from '../__parts/ConfirmDialog/ConfirmDialog';
 
-export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
-  id,
-  news: initialNews
-}) => {
+export const ComposeNews: React.FC<{
+  id?: number;
+  news?: NewsModel;
+  updateNews: (news?: NewsModel) => void;
+}> = ({ id, news: initialNews, updateNews }) => {
   //const { id } = useParams();
   id = (initialNews ? initialNews.id : id) as number;
   const currentUser = useContext(UserContext);
@@ -57,7 +58,7 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
   );
 
   const editorContext = useContext(EditorContext);
-  const { saveNews, getNewsById, publishNews } = useServices();
+  const { saveNews, publishNews } = useServices();
 
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
     useLocalStorage<NewsModel | undefined>('draft-' + id);
@@ -71,27 +72,12 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
     []
   );
 
-  const getCurrentNews = useCallback((id: number) => {
+  const loadDraft = useCallback((id: number) => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
-    console.log(draft);
     if (draft) {
       setNews(draft);
       setShowDraftMessage(true);
       setHasUnsavedChanges(true);
-    } else if (!initialNews || true) {
-      setLoading(true);
-      console.log(getNewsById);
-      getNewsById(id).then((r: any) => {
-        setLoading(false);
-        const news: NewsModel = id
-          ? /*{
-            ...r?.data.news,
-            components: r?.data.components
-          }*/ r?.data
-          : getEmptyNews(currentUser, id);
-
-        setNews(news);
-      });
     }
   }, []);
 
@@ -112,7 +98,8 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
     });
     response.then((r: any) => {
       const resNews = r.data[0];
-      setNews({ ...news, ...resNews });
+      //setNews({ ...news, ...resNews });
+      updateNews({ ...news, ...resNews });
       removeLocalStorage();
       initialise(resNews.id?.toString() ?? 'undefined');
       //removeLocalStorage();
@@ -132,15 +119,12 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
   };
 
   const onComponentsChange = (components?: ComponentModel[]) => {
-    console.log('before ordered', components);
     /*const orderedComp = components?.map((component, position) => {
       return { ...component, position };
     });*/
     const orderedComp = normalizeComponents(components);
-    //console.log(orderedComp);
     const _news = { ...news, components: [...(orderedComp ?? [])] };
     _news.cover = (components?.find(c => !!c.isCover) || {}).key;
-    console.log(_news.components);
     setNews(_news);
     saveDraft(_news);
   };
@@ -172,7 +156,8 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
     removeLocalStorage();
     hideDraftMessage();
     setHasUnsavedChanges(false);
-    getCurrentNews(id as unknown as number);
+    updateNews();
+    //getCurrentNews(id as unknown as number);
   };
 
   const hideDraftMessage = () => {
@@ -230,7 +215,10 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
     setShowConfirmDialog(true);
   };
   const handleConfirmPublish = () => {
-    news.id && publishNews(news.id as number);
+    news.id &&
+      publishNews(news.id as number).then(() => {
+        setShowConfirmDialog(false);
+      });
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -238,7 +226,11 @@ export const ComposeNews: React.FC<{ id?: number; news?: NewsModel }> = ({
   };
 
   useEffect(() => {
-    return getCurrentNews(id as unknown as number);
+    initialNews && setNews(initialNews);
+  }, [initialNews]);
+
+  useEffect(() => {
+    return loadDraft(id as unknown as number);
   }, []);
 
   useEffect(() => {

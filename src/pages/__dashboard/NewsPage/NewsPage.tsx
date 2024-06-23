@@ -106,7 +106,7 @@ export const NewsPage = () => {
                           ? twoLinesDate(n.createdAt)
                           : [];
                         const updatedAtInLines = n.updatedAt
-                          ? twoLinesDate(n.createdAt)
+                          ? twoLinesDate(n.updatedAt)
                           : [];
                         const draftBadge = localStorageKeys.includes(
                           'draft-' + n.id
@@ -154,23 +154,25 @@ export const NewsPage = () => {
                                       )}
                                     </div>
                                   </div>
-                                  <div>
-                                    <label className={style['label-date']}>
-                                      last update
-                                    </label>
-                                    <div className={style['date']}>
-                                      {updatedAtInLines.length && (
-                                        <>
-                                          {updatedAtInLines[0] && (
-                                            <div>{updatedAtInLines[0]}</div>
-                                          )}
-                                          {updatedAtInLines[1] && (
-                                            <div>{updatedAtInLines[1]}</div>
-                                          )}
-                                        </>
-                                      )}
+                                  {!!updatedAtInLines.length && (
+                                    <div>
+                                      <label className={style['label-date']}>
+                                        last update
+                                      </label>
+                                      <div className={style['date']}>
+                                        {updatedAtInLines.length && (
+                                          <>
+                                            {updatedAtInLines[0] && (
+                                              <div>{updatedAtInLines[0]}</div>
+                                            )}
+                                            {updatedAtInLines[1] && (
+                                              <div>{updatedAtInLines[1]}</div>
+                                            )}
+                                          </>
+                                        )}
+                                      </div>
                                     </div>
-                                  </div>
+                                  )}
                                 </div>
                               </div>
                             </div>

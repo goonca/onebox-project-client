@@ -4,7 +4,7 @@ export const getEmptyNews = (currentUser: UserModel | undefined, id: any) => ({
   id,
   title: 'Title',
   headline: 'Headline',
-  status: NewsStatus.CREATED,
+  status: NewsStatus.DRAFT,
   user: currentUser,
   userId: currentUser?.id,
   createdAt: new Date(),
