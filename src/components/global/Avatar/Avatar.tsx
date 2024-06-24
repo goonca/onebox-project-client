@@ -7,9 +7,10 @@ import style from './Avatar.module.scss';
 
 export type AvatarProps = {
   user: UserModel;
+  size?: number;
 };
 
-export const Avatar: React.FC<AvatarProps> = ({ user }: AvatarProps) => {
+export const Avatar: React.FC<AvatarProps> = ({ user, size }: AvatarProps) => {
   const [showAvatar, setShowAvatar] = useState<boolean>(true);
 
   const handleAvatarOnload = () => {
@@ -18,7 +19,13 @@ export const Avatar: React.FC<AvatarProps> = ({ user }: AvatarProps) => {
   return (
     <>
       <div className={style['avatar']}>
-        {(showAvatar || !!!user?.avatar) && <AccountCircle />}
+        {(showAvatar || !!!user?.avatar) && (
+          <AccountCircle
+            style={{
+              ...(size ? { width: `${size}px`, height: `${size}px` } : {})
+            }}
+          />
+        )}
 
         <img
           src={
@@ -26,7 +33,10 @@ export const Avatar: React.FC<AvatarProps> = ({ user }: AvatarProps) => {
               ? `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${user?.avatar}`
               : undefined
           }
-          style={{ visibility: !!user?.avatar ? 'visible' : 'hidden' }}
+          style={{
+            visibility: !!user?.avatar ? 'visible' : 'hidden',
+            ...(size ? { width: `${size}px`, height: `${size}px` } : {})
+          }}
           onLoad={handleAvatarOnload}
         />
       </div>

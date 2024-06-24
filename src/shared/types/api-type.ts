@@ -83,6 +83,8 @@ export type NewsModel = {
   context?: NewsContext;
   sectionId?: number;
   section?: SectionModel;
+  sharedById?: number;
+  holderUserId?: number;
 };
 
 export type ComponentModel = {

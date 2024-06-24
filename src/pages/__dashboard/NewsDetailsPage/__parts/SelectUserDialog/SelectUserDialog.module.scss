@@ -6,6 +6,48 @@
     min-width: 500px;
     height: 300px;
 
+    p {
+      margin: 0;
+    }
+
+    .confirm-sharing {
+      text-align: center;
+
+      .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        p {
+          margin-bottom: 10px;
+          font-size: 12px;
+          letter-spacing: 1px;
+          opacity: 0.5;
+        }
+
+        h3 {
+          max-width: 450px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin: 10px 0;
+          text-align: center;
+        }
+      }
+
+      .selected-user {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          font-size: 14px;
+          &:first-of-type {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
     .search-input {
       div[class*='MuiInputBase-root'] {
         border-radius: 30px;
@@ -22,6 +64,34 @@
       border-bottom: 1px solid darken($dashboard-background, 10);
       color: darken($dashboard-background, 30);
       font-style: italic;
+    }
+
+    .user {
+      margin-top: $space-4;
+      display: flex;
+      flex-direction: row;
+      gap: $space-1;
+
+      .avatar {
+        margin: 0 10px;
+      }
+      .username {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0;
+
+        p {
+          font-size: 14px;
+        }
+        p {
+          &:first-of-type {
+            font-size: 18px;
+            font-weight: bold;
+          }
+        }
+      }
     }
   }
   .dialog-actions {

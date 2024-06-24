@@ -210,12 +210,9 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
       </div>
       <SelectUserDialog
         open={usersDialogOpened}
-        onChange={function (location: LocationModel): void {
-          throw new Error('Function not implemented.');
-        }}
-        onClose={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        news={news}
+        onChange={console.log}
+        onClose={() => setUsersDialogOpened(false)}
       />
     </>
   );

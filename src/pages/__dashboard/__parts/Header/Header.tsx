@@ -1,4 +1,3 @@
-import { AccountCircle } from '@mui/icons-material';
 import { Avatar } from 'components/global/Avatar/Avatar';
 import { useContext, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';

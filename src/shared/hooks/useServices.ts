@@ -35,6 +35,7 @@ export type ServicesType = {
   getNewsByUrl: (url: string) => any;
   getNews: () => any;
   publishNews: (id: number) => any;
+  shareNews: (id: number | string, holderId: number) => any;
   insertStatistic: (statistics: StatisticsModel) => any;
   addViewerTime: (id: number, time: number) => Promise<any>;
   getStatisticByNews: (id: number, page: number, pageSize: number) => any;
@@ -170,6 +171,10 @@ export const useServices = (): ServicesType => {
     return await post(`${uri.NEWS}/publish/${id}`);
   };
 
+  const shareNews = async (id: number | string, holderId: number) => {
+    return await post(`${uri.NEWS}/share/${id}?holderId=${holderId}`);
+  };
+
   const getNewsById = async (id: number) => {
     return await get(`${uri.NEWS}/${id}`);
   };
@@ -234,6 +239,7 @@ export const useServices = (): ServicesType => {
     logoff,
     saveNews,
     publishNews,
+    shareNews,
     updateUser,
     updatePassword,
     getNewsById,
