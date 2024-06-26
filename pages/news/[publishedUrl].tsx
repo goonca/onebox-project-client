@@ -86,8 +86,6 @@ const Page = () => {
         const isValidNews = !!news;
         isValidNews && setNews(news);
 
-        console.log(news);
-
         if (news) {
           getClientLocation().then(location => {
             console.log(location);

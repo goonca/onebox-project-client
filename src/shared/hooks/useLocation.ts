@@ -55,7 +55,7 @@ export const useLocation = (): LocationProps => {
     ipLocation?: IPLocation
   ): Promise<ClientLocation> => {
     if (!ipLocation) {
-      const rawResponse = await fetch(`${IPAPI_URI}/json?key=${IPAPI_KEY}`);
+      const rawResponse = await fetch(`${IPAPI_URI}/json`);
       ipLocation = (await rawResponse.json()) as IPLocation;
     }
 

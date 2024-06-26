@@ -1,5 +1,6 @@
 import { FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
+import { UserContext } from 'shared/context/UserContext';
 import { NewsModel } from 'shared/types/api-type';
 
 import style from './HeaderEditor.module.scss';
@@ -13,6 +14,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
   updateHeader,
   news
 }: HeaderEditorProps) => {
+  const currentUser = useContext(UserContext);
   const titleRef = useRef<HTMLInputElement>();
   const headlineRef = useRef<HTMLInputElement>();
   const showAuthorRef = useRef<HTMLInputElement>();
@@ -42,6 +44,12 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
         </div>
 
         <TextField
+          style={{
+            display:
+              news?.holderUserId && news?.userId != currentUser?.id
+                ? 'none'
+                : ''
+          }}
           inputRef={titleRef}
           label="Title"
           value={news?.title}
@@ -51,6 +59,12 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
         />
 
         <TextField
+          style={{
+            display:
+              news?.holderUserId && news?.userId != currentUser?.id
+                ? 'none'
+                : ''
+          }}
           inputRef={headlineRef}
           label="Headline"
           value={news?.headline}
@@ -58,6 +72,7 @@ export const HeaderEditor: React.FC<HeaderEditorProps> = ({
           maxRows={4}
           onChange={() => _updateHeader()}
         />
+
         <FormGroup className={style['switchers']}>
           <FormControlLabel
             control={

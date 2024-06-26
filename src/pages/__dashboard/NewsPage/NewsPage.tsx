@@ -4,7 +4,8 @@ import {
   faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, OutlinedInput } from '@mui/material';
+import { Button, Link, OutlinedInput } from '@mui/material';
+import { Avatar } from 'components/global/Avatar/Avatar';
 //import { Loading } from 'components/global/Loading/Loading';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -112,6 +113,9 @@ export const NewsPage = () => {
                           'draft-' + n.id
                         );
                         const hasBadges = !!draftBadge;
+
+                        console.log(n);
+
                         return (
                           <>
                             <div
@@ -120,7 +124,13 @@ export const NewsPage = () => {
                               onClick={() => editNews(n.id as number)}
                             >
                               <div className={style['item']}>
+                                {n.user && n.holderUser && (
+                                  <span className={style['avatar']}>
+                                    <Avatar user={n.user} />
+                                  </span>
+                                )}
                                 <img
+                                  className={style['cover']}
                                   src={`${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${n.cover}`}
                                 ></img>
                                 <div className={style['title']}>
@@ -132,6 +142,11 @@ export const NewsPage = () => {
                                         </span>
                                       )}
                                     </div>
+                                  )}
+                                  {n.user && n.holderUser && (
+                                    <p onClick={e => e.stopPropagation()}>
+                                      by <Link>@{n.user.username}</Link>
+                                    </p>
                                   )}
                                   <h1>{n.title}</h1>
                                   <p>{n.headline}</p>

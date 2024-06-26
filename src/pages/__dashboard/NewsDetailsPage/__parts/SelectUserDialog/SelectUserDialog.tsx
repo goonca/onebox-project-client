@@ -11,12 +11,19 @@ import {
   IconButton,
   OutlinedInput
 } from '@mui/material';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
 import { ResponseType, useServices } from 'shared/hooks/useServices';
 import { LocationModel, NewsModel, UserModel } from 'shared/types/api-type';
 import { Avatar } from 'components/global/Avatar/Avatar';
 import style from './SelectUserDialog.module.scss';
+import { UserContext } from 'shared/context/UserContext';
 
 export type ChangeRegionProps = {
   open: boolean;
@@ -39,6 +46,7 @@ export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
   const [user, setUser] = useState<UserModel>();
   const searchRef = useRef<HTMLInputElement>();
   const { shareNews } = useServices();
+  const currentUser = useContext(UserContext);
 
   const searchUsers = useCallback(
     debounce(() => listUsers(), 500),
@@ -56,7 +64,7 @@ export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
         const users = res.data as UserModel[];
         console.log(users);
 
-        setUsers(users);
+        setUsers(users.filter(user => user.id != currentUser?.id));
       }
     );
   };

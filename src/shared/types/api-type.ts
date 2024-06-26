@@ -85,6 +85,7 @@ export type NewsModel = {
   section?: SectionModel;
   sharedById?: number;
   holderUserId?: number;
+  holderUser?: UserModel;
 };
 
 export type ComponentModel = {

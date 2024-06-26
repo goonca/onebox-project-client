@@ -18,11 +18,18 @@ export const Avatar: React.FC<AvatarProps> = ({ user, size }: AvatarProps) => {
   };
   return (
     <>
-      <div className={style['avatar']}>
+      <div
+        className={style['avatar']}
+        style={{
+          ...(size ? { width: `${size}px`, height: `${size}px` } : {})
+        }}
+      >
         {(showAvatar || !!!user?.avatar) && (
           <AccountCircle
             style={{
-              ...(size ? { width: `${size}px`, height: `${size}px` } : {})
+              ...(size
+                ? { width: `${size + 5}px`, height: `${size + 5}px` }
+                : {})
             }}
           />
         )}

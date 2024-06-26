@@ -9,11 +9,13 @@ import {
 } from 'shared/types/api-type';
 import { useMoment } from 'shared/hooks/useMoment';
 import style from './NewsGeneralPage.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StatisticsMap } from './__parts/StatisticsMap/StatisticsMap';
 import Chart from 'chart.js/auto';
 import { CategoryScale } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { Avatar } from 'components/global/Avatar/Avatar';
+import { UserContext } from 'shared/context/UserContext';
 
 export type NewsGeneralPageProps = {
   statistics: NewsStatistics;
@@ -43,7 +45,7 @@ export type ChartHit = {
 export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
   props: NewsGeneralPageProps
 ) => {
-  const { toDateTimeString, twoLinesDate, toDateString } = useMoment();
+  const { toDateTimeString, twoLinesDate } = useMoment();
   const [hits, setHits] = useState<StatisticsModel[]>();
   /*const [groupedHits, setGroupedHits] = useState<GroupedHits[]>();
   const [chartHits, setChartHits] = useState<GroupedHits[]>();*/
@@ -91,7 +93,8 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
       y: {
         ticks: {
           maxTicksLimit: 8
-        }
+        },
+        beginAtZero: true
       }
     }
   };
@@ -167,34 +170,23 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
             <h1>{props.statistics.avgViewingTime}s</h1>
           </div>
           <div className={`${style['content']} ${style['news-content']}`}>
-            <div
-              className={`${style['content']} ${style['content-box']} ${style['shared-with']}`}
-            >
-              <Link>Shared with</Link>
-              <div
-                style={{
-                  width: '25px',
-                  height: '25px',
-                  backgroundColor: 'gray',
-                  borderRadius: '25px',
-                  marginTop: '15px',
-                  overflow: 'hidden'
-                }}
-              >
+            {props.statistics.news.holderUserId &&
+              props.statistics.news.holderUser &&
+              props.statistics.news.user && (
                 <div
-                  style={{
-                    marginTop: '2px',
-                    color: 'lightgray',
-                    textAlign: 'center',
-                    fontWeight: '500'
-                  }}
+                  className={`${style['content']} ${style['content-box']} ${style['shared-with']}`}
                 >
-                  SG
+                  <label>Shared by</label>
+                  <div className={style['shared-by']}>
+                    <Avatar size={30} user={props.statistics.news.user} />
+                    <Link>@{props.statistics.news.user.username}</Link>
+                  </div>
                 </div>
-              </div>
-            </div>
+              )}
             <div
-              className={`${style['content']} ${style['content-box']}  ${style['other-inf']}`}
+              className={`${style['content']} ${style['content-box']} ${
+                style['other-inf']
+              } ${props.statistics.news.holderUserId && style['is-shared']}`}
             >
               <div>
                 <label>Status</label>
@@ -217,9 +209,9 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
               <div>
                 <StatisticsMap groupedHits={props.groupedHits} />
                 <div className={style['grouped-hits']}>
-                  {props.groupedHits?.map(hit => {
+                  {props.groupedHits?.map((hit, i) => {
                     return (
-                      <div>
+                      <div key={i}>
                         {hit.location.name} <span>{hit.hits}</span>
                       </div>
                     );
@@ -262,17 +254,23 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
                       </tr>
                     ))}
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={5}>
-                      <Link onClick={() => handleChangePage(false)}>≪Prev</Link>
-                      &nbsp;&nbsp;page {pageStatus.currentPage + 1}
-                      &nbsp;of&nbsp;
-                      {pageStatus.pages}&nbsp;&nbsp;
-                      <Link onClick={() => handleChangePage(true)}>Next≫</Link>
-                    </td>
-                  </tr>
-                </tfoot>
+                {pageStatus.pages > 1 && (
+                  <tfoot>
+                    <tr>
+                      <td colSpan={5}>
+                        <Link onClick={() => handleChangePage(false)}>
+                          ≪Prev
+                        </Link>
+                        &nbsp;&nbsp;page {pageStatus.currentPage + 1}
+                        &nbsp;of&nbsp;
+                        {pageStatus.pages}&nbsp;&nbsp;
+                        <Link onClick={() => handleChangePage(true)}>
+                          Next≫
+                        </Link>
+                      </td>
+                    </tr>
+                  </tfoot>
+                )}
               </table>
             </div>
           </div>

@@ -38,6 +38,7 @@
       .selected-user {
         display: flex;
         flex-direction: column;
+        align-items: center;
 
         p {
           font-size: 14px;
@@ -73,7 +74,7 @@
       gap: $space-1;
 
       .avatar {
-        margin: 0 10px;
+        margin: auto;
       }
       .username {
         width: 100%;

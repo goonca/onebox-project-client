@@ -64,16 +64,23 @@ $table-color: #f5f6fa;
             font-size: 12px;
             text-decoration: none;
           }
+
+          .shared-by {
+            margin-top: $space-2;
+          }
           //color: rgb(37, 37, 37);
         }
 
         .other-inf {
           background-color: #44415d;
           flex-grow: 1;
-          margin-left: -25px;
           display: flex;
           flex-direction: column;
           gap: $space-2;
+
+          &.is-shared {
+            margin-left: -25px;
+          }
 
           label {
             color: white;

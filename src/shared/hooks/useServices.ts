@@ -20,6 +20,8 @@ export type UpdatePassword = {
   confirmNewPassword: string;
 };
 
+export type IdType = string | number | undefined;
+
 export type ServicesType = {
   authenticate: (user: UserModel) => any;
   getClientIp: () => any;
@@ -31,21 +33,22 @@ export type ServicesType = {
   updateUser: (user: UserModel, token?: string, hideFeedback?: boolean) => any;
   updatePassword: (data: UpdatePassword) => any;
   saveNews: (news: NewsModel) => any;
-  getNewsById: (id: number) => any;
+  getNewsById: (id: IdType) => any;
   getNewsByUrl: (url: string) => any;
   getNews: () => any;
-  publishNews: (id: number) => any;
-  shareNews: (id: number | string, holderId: number) => any;
+  getSharedByNewsId: (id: IdType) => any;
+  publishNews: (id: IdType) => any;
+  shareNews: (id: IdType, holderId: number) => any;
   insertStatistic: (statistics: StatisticsModel) => any;
   addViewerTime: (id: number, time: number) => Promise<any>;
-  getStatisticByNews: (id: number, page: number, pageSize: number) => any;
-  getStatisticByUser: (id: number) => any;
-  getGroupedStatisticsByNews: (id: number, groupBy: string) => any;
-  getGeneralStatistics: (id: number) => any;
+  getStatisticByNews: (id: IdType, page: number, pageSize: number) => any;
+  getStatisticByUser: (id: IdType) => any;
+  getGroupedStatisticsByNews: (id: IdType, groupBy: string) => any;
+  getGeneralStatistics: (id: IdType) => any;
   getFiles: () => any;
   getSections: () => any;
   logoff: () => any;
-  deleteFile: (id: number) => any;
+  deleteFile: (id: IdType) => any;
   saveLocation: (location: LocationModel) => any;
   //deleteComponent: (component?: ComponentModel) => any;
 };
@@ -167,20 +170,24 @@ export const useServices = (): ServicesType => {
     return await post(uri.NEWS, news);
   };
 
-  const publishNews = async (id: number) => {
+  const publishNews = async (id: IdType) => {
     return await post(`${uri.NEWS}/publish/${id}`);
   };
 
-  const shareNews = async (id: number | string, holderId: number) => {
+  const shareNews = async (id: IdType, holderId: number) => {
     return await post(`${uri.NEWS}/share/${id}?holderId=${holderId}`);
   };
 
-  const getNewsById = async (id: number) => {
+  const getNewsById = async (id: IdType) => {
     return await get(`${uri.NEWS}/${id}`);
   };
 
   const getNewsByUrl = async (url: string) => {
     return await get(`${uri.NEWS}/published/${url}`);
+  };
+
+  const getSharedByNewsId = async (id: IdType) => {
+    return await get(`${uri.NEWS}/shared/${id}`);
   };
 
   const getNews = async () => {
@@ -195,7 +202,7 @@ export const useServices = (): ServicesType => {
     return await get(uri.SECTION);
   };
 
-  const deleteFile = async (id: number) => {
+  const deleteFile = async (id: IdType) => {
     return await remove(`${uri.FILES}/${id}`);
   };
 
@@ -208,7 +215,7 @@ export const useServices = (): ServicesType => {
   };
 
   const getStatisticByNews = async (
-    id: number,
+    id: IdType,
     page: number = 0,
     pageSize: number = 99
   ) => {
@@ -217,18 +224,18 @@ export const useServices = (): ServicesType => {
     );
   };
 
-  const getStatisticByUser = async (id: number) => {
+  const getStatisticByUser = async (id: IdType) => {
     return await get(`${uri.STATISTICS}/user/${id}`);
   };
-  const getGeneralStatistics = async (id: number) => {
+  const getGeneralStatistics = async (id: IdType) => {
     return await get(`${uri.STATISTICS}/news/${id}/general`);
   };
 
-  const getGroupedStatisticsByNews = async (id: number, groupBy: string) => {
+  const getGroupedStatisticsByNews = async (id: IdType, groupBy: string) => {
     return await get(`${uri.STATISTICS}/news/${id}/grouped/${groupBy}`);
   };
 
-  const addViewerTime = (id: number, time: number) => {
+  const addViewerTime = (id: IdType, time: number) => {
     return post(`${uri.STATISTICS}/log/${id}`, { time });
   };
 
@@ -245,6 +252,7 @@ export const useServices = (): ServicesType => {
     getNewsById,
     getNewsByUrl,
     getNews,
+    getSharedByNewsId,
     getFiles,
     deleteFile,
     getLocationNearby,

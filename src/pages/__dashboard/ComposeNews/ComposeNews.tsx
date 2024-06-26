@@ -91,7 +91,7 @@ export const ComposeNews: React.FC<{
   };
 
   const createNews = useCallback((news: NewsModel) => {
-    console.log(news);
+    //console.log(news);
     const response = saveNews({
       ...news,
       locationGeonameId: news?.location?.geoname_id
@@ -264,19 +264,22 @@ export const ComposeNews: React.FC<{
             <Button
               variant="contained"
               size="small"
-              href={document.location.origin + '/viewer?id=' + news.id}
+              href={document.location.origin + '/viewer/' + news.id}
               target="_blank"
             >
               View draft
             </Button>
-            <Button
-              variant="contained"
-              size="small"
-              data-dark
-              onClick={handlePublishClick}
-            >
-              Publish
-            </Button>
+            {((news?.holderUserId && news?.userId != currentUser?.id) ||
+              !news?.holderUserId) && (
+              <Button
+                variant="contained"
+                size="small"
+                data-dark
+                onClick={handlePublishClick}
+              >
+                Publish
+              </Button>
+            )}
           </div>
         </div>
         {showDraftMessage && (
@@ -312,21 +315,23 @@ export const ComposeNews: React.FC<{
           >
             <div className={style['editor-header']}>
               <label>editor</label>
-              <div className={style['editor-switcher']}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      size="small"
-                      checked={editMode}
-                      onChange={() => {
-                        !editMode && setComponentsOpened(false);
-                        setEditMode(!editMode);
-                      }}
-                    />
-                  }
-                  label="Edit mode"
-                />
-              </div>
+              {news?.userId == currentUser?.id && (
+                <div className={style['editor-switcher']}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        size="small"
+                        checked={editMode}
+                        onChange={() => {
+                          !editMode && setComponentsOpened(false);
+                          setEditMode(!editMode);
+                        }}
+                      />
+                    }
+                    label="Edit mode"
+                  />
+                </div>
+              )}
             </div>
             <div
               className={`${style['overlay']} ${
@@ -345,7 +350,10 @@ export const ComposeNews: React.FC<{
                   newsId={id as unknown as number}
                   onChange={onComponentsChange}
                   onEdit={onEdit}
-                  editMode={editMode}
+                  editMode={
+                    (editMode && !news.holderUserId) ||
+                    (news?.userId == currentUser?.id && editMode)
+                  }
                 ></FreeEditor>
               )}
             </div>

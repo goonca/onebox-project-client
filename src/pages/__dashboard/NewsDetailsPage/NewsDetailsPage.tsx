@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   Box,
+  Button,
   Checkbox,
   FormControl,
   InputLabel,
@@ -10,17 +11,26 @@ import {
   OutlinedInput,
   Select,
   SelectChangeEvent,
-  Tab
+  Tab,
+  Typography
 } from '@mui/material';
-import { ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useServices } from 'shared/hooks/useServices';
+import { IdType, useServices } from 'shared/hooks/useServices';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 import {
   LocationModel,
   NewsModel,
   NewsStatistics,
-  StatisticsModel
+  StatisticsModel,
+  UserModel
 } from 'shared/types/api-type';
 
 import { ComposeNews } from '../ComposeNews/ComposeNews';
@@ -33,6 +43,8 @@ import {
 import style from './NewsDetailsPage.module.scss';
 import { UserContext } from 'shared/context/UserContext';
 import { SelectUserDialog } from './__parts/SelectUserDialog/SelectUserDialog';
+import { Avatar } from 'components/global/Avatar/Avatar';
+import { faCirclePlus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 type NewsDetailsPageProps = {
   type?: string;
@@ -42,14 +54,17 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   props?: NewsDetailsPageProps
 ) => {
   const { id: initialId } = useParams();
+  const originalId = useRef<IdType>(initialId);
   const currentUser = useContext(UserContext);
-  const [version, setVersion] = useState<string | number | undefined>();
   const [usersDialogOpened, setUsersDialogOpened] = useState<boolean>(false);
   const [id, setId] = useState<string | number | undefined>(initialId);
   const [value, setValue] = useState(id ? '1' : '2');
   const [statistics, setStatistics] = useState<NewsStatistics>();
   const [hits, setHits] = useState<StatisticsModel[]>();
   const [news, setNews] = useState<NewsModel>();
+  //const [version, setVersion] = useState<NewsModel>();
+  const [versionComboOpen, setVersionComboOpen] = useState<boolean>(false);
+  const [sharedNews, setSharedNews] = useState<NewsModel[]>();
   const [groupedHits, setGroupedHits] = useState<GroupedHit[]>();
   const [chartHits, setChartHits] = useState<ChartHit[]>();
   const [pageStatus, setPageStatus] = useState<PageStatus>({
@@ -60,7 +75,8 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
     getGeneralStatistics,
     getStatisticByNews,
     getGroupedStatisticsByNews,
-    getNewsById
+    getNewsById,
+    getSharedByNewsId
   } = useServices();
   const PAGE_SIZE = 5;
 
@@ -72,7 +88,7 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   };
 
   const getHits = (page: number) => {
-    getStatisticByNews(id as unknown as number, page, PAGE_SIZE)
+    getStatisticByNews(id, page, PAGE_SIZE)
       .then((res: any) => {
         setHits(res.data);
         setPageStatus({ currentPage: page, pages: res.pages });
@@ -81,7 +97,7 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   };
 
   const getGroupedHits = () => {
-    getGroupedStatisticsByNews(id as unknown as number, 'location.name')
+    getGroupedStatisticsByNews(id, 'location.name')
       .then((res: any) => {
         setGroupedHits(res.data);
       })
@@ -89,14 +105,25 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   };
 
   const getChartHits = () => {
-    getGroupedStatisticsByNews(id as unknown as number, 'statistics.createdAt')
+    getGroupedStatisticsByNews(id, 'statistics.createdAt')
       .then((res: any) => {
         setChartHits(res.data);
       })
       .catch(console.error);
   };
 
+  const getSharedNews = () => {
+    console.log('getSharedNews');
+    getSharedByNewsId(originalId.current)
+      .then((res: any) => {
+        setSharedNews(res.data);
+        console.log(res.data);
+      })
+      .catch(console.error);
+  };
+
   const getCurrentNews = () => {
+    console.log('getCurrentNews', id);
     getNewsById(id as unknown as number).then((r: any) => {
       const news: NewsModel = id
         ? /*{
@@ -104,7 +131,6 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
           components: r?.data.components
         }*/ r?.data
         : getEmptyNews(currentUser, id);
-
       setNews(news);
     });
   };
@@ -123,16 +149,22 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
     event: SelectChangeEvent<string[]>,
     child: ReactNode
   ) => {
-    event.target.value == 'share' && setUsersDialogOpened(true);
-    setVersion(event.target.value as string);
-    console.log(version);
+    if (event.target.value == 'share') {
+      setUsersDialogOpened(true);
+      return;
+    }
+
+    //setVersion(sharedNews?.find(news => news.id == event.target.value));
+    setId(event.target.value as string);
   };
 
-  const handleUpdateNews = (news?: NewsModel) => {
-    console.log('handleUpdateNews', news);
-    if (news) {
-      setNews(news);
-      setId(news.id);
+  const handleUpdateNews = (_news?: NewsModel) => {
+    if (_news) {
+      if (!news?.id && _news.id != news?.id) {
+        originalId.current = _news.id;
+      }
+      setNews(_news);
+      setId(_news.id);
       return;
     }
 
@@ -145,43 +177,129 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
     getChartHits();
     getGenerals();
     getCurrentNews();
+    originalId.current == id && !sharedNews?.length && getSharedNews();
   };
 
   useEffect(() => {
-    loadServices();
+    id && loadServices();
   }, [id]);
+
+  const itemStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    whiteSpace: 'nowrap',
+    justifyContent: 'center'
+  };
+
+  const showVersionCombobox =
+    ((originalId.current && !news?.holderUserId && sharedNews) ||
+      (originalId.current != id && sharedNews)) &&
+    currentUser;
   return (
     <>
       <div className={style['news-details-page']}>
         <div className={style['header']}>
           <div>
             <h2>
-              <Link to="../news">News</Link> / {id ?? 'Compose News'}
+              <Link to="../news">News</Link>
+              <label>/</label>
+              <label>{originalId.current ?? 'Compose News'}</label>
+              {showVersionCombobox && <label>/</label>}
+              <div className={style['select-wrapper']}>
+                {news && (
+                  <>
+                    {showVersionCombobox && (
+                      <FormControl className={style['mui-form-control']}>
+                        <Select
+                          open={versionComboOpen}
+                          defaultValue={[originalId.current as string]}
+                          onChange={handleChangeVersion}
+                          onClose={() => setVersionComboOpen(false)}
+                          onOpen={() => setVersionComboOpen(true)}
+                          IconComponent={props => (
+                            <label
+                              className={style['dropdown-icon']}
+                              onClick={() =>
+                                setVersionComboOpen(!versionComboOpen)
+                              }
+                            >
+                              {versionComboOpen ? '▲' : '▼'}
+                            </label>
+                          )}
+                          renderValue={selected => {
+                            return (
+                              <div
+                                className={style['selected-version-renderer']}
+                              >
+                                {
+                                  (
+                                    (news.holderUserId
+                                      ? news.holderUser
+                                      : news.user) as UserModel
+                                  )?.username
+                                }
+                              </div>
+                            );
+                          }}
+                        >
+                          {
+                            <MenuItem key="myOwn" value={originalId.current}>
+                              <div style={itemStyle}>
+                                <Avatar user={currentUser} size={30} />
+                                <ListItemText
+                                  disableTypography
+                                  primary={
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                      {currentUser.username} (mine)
+                                    </Typography>
+                                  }
+                                  style={{ fontWeight: 'bold' }}
+                                />
+                              </div>
+                            </MenuItem>
+                          }
+                          {sharedNews.map(news => {
+                            return (
+                              (news.holderUser ||
+                                news.id == originalId.current) && (
+                                <MenuItem key={news.id} value={news.id}>
+                                  <div style={itemStyle}>
+                                    <Avatar
+                                      user={
+                                        (news.holderUserId
+                                          ? news.holderUser
+                                          : news.user) as UserModel
+                                      }
+                                      size={30}
+                                    />
+                                    <ListItemText
+                                      primary={
+                                        (
+                                          (news.holderUserId
+                                            ? news.holderUser
+                                            : news.user) as UserModel
+                                        )?.username
+                                      }
+                                    />
+                                  </div>
+                                </MenuItem>
+                              )
+                            );
+                          })}
+                          <hr data-combo-divisor />
+                          <MenuItem key={'share'} value={'share'}>
+                            <div style={itemStyle}>
+                              <ListItemText primary={'Share'} />
+                            </div>
+                          </MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
+                  </>
+                )}
+              </div>
             </h2>
-          </div>
-          <div>
-            <FormControl>
-              <Select
-                labelId="demo-multiple-checkbox-label"
-                id="demo-multiple-checkbox"
-                value={['samuel', 'goncalves']}
-                onChange={handleChangeVersion}
-                displayEmpty
-                renderValue={selected => selected.join(', ')}
-              >
-                <MenuItem key={'name'} value={'name'}>
-                  <Checkbox checked={true} />
-                  <ListItemText primary={'username 1'} />
-                </MenuItem>
-                <MenuItem key={'name1'} value={'name'}>
-                  <Checkbox checked={true} />
-                  <ListItemText primary={'username 2'} />
-                </MenuItem>
-                <MenuItem key={'share'} value={'share'}>
-                  <ListItemText primary={'Share'} />
-                </MenuItem>
-              </Select>
-            </FormControl>
           </div>
         </div>
         <TabContext value={value}>

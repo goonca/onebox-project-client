@@ -40,6 +40,10 @@ a {
     }
   }
 }
+//select shared version combobox
+[id=':r15:'] {
+  min-width: 250px;
+}
 
 .MuiLink-root {
   &.MuiLink-underlineHover {
@@ -90,6 +94,12 @@ input[type='number']::-webkit-inner-spin-button {
     background-color: $dashboard-background;
     border-bottom: 1px solid darken($color: $dashboard-background, $amount: 20);
   }
+}
+
+hr[data-combo-divisor] {
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 10px;
 }
 
 /*.cm-spell-error {

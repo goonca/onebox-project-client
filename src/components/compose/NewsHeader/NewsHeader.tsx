@@ -38,7 +38,7 @@ export const NewsHeader: React.FC<{ news?: NewsModel }> = props => {
         <h1 className={style.bagde}>{news?.title}</h1>
         {news?.headline && <p>{news?.headline}</p>}
         <div>
-          {news?.showAuthor && news?.user && (
+          {!!news?.showAuthor && !!news?.user && (
             <address>
               By
               <a rel="author" href="#">

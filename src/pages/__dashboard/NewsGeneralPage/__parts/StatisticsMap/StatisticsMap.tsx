@@ -19,7 +19,7 @@ export type StatisticsMapProps = {
 };
 
 export const StatisticsMap = (props: StatisticsMapProps) => {
-  //const currentUser = useContext(UserContext);
+  const currentUser = useContext(UserContext);
   const mapRef = useRef<HTMLDivElement | null>(null);
   const styleCache: any = {};
   const styleFunction = function (feature: any) {
@@ -52,24 +52,28 @@ export const StatisticsMap = (props: StatisticsMapProps) => {
     if (!mapRef.current) return;
 
     const features = [];
-    if (props.groupedHits) {
-      const sorted = props.groupedHits.sort((a, b) => b.hits - a.hits);
+    if (props.groupedHits?.length) {
+      //const sorted = props.groupedHits.sort((a, b) => b.hits - a.hits);
 
       for (let i = 0; i < props.groupedHits.length; ++i) {
         const hit = props.groupedHits[i];
         const feat = new Feature(
           new Point(
-            fromLonLat([
+            fromLonLat(
               //@ts-ignore
-              hit.location.coordinates.coordinates[0],
-              //@ts-ignore
-              hit.location.coordinates.coordinates[1]
-            ])
+              hit.location.coordinates.coordinates
+            )
           )
         );
         feat.setProperties(hit);
         features.push(feat);
       }
+    } else {
+      const feat = new Feature(
+        //@ts-ignore
+        new Point(fromLonLat(currentUser?.location?.coordinates.coordinates))
+      );
+      features.push(feat);
     }
 
     const source = new VectorSource({
@@ -91,7 +95,9 @@ export const StatisticsMap = (props: StatisticsMapProps) => {
     });
 
     mapObj.getView().fit(source.getExtent());
-    mapObj.getView().setZoom((mapObj.getView().getZoom() as number) - 2);
+    mapObj
+      .getView()
+      .setZoom(Math.min((mapObj.getView().getZoom() as number) - 2, 11));
 
     mapObj.setTarget(mapRef.current);
 

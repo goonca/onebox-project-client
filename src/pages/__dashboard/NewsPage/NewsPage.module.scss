@@ -94,7 +94,17 @@ $hovered-border: lighten(
                 //background-color: #fbfbfb;
               }
 
-              img {
+              .avatar {
+                padding: 3px;
+                background-color: white;
+                position: absolute;
+                border-radius: 50%;
+                transform: translate(-10px, -10px);
+                width: 45px;
+                height: 45px;
+              }
+
+              .cover {
                 object-fit: cover;
                 width: 100px;
                 height: 100px;
@@ -103,6 +113,11 @@ $hovered-border: lighten(
 
               .title {
                 flex-grow: 10;
+
+                p {
+                  font-size: 12px;
+                  cursor: default;
+                }
 
                 .badges {
                   margin-bottom: $space-2;
@@ -222,7 +237,12 @@ $hovered-border: lighten(
               .item {
                 flex-direction: column;
 
-                img {
+                .avatar {
+                  left: 50%;
+                  transform: translate(-50%, -10px);
+                }
+
+                .cover {
                   width: 100%;
                   height: 150px;
                 }
