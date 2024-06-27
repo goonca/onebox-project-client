@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef } from 'react';
 import { Feature, Map, View } from 'ol';
 import { Tile } from 'ol/layer';
 import { OSM } from 'ol/source';
+import { defaults } from 'ol/interaction.js';
 import { GroupedHit } from '../../NewsGeneralPage';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
@@ -87,6 +88,7 @@ export const StatisticsMap = (props: StatisticsMapProps) => {
 
     const mapObj = new Map({
       //layers: [vector],
+      interactions: defaults({ mouseWheelZoom: false }),
       view: new View({
         center: [0, 0]
       }),

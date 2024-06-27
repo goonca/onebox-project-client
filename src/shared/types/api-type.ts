@@ -210,6 +210,16 @@ export type StatisticsModel = {
   createdAt?: Date;
 };
 
+export type NotificationModel = {
+  title?: string;
+  message?: string;
+  fromUserId?: number;
+  fromUser?: UserModel;
+  toUserId?: UserModel;
+  read?: number;
+  createdAt?: Date;
+};
+
 export type NewsStatistics = {
   totalViewers: number;
   uniqueViewers: number;

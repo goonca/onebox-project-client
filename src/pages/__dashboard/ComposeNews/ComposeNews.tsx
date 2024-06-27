@@ -218,6 +218,7 @@ export const ComposeNews: React.FC<{
     news.id &&
       publishNews(news.id as number).then(() => {
         setShowConfirmDialog(false);
+        updateNews();
       });
   };
 

@@ -114,8 +114,6 @@ export const NewsPage = () => {
                         );
                         const hasBadges = !!draftBadge;
 
-                        console.log(n);
-
                         return (
                           <>
                             <div

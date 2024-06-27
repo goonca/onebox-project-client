@@ -28,14 +28,12 @@ import { UserContext } from 'shared/context/UserContext';
 export type ChangeRegionProps = {
   open: boolean;
   news?: NewsModel;
-  onChange: (location: LocationModel) => void;
   onClose: () => void;
 };
 
 export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
   open,
   news,
-  onChange,
   onClose
 }: ChangeRegionProps) => {
   const { isMobile } = useMediaQuery();
@@ -62,8 +60,6 @@ export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
     listUsersByNameOrUsername(searchRef.current?.value as string).then(
       (res: ResponseType) => {
         const users = res.data as UserModel[];
-        console.log(users);
-
         setUsers(users.filter(user => user.id != currentUser?.id));
       }
     );
@@ -71,7 +67,6 @@ export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
 
   const selectUser = (user: UserModel) => {
     setUser(user);
-    //onChange && onChange(user);
   };
 
   const handleClose = () => {
@@ -83,9 +78,8 @@ export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
   };
 
   const share = () => {
-    console.log('share it', user);
     shareNews(news?.id as string, user?.id as number).then((res: any) => {
-      console.log(res);
+      handleClose();
     });
   };
 

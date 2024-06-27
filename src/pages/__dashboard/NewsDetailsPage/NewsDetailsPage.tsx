@@ -2,31 +2,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   Box,
-  Button,
-  Checkbox,
   FormControl,
-  InputLabel,
   ListItemText,
   MenuItem,
-  OutlinedInput,
   Select,
   SelectChangeEvent,
   Tab,
   Typography
 } from '@mui/material';
-import {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { IdType, useServices } from 'shared/hooks/useServices';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 import {
-  LocationModel,
   NewsModel,
   NewsStatistics,
   StatisticsModel,
@@ -113,17 +101,14 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   };
 
   const getSharedNews = () => {
-    console.log('getSharedNews');
     getSharedByNewsId(originalId.current)
       .then((res: any) => {
         setSharedNews(res.data);
-        console.log(res.data);
       })
       .catch(console.error);
   };
 
   const getCurrentNews = () => {
-    console.log('getCurrentNews', id);
     getNewsById(id as unknown as number).then((r: any) => {
       const news: NewsModel = id
         ? /*{
@@ -141,7 +126,6 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
 
   const handleChangeHitsPage = (page: number) => {
     const newPage = Math.max(Math.min(page, pageStatus.pages), 0);
-    //console.log(newPage);
     getHits(newPage);
   };
 
@@ -288,7 +272,11 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
                             );
                           })}
                           <hr data-combo-divisor />
-                          <MenuItem key={'share'} value={'share'}>
+                          <MenuItem
+                            key={'share'}
+                            value={'share'}
+                            onClick={() => setUsersDialogOpened(true)}
+                          >
                             <div style={itemStyle}>
                               <ListItemText primary={'Share'} />
                             </div>
@@ -329,7 +317,6 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
       <SelectUserDialog
         open={usersDialogOpened}
         news={news}
-        onChange={console.log}
         onClose={() => setUsersDialogOpened(false)}
       />
     </>

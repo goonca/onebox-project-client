@@ -27,7 +27,11 @@ export const NewsViewer: React.FC<ViwerProps> = props => {
         <div className={style['content']}>
           {props.isPublished && (
             <div className={style['user']}>
-              <UserHeader user={news?.user ?? {}} />
+              <UserHeader
+                user={
+                  (news?.holderUserId ? news?.holderUser : news?.user) ?? {}
+                }
+              />
             </div>
           )}
           <div className={style['wrapper']} data-component="news-wrapper">
