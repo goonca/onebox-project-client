@@ -1,28 +1,49 @@
+import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Badge } from '@mui/material';
 import { Avatar } from 'components/global/Avatar/Avatar';
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
+import { NotificationPopover } from '../NotificationPopover/NotificationPopover';
 
 import style from './Header.module.scss';
 
 export const Header = () => {
   const currentUser = useContext(UserContext);
-  const [showAvatar, setShowAvatar] = useState<boolean>(true);
+  const notificationIconRef = useRef<HTMLElement>(null);
+  const [open, setOpen] = useState<boolean>(false);
 
-  const handleAvatarOnload = () => {
-    setShowAvatar(false);
+  const handleBellClick = () => {
+    setOpen(!open);
   };
+
+  const handlePopoverClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <div className={style['header']} data-component="header">
         <div className={style['logo']}>
           <img src="/static/onebox-complete-logo-dark.svg" height={18} />
         </div>
-        <label>{currentUser?.username}</label>
+        <div className={style['notification']}>
+          <Badge color="warning" variant="dot" ref={notificationIconRef}>
+            <FontAwesomeIcon icon={faBell} onClick={handleBellClick} />
+          </Badge>
+        </div>
+        <hr />
 
         <div className={style['avatar']}>
+          <label>{currentUser?.username}</label>
           <Avatar user={currentUser ?? {}} />
         </div>
       </div>
+      <NotificationPopover
+        open={open}
+        onclose={handlePopoverClose}
+        anchorEl={(notificationIconRef.current as HTMLElement) ?? <></>}
+      />
     </>
   );
 };

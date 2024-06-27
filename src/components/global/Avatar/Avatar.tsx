@@ -1,6 +1,5 @@
-import { AccountCircle } from '@mui/icons-material';
 import { useState } from 'react';
-
+import { default as MUIAvatar } from '@mui/material/Avatar';
 import { UserModel } from 'shared/types/api-type';
 
 import style from './Avatar.module.scss';
@@ -18,35 +17,14 @@ export const Avatar: React.FC<AvatarProps> = ({ user, size }: AvatarProps) => {
   };
   return (
     <>
-      <div
-        className={style['avatar']}
-        style={{
-          ...(size ? { width: `${size}px`, height: `${size}px` } : {})
-        }}
-      >
-        {(showAvatar || !!!user?.avatar) && (
-          <AccountCircle
-            style={{
-              ...(size
-                ? { width: `${size + 5}px`, height: `${size + 5}px` }
-                : {})
-            }}
-          />
-        )}
-
-        <img
-          src={
-            !!user?.avatar
-              ? `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${user?.avatar}`
-              : undefined
-          }
-          style={{
-            visibility: !!user?.avatar ? 'visible' : 'hidden',
-            ...(size ? { width: `${size}px`, height: `${size}px` } : {})
-          }}
-          onLoad={handleAvatarOnload}
-        />
-      </div>
+      <MUIAvatar
+        alt={user.name ?? user.username}
+        src={
+          user?.avatar &&
+          `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files/${user?.avatar}`
+        }
+        sx={{ width: size, height: size, bgcolor: 'gray' }}
+      ></MUIAvatar>
     </>
   );
 };

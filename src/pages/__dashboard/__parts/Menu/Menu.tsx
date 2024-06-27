@@ -1,6 +1,7 @@
 import {
   faHardDrive,
   faHouse,
+  faMessage,
   faNewspaper,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
@@ -57,6 +58,13 @@ export const Menu = () => {
           label="Files"
           icon={faHardDrive}
           path="files"
+          preSelected={page}
+          onClick={path => setPage(path)}
+        />
+        <MenuButton
+          label="Notifications"
+          icon={faMessage}
+          path="notifications"
           preSelected={page}
           onClick={path => setPage(path)}
         />

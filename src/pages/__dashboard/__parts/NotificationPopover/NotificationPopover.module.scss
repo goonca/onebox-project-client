@@ -1,0 +1,47 @@
+@import '~/src/shared/style/variables.scss';
+
+.notification-popover {
+  @include dashboard-section-header;
+
+  min-width: 350px;
+
+  .header {
+    font-size: 12px;
+    padding: 20px;
+    margin-bottom: 0;
+    border-bottom: 1px solid #f1f1f3;
+    align-items: center;
+
+    div:first-of-type {
+      justify-content: center;
+    }
+  }
+
+  .body {
+    background-color: #fafafa;
+    padding: 20px 15px;
+
+    .tile {
+      display: flex;
+      flex-direction: row;
+      gap: $space-2;
+      font-size: 14px;
+      align-items: center;
+
+      p {
+        margin: 0;
+      }
+
+      .datetime {
+        color: darkgray;
+      }
+    }
+  }
+
+  .footer {
+    border-top: 1px solid #f1f1f3;
+    padding: 20px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
