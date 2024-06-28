@@ -19,7 +19,7 @@ import React, {
   useState
 } from 'react';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
-import { ResponseType, useServices } from 'shared/hooks/useServices';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
 import { LocationModel, NewsModel, UserModel } from 'shared/types/api-type';
 import { Avatar } from 'components/global/Avatar/Avatar';
 import style from './SelectUserDialog.module.scss';
@@ -58,7 +58,7 @@ export const SelectUserDialog: React.FC<ChangeRegionProps> = ({
     }
 
     listUsersByNameOrUsername(searchRef.current?.value as string).then(
-      (res: ResponseType) => {
+      (res: OBResponseType) => {
         const users = res.data as UserModel[];
         setUsers(users.filter(user => user.id != currentUser?.id));
       }

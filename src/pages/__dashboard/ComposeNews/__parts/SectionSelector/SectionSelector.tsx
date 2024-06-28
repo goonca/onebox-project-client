@@ -4,7 +4,7 @@ import { NewsModel, SectionModel } from 'shared/types/api-type';
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { ResponseType, useServices } from 'shared/hooks/useServices';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
 import tinycolor from 'tinycolor2';
 
 export type SectionSelectorProps = {
@@ -43,7 +43,7 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
   };
 
   useEffect(() => {
-    getSections().then((response: ResponseType) => {
+    getSections().then((response: OBResponseType) => {
       setSections(getFilteredSections(response.data));
     });
   }, []);

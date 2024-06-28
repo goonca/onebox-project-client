@@ -102,6 +102,12 @@ hr[data-combo-divisor] {
   margin: 10px;
 }
 
+#notificationPopover {
+  [class*='MuiPaper-root'] {
+    transform: translate(25px, 15px) !important;
+  }
+}
+
 /*.cm-spell-error {
   background-color: initial !important;
 }

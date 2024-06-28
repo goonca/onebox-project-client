@@ -1,8 +1,9 @@
-import { PeopleSharp } from '@mui/icons-material';
 import { Link, Popover } from '@mui/material';
 import { Avatar } from 'components/global/Avatar/Avatar';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
+import { NotificationModel } from 'shared/types/api-type';
 import style from './NotificationPopover.module.scss';
 
 type NotificationPopoverProps = {
@@ -15,16 +16,23 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = (
   props: NotificationPopoverProps
 ) => {
   const currentUser = useContext(UserContext);
+  const { listNotificationByTo } = useServices();
+  const [notifications, setNotifications] = useState<NotificationModel[]>();
 
-  /*const [open, setOpen] = useState<boolean>(props.open);
+  const listNotificatrions = () => {
+    listNotificationByTo(currentUser?.id, 5, 1).then((res: OBResponseType) => {
+      setNotifications(res.data);
+    });
+  };
 
   useEffect(() => {
-    setOpen(props.open);
-  }, [props?.open]);*/
+    listNotificatrions();
+  }, []);
 
   return (
     <>
       <Popover
+        id="notificationPopover"
         open={props.open}
         anchorEl={props.anchorEl}
         onClose={props.onclose}
@@ -44,17 +52,25 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = (
             </div>
           </div>
           <div className={style['body']}>
-            <div className={style['tile']}>
-              <Avatar user={currentUser ?? {}} />
-              <div>
-                <p>
-                  <strong>{currentUser?.name ?? currentUser?.username}</strong>
-                  &nbsp;
-                  <span>shared a news</span>
-                </p>
-                <p className={style['datetime']}>4 min ago</p>
-              </div>
-            </div>
+            {notifications &&
+              notifications.map(notification => (
+                <div className={style['tile']}>
+                  <Avatar user={notification.toUser ?? {}} />
+                  <div>
+                    <p>
+                      <strong>
+                        {notification.toUser?.name ??
+                          notification.toUser?.username}
+                      </strong>
+                      &nbsp;
+                      <span>shared a news</span>
+                    </p>
+                    <p className={style['datetime']}>
+                      {notification.createdAt}
+                    </p>
+                  </div>
+                </div>
+              ))}
           </div>
           <div className={style['footer']}>
             <Link>See all</Link>

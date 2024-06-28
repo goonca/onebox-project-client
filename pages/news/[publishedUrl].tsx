@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { NewsViewer } from 'pages/__viewer/NewsViewer/NewsViewer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'shared/hooks/useLocation';
-import { ResponseType, useServices } from 'shared/hooks/useServices';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
 import { useTimer } from 'shared/hooks/useTimer';
 import {
   NewsModel,
@@ -94,7 +94,7 @@ const Page = () => {
               clientIp: location.ipLocation?.ip,
               newsId: news.id as number,
               locationGeonameId: location.geoLocation?.geoname_id
-            }).then((response: ResponseType) => {
+            }).then((response: OBResponseType) => {
               statistics.current = response.data[0];
               startTimer();
 

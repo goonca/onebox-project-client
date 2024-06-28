@@ -11,7 +11,7 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { UserContext } from 'shared/context/UserContext';
 import { useFile } from 'shared/hooks/useFile';
-import { ResponseType } from 'shared/hooks/useServices';
+import { OBResponseType } from 'shared/hooks/useServices';
 import { FileModel, UserModel } from 'shared/types/api-type';
 
 import style from './Draggable.module.scss';
@@ -85,7 +85,7 @@ export const Draggable = forwardRef(function Draggable(
       credentials: 'include'
     })
       .then(response => response.json())
-      .then((res: ResponseType) => {
+      .then((res: OBResponseType) => {
         setTimeout(() => {
           props.onUpload &&
             !props.showPreview &&

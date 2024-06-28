@@ -4,6 +4,7 @@ import { Badge } from '@mui/material';
 import { Avatar } from 'components/global/Avatar/Avatar';
 import { useContext, useRef, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
+import { useServices } from 'shared/hooks/useServices';
 import { NotificationPopover } from '../NotificationPopover/NotificationPopover';
 
 import style from './Header.module.scss';
@@ -12,6 +13,7 @@ export const Header = () => {
   const currentUser = useContext(UserContext);
   const notificationIconRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const { countUnreadByTo } = useServices();
 
   const handleBellClick = () => {
     setOpen(!open);

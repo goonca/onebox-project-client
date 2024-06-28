@@ -9,7 +9,7 @@ import {
 } from 'shared/types/api-type';
 import { EventType, useEvent } from './useEvent';
 
-export type ResponseType = {
+export type OBResponseType = {
   data?: any;
   status?: RequestStatus;
 };
@@ -50,6 +50,8 @@ export type ServicesType = {
   logoff: () => any;
   deleteFile: (id: IdType) => any;
   saveLocation: (location: LocationModel) => any;
+  listNotificationByTo: (id: IdType, pageSize?: number, page?: number) => any;
+  countUnreadByTo: (id: IdType) => any;
   //deleteComponent: (component?: ComponentModel) => any;
 };
 
@@ -73,7 +75,8 @@ export const useServices = (): ServicesType => {
     FILES: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/files`,
     SECTION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/section`,
     LOCATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/location`,
-    STATISTICS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/statistics`
+    STATISTICS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/statistics`,
+    NOTIFICATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/notification`
   };
 
   const _fetch = async (method: string, url: string, props?: FecthProps) => {
@@ -239,6 +242,18 @@ export const useServices = (): ServicesType => {
     return post(`${uri.STATISTICS}/log/${id}`, { time });
   };
 
+  const listNotificationByTo = (
+    id: IdType,
+    pageSize?: number,
+    page?: number
+  ) => {
+    return get(`${uri.NOTIFICATION}/${id}`);
+  };
+
+  const countUnreadByTo = (id: IdType) => {
+    return get(`${uri.NOTIFICATION}/count/${id}`);
+  };
+
   return {
     authenticate,
     saveUser,
@@ -266,6 +281,8 @@ export const useServices = (): ServicesType => {
     getStatisticByUser,
     getGeneralStatistics,
     getGroupedStatisticsByNews,
-    addViewerTime
+    addViewerTime,
+    listNotificationByTo,
+    countUnreadByTo
   };
 };

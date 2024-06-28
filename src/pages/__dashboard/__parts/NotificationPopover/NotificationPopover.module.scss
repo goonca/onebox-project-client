@@ -1,5 +1,7 @@
 @import '~/src/shared/style/variables.scss';
 
+$border-color: #f1f1f3;
+
 .notification-popover {
   @include dashboard-section-header;
 
@@ -9,7 +11,7 @@
     font-size: 12px;
     padding: 20px;
     margin-bottom: 0;
-    border-bottom: 1px solid #f1f1f3;
+    border-bottom: 1px solid $border-color;
     align-items: center;
 
     div:first-of-type {
@@ -19,7 +21,9 @@
 
   .body {
     background-color: #fafafa;
-    padding: 20px 15px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
 
     .tile {
       display: flex;
@@ -27,6 +31,12 @@
       gap: $space-2;
       font-size: 14px;
       align-items: center;
+      padding: 20px 10px;
+      border-bottom: 1px solid $border-color;
+
+      &:last-of-type {
+        border-bottom-width: 0;
+      }
 
       p {
         margin: 0;
@@ -34,12 +44,13 @@
 
       .datetime {
         color: darkgray;
+        font-size: small;
       }
     }
   }
 
   .footer {
-    border-top: 1px solid #f1f1f3;
+    border-top: 1px solid $border-color;
     padding: 20px;
     font-size: 14px;
     text-align: center;

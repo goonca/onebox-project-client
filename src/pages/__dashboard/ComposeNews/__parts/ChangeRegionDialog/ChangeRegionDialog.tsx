@@ -21,7 +21,7 @@ import React, {
 import { UserContext } from 'shared/context/UserContext';
 import { useLocation } from 'shared/hooks/useLocation';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
-import { ResponseType, useServices } from 'shared/hooks/useServices';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
 import { LocationModel } from 'shared/types/api-type';
 import style from './ChangeRegionDialog.module.scss';
 
@@ -56,7 +56,7 @@ export const ChangeRegionDialog: React.FC<ChangeRegionProps> = ({
     }
 
     getCitiesByName(searchRef.current?.value as string).then(
-      (res: ResponseType) => {
+      (res: OBResponseType) => {
         const cities = res.data as LocationModel[];
         console.log(cities, currentUser?.location);
         currentUser?.location &&

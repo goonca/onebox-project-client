@@ -7,6 +7,13 @@ export type FigureFitType =
 
 export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
+export enum NotificationType {
+  NEWS_PUBLISHED,
+  NEWS_UNPUBLISHED,
+  NEWS_UPDATED,
+  NEWS_SHARED
+}
+
 export enum NewsStatus {
   DRAFT,
   PUBLISHED,
@@ -211,11 +218,15 @@ export type StatisticsModel = {
 };
 
 export type NotificationModel = {
-  title?: string;
-  message?: string;
+  type?: NotificationType;
+  param1?: string;
+  param2?: string;
+  newsId?: number;
+  news?: NewsModel;
   fromUserId?: number;
   fromUser?: UserModel;
-  toUserId?: UserModel;
+  toUserId?: number;
+  toUser?: UserModel;
   read?: number;
   createdAt?: Date;
 };

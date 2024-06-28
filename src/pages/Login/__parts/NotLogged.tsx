@@ -1,7 +1,7 @@
 import { Button, Link, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
-import { ResponseType, useServices } from 'shared/hooks/useServices';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
 import { RequestStatus, UserModel } from 'shared/types/api-type';
 
 import style from './NotLogged.module.scss';
@@ -33,7 +33,7 @@ export const NotLogged = () => {
       email: !!emailRef.current?.value ? emailRef.current?.value : undefined
     };
     const response = firstTime ? createUser(user) : authenticateUser(user);
-    response.then((res: ResponseType) => {
+    response.then((res: OBResponseType) => {
       console.log(res);
       if (res.status == RequestStatus.SUCCESS) {
         document.location.href = '/dashboard';
