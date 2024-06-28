@@ -8,10 +8,16 @@ export type FigureFitType =
 export type ComponentType = 'Figure' | 'Quote' | 'Text';
 
 export enum NotificationType {
-  NEWS_PUBLISHED,
-  NEWS_UNPUBLISHED,
-  NEWS_UPDATED,
-  NEWS_SHARED
+  NEWS_PUBLISHED = 'NEWS_PUBLISHED',
+  NEWS_UNPUBLISHED = 'NEWS_UNPUBLISHED',
+  NEWS_VIEWED = 'NEWS_VIEWED',
+  NEWS_UPDATED = 'NEWS_UPDATED',
+  NEWS_SHARED = 'NEWS_SHARED'
+}
+
+export enum ViewerSurceEnum {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED'
 }
 
 export enum NewsStatus {
@@ -23,9 +29,9 @@ export enum NewsStatus {
 }
 
 export enum NewsContext {
-  WORLD = 0,
-  COUNTRY = 1,
-  REGION = 2
+  WORLD,
+  COUNTRY,
+  REGION
 }
 
 export enum AccountType {
@@ -62,8 +68,8 @@ export type UserModel = {
   youtube?: string;
   twitter?: string;
   facebook?: string;
-  location?: LocationModel;
   locationGeonameId?: string;
+  location?: LocationModel;
 };
 
 export type NewsModel = {
@@ -81,6 +87,7 @@ export type NewsModel = {
   showDate?: boolean;
   showContext?: boolean;
   showSection?: boolean;
+  holderViewed?: boolean;
   userId?: number;
   publishedAt?: Date;
   draftId?: number;
@@ -93,28 +100,6 @@ export type NewsModel = {
   sharedById?: number;
   holderUserId?: number;
   holderUser?: UserModel;
-};
-
-export type ComponentModel = {
-  id?: number;
-  tempId?: string;
-  newsId?: number;
-  position?: number;
-  type?: ComponentType;
-  src?: string;
-  key?: string;
-  $key?: string;
-  isCover?: boolean;
-  fitType?: FigureFitType;
-  caption?: string;
-  longText?: string;
-  longFormattedText?: string;
-  paddingTop?: number;
-  paddingBottom?: number;
-  marginTop?: number;
-  marginBottom?: number;
-  width?: number;
-  height?: number;
 };
 
 export type FileModel = {
@@ -135,6 +120,58 @@ export type FileModel = {
   createdAt?: Date;
 };
 
+export type ComponentModel = {
+  id?: number;
+  tempId?: string;
+  newsId?: number;
+  position?: number;
+  type?: ComponentType;
+  src?: string;
+  key?: string;
+  isCover?: boolean;
+  fitType?: FigureFitType;
+  caption?: string;
+  longText?: string;
+  longFormattedText?: string;
+  paddingTop?: number;
+  paddingBottom?: number;
+  marginTop?: number;
+  marginBottom?: number;
+  width?: number;
+  height?: number;
+};
+
+export type LocationModel = {
+  geoname_id: string;
+  name: string;
+  ascii_name: string;
+  alternate_names: string[] | string;
+  latitude: string;
+  longitude: string;
+  feature_class: string;
+  feature_code: string;
+  country_code: string;
+  country_code_2: string;
+  admin1_code: string;
+  admin2_code: string;
+  admin3_code: string;
+  admin4_code: string;
+  population: number;
+  elevation: string;
+  dem: number;
+  timezone: string;
+  modification_date: string;
+  country: string;
+  distance?: number;
+  coordinates:
+    | {
+        lon: number;
+        lat: number;
+      }
+    | number[]
+    | { type: string; coordinates: number[] };
+};
+
 export type SectionModel = {
   id?: number;
   key?: string;
@@ -142,37 +179,6 @@ export type SectionModel = {
   primaryColor?: string;
   secondaryColor?: string;
   totalNews?: number;
-};
-
-export type LocationModel = {
-  geoname_id?: string;
-  name?: string;
-  ascii_name?: string;
-  alternate_names?: string[] | string;
-  latitude?: string;
-  longitude?: string;
-  feature_class?: string;
-  feature_code?: string;
-  country_code?: string;
-  country_code_2?: string;
-  admin1_code?: string;
-  admin2_code?: string;
-  admin3_code?: string;
-  admin4_code?: string;
-  population?: number;
-  elevation?: string;
-  dem?: number;
-  timezone?: string;
-  modification_date?: string;
-  country?: string;
-  distance?: number;
-  coordinates?:
-    | {
-        lon: number;
-        lat: number;
-      }
-    | number[]
-    | { type: string; coordinates: number[] };
 };
 
 export type IPLocation = {

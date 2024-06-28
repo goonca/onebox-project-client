@@ -4,7 +4,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next/types';
 import { NewsViewer } from 'pages/__viewer/NewsViewer/NewsViewer';
 import { useEffect, useState } from 'react';
 import { useServices } from 'shared/hooks/useServices';
-import { NewsModel } from 'shared/types/api-type';
+import { NewsModel, ViewerSurceEnum } from 'shared/types/api-type';
 import { PageProps } from 'shared/types/PagePropsType';
 
 export const getServerSideProps = (async ({ req, res }) => {
@@ -29,10 +29,12 @@ const Page = ({
   const { id } = router.query;
 
   useEffect(() => {
-    getNewsById(id as unknown as number).then((res: any) => {
-      const isValidNews = !!res.data;
-      isValidNews && setNews(res.data);
-    });
+    getNewsById(id as unknown as number, ViewerSurceEnum.DRAFT).then(
+      (res: any) => {
+        const isValidNews = !!res.data;
+        isValidNews && setNews(res.data);
+      }
+    );
   }, []);
   return <>{news && <NewsViewer news={news} />}</>;
 };

@@ -5,7 +5,8 @@ import {
   NewsModel,
   RequestStatus,
   StatisticsModel,
-  UserModel
+  UserModel,
+  ViewerSurceEnum
 } from 'shared/types/api-type';
 import { EventType, useEvent } from './useEvent';
 
@@ -33,7 +34,7 @@ export type ServicesType = {
   updateUser: (user: UserModel, token?: string, hideFeedback?: boolean) => any;
   updatePassword: (data: UpdatePassword) => any;
   saveNews: (news: NewsModel) => any;
-  getNewsById: (id: IdType) => any;
+  getNewsById: (id: IdType, source?: ViewerSurceEnum) => any;
   getNewsByUrl: (url: string) => any;
   getNews: () => any;
   getSharedByNewsId: (id: IdType) => any;
@@ -181,8 +182,8 @@ export const useServices = (): ServicesType => {
     return await post(`${uri.NEWS}/share/${id}?holderId=${holderId}`);
   };
 
-  const getNewsById = async (id: IdType) => {
-    return await get(`${uri.NEWS}/${id}`);
+  const getNewsById = async (id: IdType, source?: ViewerSurceEnum) => {
+    return await get(`${uri.NEWS}/${id}${source ? `?source=${source}` : ''}`); //read the source on BE to set add viewed notification
   };
 
   const getNewsByUrl = async (url: string) => {

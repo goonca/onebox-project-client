@@ -18,7 +18,8 @@ import {
   NewsModel,
   NewsStatistics,
   StatisticsModel,
-  UserModel
+  UserModel,
+  ViewerSurceEnum
 } from 'shared/types/api-type';
 
 import { ComposeNews } from '../ComposeNews/ComposeNews';
@@ -109,15 +110,17 @@ export const NewsDetailsPage: React.FC<NewsDetailsPageProps> = (
   };
 
   const getCurrentNews = () => {
-    getNewsById(id as unknown as number).then((r: any) => {
-      const news: NewsModel = id
-        ? /*{
+    getNewsById(id as unknown as number, ViewerSurceEnum.DRAFT).then(
+      (r: any) => {
+        const news: NewsModel = id
+          ? /*{
           ...r?.data.news,
           components: r?.data.components
         }*/ r?.data
-        : getEmptyNews(currentUser, id);
-      setNews(news);
-    });
+          : getEmptyNews(currentUser, id);
+        setNews(news);
+      }
+    );
   };
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
