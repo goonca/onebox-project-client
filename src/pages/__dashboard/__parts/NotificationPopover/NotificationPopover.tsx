@@ -68,13 +68,10 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = (
             {notifications &&
               notifications.map(notification => (
                 <div className={style['tile']}>
-                  <Avatar user={notification.toUser ?? {}} />
+                  <Avatar user={notification.fromUser ?? {}} />
                   <div>
                     <p>
-                      <strong>
-                        {notification.toUser?.name ??
-                          notification.toUser?.username}
-                      </strong>
+                      <strong>{notification.fromUser?.username}</strong>
                       &nbsp;
                       <span>
                         {notification.type &&
