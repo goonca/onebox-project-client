@@ -5,7 +5,8 @@ import {
   LocationModel,
   NewsStatistics,
   NewsStatus,
-  StatisticsModel
+  StatisticsModel,
+  UserModel
 } from 'shared/types/api-type';
 import { useMoment } from 'shared/hooks/useMoment';
 import style from './NewsGeneralPage.module.scss';
@@ -47,6 +48,7 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
 ) => {
   const { toDateTimeString, twoLinesDate } = useMoment();
   const [hits, setHits] = useState<StatisticsModel[]>();
+  const currentUser = useContext(UserContext);
   /*const [groupedHits, setGroupedHits] = useState<GroupedHits[]>();
   const [chartHits, setChartHits] = useState<GroupedHits[]>();*/
   const [pageStatus, setPageStatus] = useState<PageStatus>(
@@ -125,6 +127,10 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
 
   //************************ */
   //************************ */
+  const sharedByMe: boolean = !!(
+    props.statistics.news.userId == currentUser?.id &&
+    props.statistics.news.holderUserId
+  );
 
   return (
     <>
@@ -176,10 +182,24 @@ export const NewsGeneralPage: React.FC<NewsGeneralPageProps> = (
                 <div
                   className={`${style['content']} ${style['content-box']} ${style['shared-with']}`}
                 >
-                  <label>Shared by</label>
+                  <label>{sharedByMe ? 'Shared with' : 'Shared by'}</label>
                   <div className={style['shared-by']}>
-                    <Avatar size={30} user={props.statistics.news.user} />
-                    <Link>@{props.statistics.news.user.username}</Link>
+                    <Avatar
+                      size={30}
+                      user={
+                        props.statistics.news[
+                          sharedByMe ? 'holderUser' : 'user'
+                        ] as UserModel
+                      }
+                    />
+                    <Link>
+                      @
+                      {
+                        props.statistics.news[
+                          sharedByMe ? 'holderUser' : 'user'
+                        ]?.username
+                      }
+                    </Link>
                   </div>
                 </div>
               )}
