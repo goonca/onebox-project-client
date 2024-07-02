@@ -105,6 +105,7 @@ hr[data-combo-divisor] {
 #notificationPopover {
   [class*='MuiPaper-root'] {
     transform: translate(25px, 15px) !important;
+    overflow: visible;
   }
 }
 

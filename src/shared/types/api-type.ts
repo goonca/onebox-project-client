@@ -224,6 +224,7 @@ export type StatisticsModel = {
 };
 
 export type NotificationModel = {
+  id?: number;
   type?: NotificationType;
   param1?: string;
   param2?: string;

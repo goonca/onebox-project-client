@@ -1,0 +1,135 @@
+@import '~/src/shared/style/variables.scss';
+
+$border-color: #f1f1f3;
+
+.notification-page {
+  @include dashboard-section-header;
+
+  [class*='Container_container'] {
+    padding: 0;
+  }
+
+  .header {
+    h2 {
+      margin-right: 15px;
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 190px);
+    overflow: auto;
+
+    .list {
+      min-width: 300px;
+      border-right: 1px solid $border-color;
+      //height: 200px;
+      overflow: auto;
+      position: sticky;
+      top: 0;
+
+      .wrapper {
+        position: relative;
+
+        .tile {
+          &.search {
+            position: sticky;
+            background-color: white;
+            top: 0;
+            z-index: 1;
+            padding: 0;
+            border-top-left-radius: 8px;
+
+            input {
+              font-size: 12px;
+            }
+
+            svg {
+              color: gray;
+            }
+
+            fieldset {
+              border: 0;
+              border-top-left-radius: 8px;
+            }
+          }
+        }
+
+        .tile {
+          cursor: pointer;
+          display: flex;
+          flex-direction: row;
+          gap: $space-2;
+          font-size: 14px;
+          align-items: center;
+          padding: 15px 15px;
+          border-bottom: 1px solid $border-color;
+          border-left: 3px solid white;
+          background-color: white;
+
+          transition: border-left-color 0.3s, background-color 0.3s;
+
+          &:hover {
+            //border-left-color: lightgray;
+          }
+
+          &:last-of-type {
+            //border-bottom-width: 0;
+          }
+
+          &.message-read {
+            color: gray;
+          }
+
+          &.message-unread {
+            color: black;
+            border-left-color: #ed6c02;
+          }
+
+          &.selected {
+            border-left-color: $blue;
+            background-color: lighten($color: $blue, $amount: 50);
+          }
+
+          p {
+            margin: 0;
+          }
+
+          .datetime {
+            color: darkgray;
+            font-size: small;
+          }
+        }
+      }
+    }
+
+    .message {
+      width: 100%;
+      padding: 15px;
+      color: rgb(64, 64, 64);
+      font-size: 15px;
+      letter-spacing: 0.045rem;
+      text-align: center;
+
+      .date {
+        text-align: right;
+        letter-spacing: initial;
+        margin-bottom: 40px;
+        border-bottom: 1px solid #efefef;
+        padding-bottom: 10px;
+        font-size: 12px;
+        color: gray;
+      }
+
+      .select-message {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: gray;
+        font-size: 22px;
+      }
+    }
+  }
+}

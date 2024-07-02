@@ -15,6 +15,7 @@ import { SnackBarType } from 'shared/types/SnackBarType';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
 import style from './StartPage.module.scss';
 import { NewsDetailsPage } from '../NewsDetailsPage/NewsDetailsPage';
+import { NotificationPage } from '../NotificationPage/NotificationPage';
 
 export const StartPage: React.FC<PageProps> = (props: PageProps) => {
   const [currentUser, setCurrentUser] = useState<UserModel | undefined>(
@@ -61,6 +62,11 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
                 <Route path="news/compose/" element={<NewsDetailsPage />} />
                 <Route path="news/compose/:id" element={<NewsDetailsPage />} />
                 <Route path="files" element={<FilesPage />} />
+                <Route path="notifications" element={<NotificationPage />} />
+                <Route
+                  path="notifications/:id"
+                  element={<NotificationPage />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>

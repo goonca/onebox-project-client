@@ -51,8 +51,14 @@ export type ServicesType = {
   logoff: () => any;
   deleteFile: (id: IdType) => any;
   saveLocation: (location: LocationModel) => any;
-  listNotificationByTo: (id: IdType, pageSize?: number, page?: number) => any;
+  listNotificationByTo: (
+    id: IdType,
+    pageSize?: number,
+    page?: number,
+    searchString?: string
+  ) => any;
   countUnreadByTo: (id: IdType) => any;
+  setNotificationRead: (ids: IdType[]) => any;
   //deleteComponent: (component?: ComponentModel) => any;
 };
 
@@ -183,7 +189,7 @@ export const useServices = (): ServicesType => {
   };
 
   const getNewsById = async (id: IdType, source?: ViewerSurceEnum) => {
-    return await get(`${uri.NEWS}/${id}${source ? `?source=${source}` : ''}`); //read the source on BE to set add viewed notification
+    return await get(`${uri.NEWS}/${id}${source ? `?source=${source}` : ''}`);
   };
 
   const getNewsByUrl = async (url: string) => {
@@ -243,16 +249,23 @@ export const useServices = (): ServicesType => {
     return post(`${uri.STATISTICS}/log/${id}`, { time });
   };
 
-  const listNotificationByTo = (
+  const listNotificationByTo = async (
     id: IdType,
     pageSize?: number,
-    page?: number
+    page?: number,
+    searchString?: string
   ) => {
-    return get(`${uri.NOTIFICATION}/${id}`);
+    return get(
+      `${uri.NOTIFICATION}/${id}?pageSize=${pageSize}&page=${page}&searchString=${searchString}`
+    );
   };
 
-  const countUnreadByTo = (id: IdType) => {
+  const countUnreadByTo = async (id: IdType) => {
     return get(`${uri.NOTIFICATION}/count/${id}`);
+  };
+
+  const setNotificationRead = async (ids: IdType[]) => {
+    return get(`${uri.NOTIFICATION}/read/${ids.join(',')}`);
   };
 
   return {
@@ -284,6 +297,7 @@ export const useServices = (): ServicesType => {
     getGroupedStatisticsByNews,
     addViewerTime,
     listNotificationByTo,
-    countUnreadByTo
+    countUnreadByTo,
+    setNotificationRead
   };
 };

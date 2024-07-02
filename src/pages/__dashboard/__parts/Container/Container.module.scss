@@ -1,0 +1,8 @@
+@import '~/src/shared/style/variables.scss';
+
+.container {
+  background-color: white;
+  box-shadow: $shadow-tiny;
+  border-radius: $block-radius;
+  padding: $space-3;
+}
