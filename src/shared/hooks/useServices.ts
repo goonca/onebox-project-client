@@ -256,7 +256,11 @@ export const useServices = (): ServicesType => {
     searchString?: string
   ) => {
     return get(
-      `${uri.NOTIFICATION}/${id}?pageSize=${pageSize}&page=${page}&searchString=${searchString}`
+      `${
+        uri.NOTIFICATION
+      }/${id}?pageSize=${pageSize}&page=${page}&searchString=${
+        searchString ?? ''
+      }`
     );
   };
 

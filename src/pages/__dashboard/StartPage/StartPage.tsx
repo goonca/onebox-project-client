@@ -16,6 +16,7 @@ import { EventType, useEvent } from 'shared/hooks/useEvent';
 import style from './StartPage.module.scss';
 import { NewsDetailsPage } from '../NewsDetailsPage/NewsDetailsPage';
 import { NotificationPage } from '../NotificationPage/NotificationPage';
+import { MySpacePage } from '../MySpacePage/MySpacePage';
 
 export const StartPage: React.FC<PageProps> = (props: PageProps) => {
   const [currentUser, setCurrentUser] = useState<UserModel | undefined>(
@@ -58,6 +59,7 @@ export const StartPage: React.FC<PageProps> = (props: PageProps) => {
               <Route path="/dashboard" element={<Layout />}>
                 <Route index element={<NewsPage />} />
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="myspace" element={<MySpacePage />} />
                 <Route path="news" element={<NewsPage />} />
                 <Route path="news/compose/" element={<NewsDetailsPage />} />
                 <Route path="news/compose/:id" element={<NewsDetailsPage />} />

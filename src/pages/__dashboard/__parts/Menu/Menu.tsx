@@ -3,6 +3,7 @@ import {
   faHouse,
   faMessage,
   faNewspaper,
+  faTable,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useState } from 'react';
@@ -40,6 +41,13 @@ export const Menu = () => {
           />
         </div>
         <MenuButton label="Home" icon={faHouse} preSelected={page} />
+        <MenuButton
+          label="My Space"
+          icon={faTable}
+          path="myspace"
+          preSelected={page}
+          onClick={path => setPage(path)}
+        />
         <MenuButton
           label="Profile"
           icon={faUser}

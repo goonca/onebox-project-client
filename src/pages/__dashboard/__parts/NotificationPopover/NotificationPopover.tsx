@@ -1,7 +1,8 @@
 import { Badge, Link, Popover } from '@mui/material';
 import { Avatar } from 'components/global/Avatar/Avatar';
+import { throttle } from 'lodash';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useNotification } from 'shared/hooks/useNotification';
 import { OBResponseType, useServices } from 'shared/hooks/useServices';
@@ -29,15 +30,29 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = (
     props.open && setTimeout(updateTime, 1000 * 10);
   };
 
-  const listNotifications = () => {
-    listNotificationByTo(currentUser?.id, 4, 0).then((res: OBResponseType) => {
-      setNotifications(res.data);
-    });
-  };
+  const listNotifications = useCallback(
+    throttle(
+      () => {
+        listNotificationByTo(currentUser?.id, 4, 0).then(
+          (res: OBResponseType) => {
+            console.log('listNotifications', res);
+            setNotifications(res.data);
+          }
+        );
+      },
+      1000,
+      { leading: true, trailing: false }
+    ),
+    []
+  );
 
   useEffect(() => {
     listNotifications();
   }, [props.hasUnreadMessages]);
+
+  useEffect(() => {
+    listNotifications();
+  }, []);
 
   useEffect(() => {
     updateTime();
