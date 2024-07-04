@@ -6,9 +6,9 @@ import style from './NewsHorizontal.module.scss';
 
 const NewsHorizontal = (props: NewsCoverType) => {
   const titleStyle =
-    props.badge && props.badgeType === 'titled'
+    props.news?.section && props.badgeType === 'titled'
       ? {
-          borderLeft: '5px solid ' + props.badge.section?.primaryColor,
+          borderLeft: '5px solid ' + props.news?.section?.primaryColor,
           paddingLeft: '5px'
         }
       : {};
@@ -22,14 +22,16 @@ const NewsHorizontal = (props: NewsCoverType) => {
         }`}
         style={props.width ? { width: props.width } : {}}
       >
-        {props.figure && <Figure {...props.figure} width={25}></Figure>}
+        {props.news?.cover && (
+          <Figure $key={props.news?.cover} width={25}></Figure>
+        )}
         <div className={style['wrapper']}>
           <div className={style['content']}>
-            {props.badge && props.badgeType !== 'titled' && (
-              <Badge {...props.badge}></Badge>
+            {props.news?.section && props.badgeType !== 'titled' && (
+              <Badge {...props.news?.section}></Badge>
             )}
             <a href="#" style={titleStyle}>
-              {props.title}
+              {props.news?.title}
             </a>
           </div>
         </div>

@@ -1,11 +1,9 @@
 import { BadgeProps } from 'components/compose/Badge';
-import { ComponentModel } from './api-type';
+import { ComponentModel, NewsModel } from './api-type';
 
 export type NewsCoverType = {
-  title: string;
-  badge?: BadgeProps;
+  news?: NewsModel;
   badgeType?: 'default' | 'titled';
-  figure?: ComponentModel;
   width?: string;
   showDivider?: boolean;
 };

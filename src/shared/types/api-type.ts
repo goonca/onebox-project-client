@@ -127,6 +127,7 @@ export type ComponentModel = {
   position?: number;
   type?: ComponentType;
   src?: string;
+  $key?: string;
   key?: string;
   isCover?: boolean;
   fitType?: FigureFitType;
@@ -243,4 +244,42 @@ export type NewsStatistics = {
   uniqueViewers: number;
   avgViewingTime: number;
   news: NewsModel;
+};
+
+export type FilterModel = {
+  id?: number | string;
+  blockId?: number;
+  block?: BlockModel;
+  attribute?: string;
+  condition?: string;
+  operator?: string;
+  value?: string;
+};
+
+export type BlockModel = {
+  id?: number | string;
+  title?: string;
+  size?: number;
+  display?: number;
+  positionX?: number;
+  positionY?: number;
+  filters?: FilterModel[];
+  userId?: number;
+  user?: UserModel;
+  layoutId?: number;
+  layout?: LayoutModel;
+  news?: NewsModel[];
+};
+
+export type LayoutModel = {
+  id?: number | string;
+  type?: number;
+  position?: number;
+  userId?: number;
+  user?: UserModel;
+  blocks?: BlockModel[];
+};
+
+export type SpaceModel = {
+  layouts?: LayoutModel[];
 };

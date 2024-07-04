@@ -1,0 +1,23 @@
+@import '~/src/shared/style/variables.scss';
+
+.template {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  &.edit-mode {
+    gap: 10px;
+  }
+
+  .column-1 {
+    width: 20%;
+  }
+
+  .column-2 {
+    width: 60%;
+  }
+
+  .column-3 {
+    width: 20%;
+  }
+}

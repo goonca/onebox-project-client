@@ -1,0 +1,78 @@
+@import '~/src/shared/style/variables.scss';
+
+$border-color: #3b86ff;
+$bg-color: #eaf2ff;
+$transition-delay: 0s;
+
+.block {
+  position: relative;
+  margin-top: 10px;
+
+  /*.wrapper {
+    opacity: 1;
+  }*/
+
+  .header {
+    flex-direction: row;
+    background-color: $border-color;
+    position: absolute;
+    top: 0;
+    left: -2px;
+    transform: translateY(-100%);
+    padding: 1px 5px;
+    border-radius: 6px 6px 0 0;
+    font-size: 14px;
+    color: darken($color: $border-color, $amount: 60);
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      top: -30px;
+      transition: top 0.3s;
+    }
+
+    hr {
+      height: $space-3;
+      border: 0;
+      border-left: 1px solid darken($color: $bg-color, $amount: 20);
+    }
+  }
+
+  [class*='MuiButtonBase-root'] {
+    min-width: unset;
+    color: white;
+  }
+  //
+
+  &.edit-mode {
+    border: 2px dashed $border-color;
+    border-radius: 3px;
+    transition-delay: $transition-delay;
+    background-color: white;
+    padding: 5px;
+
+    /*.wrapper {
+      opacity: 0.2;
+    }*/
+
+    &:hover {
+      border-style: solid;
+
+      .header {
+        opacity: 1;
+
+        > div {
+          top: 0;
+        }
+      }
+    }
+
+    .header {
+      //display: flex;
+    }
+  }
+}

@@ -13,7 +13,7 @@ const meta = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    title: { name: 'Title' },
+    news: { title: { name: 'Title' } },
     badgeType: {
       name: 'Badge type',
       control: 'select',
@@ -29,20 +29,24 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    title: 'Lorem ipsum dolor sit amet, consetur adipiscing elit',
-    figure: { src: mock_figure },
-    width: '250px',
-    badge: {
-      color: '#C34040',
-      label: 'Esporte'
-    }
+    news: {
+      title: 'Lorem ipsum dolor sit amet, consetur adipiscing elit',
+      cover: '1719234881163',
+      section: {
+        primaryColor: '#C34040',
+        name: 'Esporte'
+      }
+    },
+    width: '250px'
   }
 };
 
 export const NoBadge: Story = {
   args: {
-    title: 'Lorem ipsum dolor sit amet, consetur adipiscing elit',
-    figure: { src: mock_figure },
+    news: {
+      title: 'Lorem ipsum dolor sit amet, consetur adipiscing elit',
+      cover: '1719234881163'
+    },
     width: '250px'
   }
 };

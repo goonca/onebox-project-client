@@ -6,9 +6,9 @@ import style from './NewsVertical.module.scss';
 
 const NewsVertical = (props: NewsCoverType) => {
   const titleStyle =
-    props.badge && props.badgeType === 'titled'
+    props.news?.section && props.badgeType === 'titled'
       ? {
-          borderLeft: '5px solid ' + props.badge.section?.primaryColor,
+          borderLeft: '5px solid ' + props.news?.section?.primaryColor,
           paddingLeft: '5px'
         }
       : {};
@@ -22,10 +22,12 @@ const NewsVertical = (props: NewsCoverType) => {
         }`}
         style={props.width ? { width: props.width } : {}}
       >
-        {props.figure && <Figure {...props.figure} width={100}></Figure>}
-        <a style={titleStyle}>{props.title}</a>
-        {props.badge && props.badgeType !== 'titled' && (
-          <Badge {...props.badge}></Badge>
+        {props.news?.cover && (
+          <Figure $key={props.news?.cover} width={100}></Figure>
+        )}
+        <a style={titleStyle}>{props.news?.title}</a>
+        {props.news?.section && props.badgeType !== 'titled' && (
+          <Badge section={props.news?.section}></Badge>
         )}
       </article>
     </>

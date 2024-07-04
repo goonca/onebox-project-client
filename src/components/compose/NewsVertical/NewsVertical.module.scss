@@ -1,5 +1,7 @@
 @import '~/src/shared/style/variables.scss';
 
+$border-color: rgba(255, 255, 255, 1);
+
 .news-vertical {
   display: flex;
   flex-direction: column;
@@ -11,14 +13,21 @@
     border-bottom-color: lighten($light-gray, 30%);
   }
 
+  img {
+    border-radius: 8px;
+  }
+
   a {
     font-size: small;
     margin-top: $space-tiny;
   }
 
   [data-component='badge'] {
-    border-right: $border-2 solid white;
-    border-bottom: $border-2 solid white;
+    border-right: $border-2 solid $border-color;
+    border-bottom: $border-2 solid $border-color;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     font-size: x-small;
     position: absolute;
   }

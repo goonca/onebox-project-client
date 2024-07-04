@@ -1,0 +1,87 @@
+@import '~/src/shared/style/variables.scss';
+
+.editor {
+  width: 100%;
+  border: 3px solid darken($editor-color, 0);
+  background-color: white;
+  box-shadow: $shadow-tiny;
+  border-radius: $block-radius;
+  min-height: 70vh;
+  position: relative;
+  margin-bottom: 100px;
+  transition: margin-bottom 0.3s;
+
+  .overlay {
+    position: absolute;
+    top: 29px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    background-color: black;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 50;
+
+    &.visible {
+      opacity: 0.5;
+      pointer-events: unset;
+    }
+  }
+
+  .header {
+    background-color: darken($editor-color, 0);
+    font-size: x-small;
+    text-transform: uppercase;
+    padding: 2px 2px 5px 4px;
+    color: darken($color: $editor-color, $amount: 15);
+    letter-spacing: 1px;
+    position: relative;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .title {
+      width: 100%;
+      margin-right: 8px;
+      margin-left: 5px;
+      flex-grow: 100;
+    }
+
+    .switcher,
+    .slider {
+      color: $blue;
+      white-space: nowrap;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      span {
+        font-size: x-small;
+        letter-spacing: 0.05rem;
+      }
+    }
+
+    .slider {
+      min-width: 150px;
+
+      label {
+        margin-left: 5px;
+      }
+    }
+
+    hr {
+      height: $space-3;
+      border: 0;
+      border-left: 1px solid darken($color: rgba(0, 0, 0, 0.2), $amount: 20);
+      margin: 0 20px;
+    }
+  }
+
+  .content {
+    padding: $space-3;
+    padding-top: 30px;
+  }
+}

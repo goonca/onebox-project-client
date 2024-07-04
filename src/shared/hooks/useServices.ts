@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import {
+  LayoutModel,
   LocationModel,
   NewsModel,
   RequestStatus,
@@ -59,6 +60,8 @@ export type ServicesType = {
   ) => any;
   countUnreadByTo: (id: IdType) => any;
   setNotificationRead: (ids: IdType[]) => any;
+  listLayout: () => any;
+  saveLayout: (layout: LayoutModel) => any;
   //deleteComponent: (component?: ComponentModel) => any;
 };
 
@@ -83,7 +86,9 @@ export const useServices = (): ServicesType => {
     SECTION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/section`,
     LOCATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/location`,
     STATISTICS: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/statistics`,
-    NOTIFICATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/notification`
+    NOTIFICATION: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/notification`,
+    BLOCK: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/block`,
+    LAYOUT: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/layout`
   };
 
   const _fetch = async (method: string, url: string, props?: FecthProps) => {
@@ -272,6 +277,14 @@ export const useServices = (): ServicesType => {
     return get(`${uri.NOTIFICATION}/read/${ids.join(',')}`);
   };
 
+  const listLayout = async () => {
+    return get(uri.LAYOUT);
+  };
+
+  const saveLayout = async (layout: LayoutModel) => {
+    return post(uri.LAYOUT, layout);
+  };
+
   return {
     authenticate,
     saveUser,
@@ -302,6 +315,8 @@ export const useServices = (): ServicesType => {
     addViewerTime,
     listNotificationByTo,
     countUnreadByTo,
-    setNotificationRead
+    setNotificationRead,
+    listLayout,
+    saveLayout
   };
 };
