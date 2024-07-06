@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
+import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { SpaceModel } from 'shared/types/api-type';
 import style from './SpaceEditor.module.scss';
 
@@ -18,9 +19,14 @@ type SpaceEditorProps = {
 export const SpaceEditor: React.FC<SpaceEditorProps> = (
   props: SpaceEditorProps
 ) => {
+  const { setLocalStorage, getLocalStorage } = useLocalStorage<number>(
+    'spaceEditorContrast'
+  );
   const [editMode, setEditMode] = useState<boolean>(true);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
-  const [contrast, setContrast] = useState<number>(25);
+  const [contrast, setContrast] = useState<number>(
+    (getLocalStorage() ?? 50) as number
+  );
 
   const ValueLabelComponent = (props: SliderValueLabelProps) => {
     const { children, value } = props;
@@ -30,6 +36,10 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
         {children}
       </Tooltip>
     );
+  };
+  const handleChangeContrast = (e: any, value: any) => {
+    setLocalStorage(value);
+    setContrast(value);
   };
 
   return (
@@ -45,12 +55,12 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
                 size="medium"
                 min={0}
                 max={100}
-                onChange={(e, value) => setContrast(value as number)}
+                onChange={handleChangeContrast}
                 valueLabelDisplay="auto"
                 slots={{
                   valueLabel: ValueLabelComponent
                 }}
-                defaultValue={20}
+                defaultValue={contrast}
               />
               <label>contrast</label>
             </div>

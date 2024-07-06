@@ -11,6 +11,7 @@ export const Figure: React.FC<ComponentModel> = (props: ComponentModel) => {
   return (
     <>
       <div
+        data-component="figure"
         style={{
           paddingTop: (props.paddingTop ?? 0) * 5 + 'px',
           paddingBottom: (props.paddingBottom ?? 0) * 5 + 'px',
@@ -19,7 +20,6 @@ export const Figure: React.FC<ComponentModel> = (props: ComponentModel) => {
         }}
       >
         <figure
-          data-component="figure"
           className={style['figure']}
           style={{ width: (props.width ?? 80) + '%' }}
         >

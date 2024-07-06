@@ -1,5 +1,33 @@
 @import '~/src/shared/style/variables.scss';
 
+$size: 20px;
+$border-color: #3b86ff;
+
 .add-component {
-  display: initial;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 10px;
+
+  hr {
+    display: none;
+    border: 0;
+    border-bottom: 1px solid $border-color;
+    width: 50%;
+  }
+
+  .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $size;
+    height: $size;
+    border-radius: $size;
+    border: 1px solid $border-color;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+    color: $border-color;
+  }
 }

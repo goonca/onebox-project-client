@@ -23,16 +23,14 @@ const NewsHorizontal = (props: NewsCoverType) => {
         style={props.width ? { width: props.width } : {}}
       >
         {props.news?.cover && (
-          <Figure $key={props.news?.cover} width={25}></Figure>
+          <Figure $key={props.news?.cover} width={100}></Figure>
         )}
         <div className={style['wrapper']}>
           <div className={style['content']}>
             {props.news?.section && props.badgeType !== 'titled' && (
               <Badge {...props.news?.section}></Badge>
             )}
-            <a href="#" style={titleStyle}>
-              {props.news?.title}
-            </a>
+            <a style={titleStyle}>{props.news?.title}</a>
           </div>
         </div>
       </article>

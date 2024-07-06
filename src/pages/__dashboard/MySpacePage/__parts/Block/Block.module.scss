@@ -6,11 +6,13 @@ $transition-delay: 0s;
 
 .block {
   position: relative;
-  margin-top: 10px;
+  border: 2px dashed rgba($color: $border-color, $alpha: 0);
 
-  /*.wrapper {
-    opacity: 1;
-  }*/
+  .wrapper {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+  }
 
   .header {
     flex-direction: row;
@@ -26,6 +28,7 @@ $transition-delay: 0s;
     overflow: hidden;
     opacity: 0;
     transition: opacity 0.3s;
+    z-index: 10;
 
     > div {
       display: flex;
@@ -49,7 +52,8 @@ $transition-delay: 0s;
   //
 
   &.edit-mode {
-    border: 2px dashed $border-color;
+    border: 2px dashed rgba($color: $border-color, $alpha: 0.15);
+    transition: border 0.3s;
     border-radius: 3px;
     transition-delay: $transition-delay;
     background-color: white;
@@ -60,7 +64,7 @@ $transition-delay: 0s;
     }*/
 
     &:hover {
-      border-style: solid;
+      border: 2px solid $border-color;
 
       .header {
         opacity: 1;

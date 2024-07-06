@@ -261,6 +261,7 @@ export type BlockModel = {
   title?: string;
   size?: number;
   display?: number;
+  columns?: number;
   positionX?: number;
   positionY?: number;
   filters?: FilterModel[];

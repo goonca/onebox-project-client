@@ -58,18 +58,19 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
         </div>
         <div
           className={style['wrapper']}
-          style={{ opacity: (spaceEditorContext.contrast ?? 50) / 100 }}
+          style={{
+            opacity: (spaceEditorContext.contrast ?? 50) / 100,
+            gridTemplateColumns: `repeat(${props?.block.columns}, minmax(0, 1fr))`
+          }}
         >
           {props?.block.news?.map(n => (
-            <>
+            <div className={style['content']}>
               {props?.block.display == 0 ? (
                 <NewsVertical news={n} />
               ) : (
                 <NewsHorizontal news={n} />
               )}
-
-              <br />
-            </>
+            </div>
           ))}
         </div>
       </div>

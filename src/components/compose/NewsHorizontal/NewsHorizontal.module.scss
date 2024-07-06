@@ -4,15 +4,22 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  padding-bottom: $space-2;
   border-bottom: 1px solid white;
+
+  [data-component='figure'] {
+    max-width: 30%;
+  }
 
   &.divided {
     border-bottom-color: lighten($light-gray, 30%);
   }
 
+  img {
+    border-radius: 8px;
+  }
+
   .wrapper {
-    padding-left: $space-4;
+    padding-left: $space-2;
     width: 100%;
 
     .content {
@@ -23,12 +30,10 @@
   a {
     font-size: small;
     display: block;
-    font-weight: 500;
   }
 
   [data-component='badge'] {
     font-size: xx-small;
     position: relative;
-    top: -$space-2;
   }
 }
