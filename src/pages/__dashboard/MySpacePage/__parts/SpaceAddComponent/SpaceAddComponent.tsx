@@ -5,7 +5,7 @@ import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
 import style from './SpaceAddComponent.module.scss';
 
 type SpaceAddComponentProps = {
-  type?: string;
+  onClick?: (param?: any) => any;
 };
 
 export const SpaceAddComponent: React.FC<SpaceAddComponentProps> = (
@@ -23,14 +23,15 @@ export const SpaceAddComponent: React.FC<SpaceAddComponentProps> = (
 
   return (
     <>
-      <div className={style['add-component']}>
-        <hr />
-        {editMode && (
+      {editMode && (
+        <div className={style['add-component']} onClick={props?.onClick}>
+          <hr />
+
           <div className={style['circle']}>
             <FontAwesomeIcon icon={faPlus} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };

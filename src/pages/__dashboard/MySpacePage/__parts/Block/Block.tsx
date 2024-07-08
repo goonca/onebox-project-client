@@ -64,7 +64,7 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
           }}
         >
           {props?.block.news?.map(n => (
-            <div className={style['content']}>
+            <div className={style['content']} key={n.id}>
               {props?.block.display == 0 ? (
                 <NewsVertical news={n} />
               ) : (

@@ -7,6 +7,7 @@ $transition-delay: 0s;
 .block {
   position: relative;
   border: 2px dashed rgba($color: $border-color, $alpha: 0);
+  z-index: 10;
 
   .wrapper {
     display: grid;
@@ -28,7 +29,7 @@ $transition-delay: 0s;
     overflow: hidden;
     opacity: 0;
     transition: opacity 0.3s;
-    z-index: 10;
+    pointer-events: none;
 
     > div {
       display: flex;
@@ -52,7 +53,7 @@ $transition-delay: 0s;
   //
 
   &.edit-mode {
-    border: 2px dashed rgba($color: $border-color, $alpha: 0.15);
+    border: 2px solid rgba($color: $border-color, $alpha: 0);
     transition: border 0.3s;
     border-radius: 3px;
     transition-delay: $transition-delay;
@@ -68,6 +69,7 @@ $transition-delay: 0s;
 
       .header {
         opacity: 1;
+        pointer-events: unset;
 
         > div {
           top: 0;

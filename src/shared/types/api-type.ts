@@ -275,6 +275,8 @@ export type BlockModel = {
 export type LayoutModel = {
   id?: number | string;
   type?: number;
+  status?: number;
+  columns?: string;
   position?: number;
   userId?: number;
   user?: UserModel;

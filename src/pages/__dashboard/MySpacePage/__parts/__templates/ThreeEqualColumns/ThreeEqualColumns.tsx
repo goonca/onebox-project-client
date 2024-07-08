@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
+import { EventType, useEvent } from 'shared/hooks/useEvent';
 import { LayoutModel } from 'shared/types/api-type';
 import { Block } from '../../Block/Block';
 import { SpaceAddComponent } from '../../SpaceAddComponent/SpaceAddComponent';
@@ -14,9 +15,15 @@ export const ThreeEqualColumns: React.FC<TemplateProps> = (
 ) => {
   const [layout, setlayout] = useState<LayoutModel>();
   const spaceEditorContext = useContext(SpaceEditorContext);
+  const { trigger } = useEvent();
+
+  const handleAddComponent = (x: number, y: number) => {
+    console.log('trigger');
+    trigger(EventType.ADD_BLOCK_TO_LAYOUT, { x, y, layout });
+  };
 
   useEffect(() => {
-    setlayout(props.layout);
+    setlayout({ ...props.layout });
   }, [props.layout]);
 
   return (
@@ -26,45 +33,25 @@ export const ThreeEqualColumns: React.FC<TemplateProps> = (
           spaceEditorContext.editMode && style['edit-mode']
         }`}
       >
-        <div className={style['column-1']}>
-          <SpaceAddComponent />
-          {layout?.blocks
-            ?.filter(l => l.positionX == 0)
-            .map(block => {
-              return (
-                <>
-                  <Block block={block} />
-                  <SpaceAddComponent />
-                </>
-              );
-            })}
-        </div>
-        <div className={style['column-2']}>
-          <SpaceAddComponent />
-          {layout?.blocks
-            ?.filter(l => l.positionX == 1)
-            .map(block => {
-              return (
-                <>
-                  <Block block={block} />
-                  <SpaceAddComponent />
-                </>
-              );
-            })}
-        </div>
-        <div className={style['column-3']}>
-          <SpaceAddComponent />
-          {layout?.blocks
-            ?.filter(l => l.positionX == 0)
-            .map(block => {
-              return (
-                <>
-                  <Block block={block} />
-                  <SpaceAddComponent />
-                </>
-              );
-            })}
-        </div>
+        {layout?.columns?.split(',').map((columnWidth, x) => {
+          return (
+            <div style={{ width: `${columnWidth}%` }} key={x}>
+              <SpaceAddComponent onClick={() => handleAddComponent(x, 0)} />
+              {layout?.blocks
+                ?.filter(l => l.positionX == x)
+                .map((block, y) => {
+                  return (
+                    <div key={block.id}>
+                      <Block block={block} />
+                      <SpaceAddComponent
+                        onClick={() => handleAddComponent(x, y + 1)}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          );
+        })}
       </div>
     </>
   );

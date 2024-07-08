@@ -9,6 +9,7 @@ import { ReactNode, useState } from 'react';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { SpaceModel } from 'shared/types/api-type';
+import { AddComponentDialog } from '../AddComponentDialog/AddComponentDialog';
 import style from './SpaceEditor.module.scss';
 
 type SpaceEditorProps = {
@@ -83,6 +84,7 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
           ></div>
           <div className={style['content']}>{props?.children}</div>
         </div>
+        <AddComponentDialog open={true} />
       </SpaceEditorContext.Provider>
     </>
   );
