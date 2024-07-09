@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
-import { EventType, useEvent } from 'shared/hooks/useEvent';
-import { LayoutModel } from 'shared/types/api-type';
-import { Block } from '../../Block/Block';
-import { SpaceAddComponent } from '../../SpaceAddComponent/SpaceAddComponent';
-import style from './ThreeEqualColumns.module.scss';
+import { BlockModel, LayoutModel } from 'shared/types/api-type';
+import { Block, BlockActionTypeEnum } from '../Block/Block';
+import { SpaceAddComponent } from '../SpaceAddComponent/SpaceAddComponent';
+import style from './LayoutTemplate.module.scss';
 
 type TemplateProps = {
   layout: LayoutModel;
@@ -12,18 +11,28 @@ type TemplateProps = {
     layout: LayoutModel,
     position: { x: number; y: number }
   ) => void;
+  onBlockAction: (
+    layout: LayoutModel,
+    block: BlockModel,
+    actionType: BlockActionTypeEnum
+  ) => void;
 };
 
-export const ThreeEqualColumns: React.FC<TemplateProps> = (
+export const LayoutTemplate: React.FC<TemplateProps> = (
   props: TemplateProps
 ) => {
   const [layout, setlayout] = useState<LayoutModel>();
   const spaceEditorContext = useContext(SpaceEditorContext);
-  const { trigger } = useEvent();
 
   const handleAddComponent = (x: number, y: number) => {
-    console.log('trigger');
     layout && props.onAddComponent(layout, { x, y });
+  };
+
+  const handleOnAction = (
+    block: BlockModel,
+    actionType: BlockActionTypeEnum
+  ) => {
+    layout && props.onBlockAction(layout, block, actionType);
   };
 
   useEffect(() => {
@@ -45,8 +54,8 @@ export const ThreeEqualColumns: React.FC<TemplateProps> = (
                 ?.filter(l => l.positionX == x)
                 .map((block, y) => {
                   return (
-                    <div key={block.id}>
-                      <Block block={block} />
+                    <div key={block.id + '-' + block.tempId}>
+                      <Block block={block} onAction={handleOnAction} />
                       <SpaceAddComponent
                         onClick={() => handleAddComponent(x, y + 1)}
                       />

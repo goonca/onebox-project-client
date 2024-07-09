@@ -20,6 +20,12 @@ export enum ViewerSurceEnum {
   PUBLISHED = 'PUBLISHED'
 }
 
+export enum BlockTypeEnum {
+  NEWS = 'NEWS',
+  FIGURE = 'FIGURE',
+  TEXT = 'TEXT'
+}
+
 export enum NewsStatus {
   DRAFT,
   PUBLISHED,
@@ -257,8 +263,10 @@ export type FilterModel = {
 };
 
 export type BlockModel = {
+  tempId?: number | string;
   id?: number | string;
   title?: string;
+  type?: string;
   size?: number;
   display?: number;
   columns?: number;
@@ -273,6 +281,7 @@ export type BlockModel = {
 };
 
 export type LayoutModel = {
+  tempId?: number | string;
   id?: number | string;
   type?: number;
   status?: number;
