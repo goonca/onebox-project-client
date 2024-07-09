@@ -7,6 +7,8 @@ import { LayoutTemplate } from './__parts/LayoutTemplate/LayoutTemplate';
 import { throttle } from 'lodash';
 import {
   addBlockToLayout,
+  deleteBlock,
+  moveBlockDown,
   moveBlockUp,
   updateLayoutOnSpace
 } from 'shared/utils/spaceEditorUtils';
@@ -26,11 +28,20 @@ export const MySpacePage: React.FC = () => {
     block: BlockModel,
     actionType: BlockActionTypeEnum
   ) => {
+    let newLayout;
     switch (actionType) {
       case BlockActionTypeEnum.MOVE_UP:
-        const newLayout = moveBlockUp(layout, block);
-        console.log('MOVE_UP', newLayout);
-        newLayout && setMySpace(updateLayoutOnSpace(mySpace, newLayout));
+        (newLayout = moveBlockUp(layout, block)) &&
+          setMySpace(updateLayoutOnSpace(mySpace, newLayout));
+        break;
+
+      case BlockActionTypeEnum.MOVE_DOWN:
+        (newLayout = moveBlockDown(layout, block)) &&
+          setMySpace(updateLayoutOnSpace(mySpace, newLayout));
+        break;
+      case BlockActionTypeEnum.DELETE:
+        (newLayout = deleteBlock(layout, block)) &&
+          setMySpace(updateLayoutOnSpace(mySpace, newLayout));
         break;
     }
   };

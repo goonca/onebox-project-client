@@ -56,8 +56,14 @@ export enum StatisticsType {
   NEWS_VIEW
 }
 
-export type UserModel = {
-  id?: number;
+export interface ModelObject {
+  tempId?: number | string;
+  id?: number | string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface UserModel extends ModelObject {
   name?: string;
   username?: string;
   description?: string;
@@ -76,18 +82,15 @@ export type UserModel = {
   facebook?: string;
   locationGeonameId?: string;
   location?: LocationModel;
-};
+}
 
-export type NewsModel = {
-  id?: number | string;
+export interface NewsModel extends ModelObject {
   title?: string;
   headline?: string;
   cover?: string;
   status?: NewsStatus;
   user?: UserModel;
   publishedUrl?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
   showAuthor?: boolean;
   showBadge?: boolean;
   showDate?: boolean;
@@ -106,10 +109,9 @@ export type NewsModel = {
   sharedById?: number;
   holderUserId?: number;
   holderUser?: UserModel;
-};
+}
 
-export type FileModel = {
-  id?: number;
+export interface FileModel extends ModelObject {
   etag?: string;
   key?: string;
   location?: string;
@@ -124,11 +126,9 @@ export type FileModel = {
   userId?: number;
   user?: UserModel;
   createdAt?: Date;
-};
+}
 
-export type ComponentModel = {
-  id?: number;
-  tempId?: string;
+export interface ComponentModel extends ModelObject {
   newsId?: number;
   position?: number;
   type?: ComponentType;
@@ -146,9 +146,9 @@ export type ComponentModel = {
   marginBottom?: number;
   width?: number;
   height?: number;
-};
+}
 
-export type LocationModel = {
+export interface LocationModel extends ModelObject {
   geoname_id: string;
   name: string;
   ascii_name: string;
@@ -177,16 +177,15 @@ export type LocationModel = {
       }
     | number[]
     | { type: string; coordinates: number[] };
-};
+}
 
-export type SectionModel = {
-  id?: number;
+export interface SectionModel extends ModelObject {
   key?: string;
   name?: string;
   primaryColor?: string;
   secondaryColor?: string;
   totalNews?: number;
-};
+}
 
 export type IPLocation = {
   ip: string;
@@ -219,8 +218,7 @@ export type IPLocation = {
   error?: string;
 };
 
-export type StatisticsModel = {
-  id?: number;
+export interface StatisticsModel extends ModelObject {
   type?: StatisticsType;
   clientIp?: string;
   newsId?: number;
@@ -228,10 +226,9 @@ export type StatisticsModel = {
   locationGeonameId?: string;
   location?: LocationModel;
   createdAt?: Date;
-};
+}
 
-export type NotificationModel = {
-  id?: number;
+export interface NotificationModel extends ModelObject {
   type?: NotificationType;
   param1?: string;
   param2?: string;
@@ -243,7 +240,7 @@ export type NotificationModel = {
   toUser?: UserModel;
   read?: number;
   createdAt?: Date;
-};
+}
 
 export type NewsStatistics = {
   totalViewers: number;
@@ -252,19 +249,16 @@ export type NewsStatistics = {
   news: NewsModel;
 };
 
-export type FilterModel = {
-  id?: number | string;
+export interface FilterModel extends ModelObject {
   blockId?: number;
   block?: BlockModel;
   attribute?: string;
   condition?: string;
   operator?: string;
   value?: string;
-};
+}
 
-export type BlockModel = {
-  tempId?: number | string;
-  id?: number | string;
+export interface BlockModel extends ModelObject {
   title?: string;
   type?: string;
   size?: number;
@@ -278,11 +272,9 @@ export type BlockModel = {
   layoutId?: number;
   layout?: LayoutModel;
   news?: NewsModel[];
-};
+}
 
-export type LayoutModel = {
-  tempId?: number | string;
-  id?: number | string;
+export interface LayoutModel extends ModelObject {
   type?: number;
   status?: number;
   columns?: string;
@@ -290,8 +282,8 @@ export type LayoutModel = {
   userId?: number;
   user?: UserModel;
   blocks?: BlockModel[];
-};
+}
 
-export type SpaceModel = {
+export interface SpaceModel extends ModelObject {
   layouts?: LayoutModel[];
-};
+}

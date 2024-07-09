@@ -1,4 +1,9 @@
-import { BlockModel, LayoutModel, SpaceModel } from 'shared/types/api-type';
+import {
+  BlockModel,
+  LayoutModel,
+  ModelObject,
+  SpaceModel
+} from 'shared/types/api-type';
 
 export const addBlockToLayout = (
   layout: LayoutModel,
@@ -6,9 +11,7 @@ export const addBlockToLayout = (
 ) => {
   layout.blocks = layout.blocks ?? [];
 
-  let allColumns = layout.columns?.split(',').map((column, index) => {
-    return layout.blocks?.filter(block => block.positionX == index);
-  });
+  let allColumns = findLayoutColumns(layout);
 
   allColumns &&
     allColumns[position.x]?.splice(position.y, 0, {
@@ -33,6 +36,14 @@ export const addBlockToLayout = (
   return layout;
 };
 
+export const deleteBlock = (
+  layout: LayoutModel,
+  block: BlockModel
+): LayoutModel | undefined => {
+  layout.blocks = layout.blocks?.filter(b => !compareId<BlockModel>(b, block));
+  return layout;
+};
+
 export const moveBlockUp = (
   layout: LayoutModel,
   block: BlockModel
@@ -43,13 +54,11 @@ export const moveBlockUp = (
     if (b.positionX == block.positionX) {
       if (b.positionY == (block.positionY as number) - 1) {
         b.positionY = b.positionY + 1;
-        console.log('preview >', b.title, b.positionY);
         return b;
       }
 
-      if (b.id == block.id || b.tempId == block.tempId) {
+      if (compareId<BlockModel>(b, block)) {
         b.positionY = (b.positionY as number) - 1;
-        console.log('current > ', b.title, b.positionY);
         return b;
       }
     }
@@ -57,7 +66,41 @@ export const moveBlockUp = (
     return b;
   });
 
-  console.log(layout.blocks);
+  return sortedColumns(layout);
+};
+
+export const moveBlockDown = (
+  layout: LayoutModel,
+  block: BlockModel
+): LayoutModel | undefined => {
+  const columns = findLayoutColumns(layout);
+  if (
+    columns &&
+    (block.positionY as number) >= columns[block.positionX ?? 0].length - 1
+  ) {
+    return;
+  }
+
+  //first needs to find the next block
+  layout.blocks = layout.blocks?.map(b => {
+    if (b.positionX == block.positionX) {
+      if (b.positionY == (block.positionY as number) + 1) {
+        b.positionY = b.positionY - 1;
+        return b;
+      }
+    }
+    return b;
+  });
+  //then thr current block
+  layout.blocks = layout.blocks?.map(b => {
+    if (b.positionX == block.positionX) {
+      if (compareId<BlockModel>(b, block)) {
+        b.positionY = (b.positionY as number) + 1;
+        return b;
+      }
+    }
+    return b;
+  });
 
   return sortedColumns(layout);
 };
@@ -69,11 +112,17 @@ export const updateLayoutOnSpace = (
   return {
     ...space,
     layouts: space.layouts?.map(_layout => {
-      return _layout.id == layout.id || _layout.tempId == layout.tempId
-        ? layout
-        : _layout;
+      return compareId<LayoutModel>(_layout, layout) ? layout : _layout;
     })
   };
+};
+
+const findLayoutColumns = (
+  layout: LayoutModel
+): Array<BlockModel[]> | undefined => {
+  return layout.columns?.split(',').map((column, index) => {
+    return layout.blocks?.filter(block => block.positionX == index);
+  }) as Array<BlockModel[]>;
 };
 
 const sortedColumns = (layout: LayoutModel): LayoutModel => {
@@ -93,4 +142,11 @@ const sortedColumns = (layout: LayoutModel): LayoutModel => {
     });
 
   return layout;
+};
+
+const compareId = <T extends ModelObject>(b1: T, b2: T) => {
+  return (
+    (b1.id !== undefined && b1.id == b2.id) ||
+    (b1.tempId !== undefined && b1.tempId == b2.tempId)
+  );
 };
