@@ -7,7 +7,11 @@ import { SpaceAddComponent } from '../../SpaceAddComponent/SpaceAddComponent';
 import style from './ThreeEqualColumns.module.scss';
 
 type TemplateProps = {
-  layout?: LayoutModel;
+  layout: LayoutModel;
+  onAddComponent: (
+    layout: LayoutModel,
+    position: { x: number; y: number }
+  ) => void;
 };
 
 export const ThreeEqualColumns: React.FC<TemplateProps> = (
@@ -19,7 +23,7 @@ export const ThreeEqualColumns: React.FC<TemplateProps> = (
 
   const handleAddComponent = (x: number, y: number) => {
     console.log('trigger');
-    trigger(EventType.ADD_BLOCK_TO_LAYOUT, { x, y, layout });
+    layout && props.onAddComponent(layout, { x, y });
   };
 
   useEffect(() => {

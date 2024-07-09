@@ -53,7 +53,7 @@ const Page = (
   const getUserLocation = async () => {
     setLoading(true);
 
-    const rawResponse = await fetch(`${IPAPI_URI}/json?key=${IPAPI_KEY}`);
+    const rawResponse = await fetch(`${IPAPI_URI}/json`);
     const ipLocation = (await rawResponse.json()) as IPLocation;
 
     if (ipLocation.city != currentUser.location?.name) {

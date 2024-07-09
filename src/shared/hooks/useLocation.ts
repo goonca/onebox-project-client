@@ -61,6 +61,7 @@ export const useLocation = (): LocationProps => {
 
     let location: LocationModel;
 
+    //@ts-ignore
     const locationResponse = await getLocationByName({
       name: ipLocation.city,
       longitude: ipLocation.longitude.toString(),
