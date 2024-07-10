@@ -55,9 +55,10 @@ export enum RequestStatus {
 export enum StatisticsType {
   NEWS_VIEW
 }
+export type IdType = string | number | undefined;
 
 export interface ModelObject {
-  tempId?: number | string;
+  tempId?: IdType;
   id?: number | string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -97,17 +98,17 @@ export interface NewsModel extends ModelObject {
   showContext?: boolean;
   showSection?: boolean;
   holderViewed?: boolean;
-  userId?: number;
+  userId?: IdType;
   publishedAt?: Date;
-  draftId?: number;
+  draftId?: IdType;
   components?: ComponentModel[];
   location?: LocationModel;
   locationGeonameId?: string;
   context?: NewsContext;
-  sectionId?: number;
+  sectionId?: IdType;
   section?: SectionModel;
-  sharedById?: number;
-  holderUserId?: number;
+  sharedById?: IdType;
+  holderUserId?: IdType;
   holderUser?: UserModel;
 }
 
@@ -123,13 +124,13 @@ export interface FileModel extends ModelObject {
   filename?: string;
   path?: string;
   size?: number;
-  userId?: number;
+  userId?: IdType;
   user?: UserModel;
   createdAt?: Date;
 }
 
 export interface ComponentModel extends ModelObject {
-  newsId?: number;
+  newsId?: IdType;
   position?: number;
   type?: ComponentType;
   src?: string;
@@ -221,7 +222,7 @@ export type IPLocation = {
 export interface StatisticsModel extends ModelObject {
   type?: StatisticsType;
   clientIp?: string;
-  newsId?: number;
+  newsId?: IdType;
   viewerTime?: number;
   locationGeonameId?: string;
   location?: LocationModel;
@@ -232,11 +233,11 @@ export interface NotificationModel extends ModelObject {
   type?: NotificationType;
   param1?: string;
   param2?: string;
-  newsId?: number;
+  newsId?: IdType;
   news?: NewsModel;
-  fromUserId?: number;
+  fromUserId?: IdType;
   fromUser?: UserModel;
-  toUserId?: number;
+  toUserId?: IdType;
   toUser?: UserModel;
   read?: number;
   createdAt?: Date;
@@ -267,9 +268,9 @@ export interface BlockModel extends ModelObject {
   positionX?: number;
   positionY?: number;
   filters?: FilterModel[];
-  userId?: number;
+  userId?: IdType;
   user?: UserModel;
-  layoutId?: number;
+  layoutId?: IdType;
   layout?: LayoutModel;
   news?: NewsModel[];
 }

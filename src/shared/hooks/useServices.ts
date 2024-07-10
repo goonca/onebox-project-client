@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import {
+  IdType,
   LayoutModel,
   LocationModel,
   NewsModel,
@@ -21,8 +22,6 @@ export type UpdatePassword = {
   newPassword: string;
   confirmNewPassword: string;
 };
-
-export type IdType = string | number | undefined;
 
 export type ServicesType = {
   authenticate: (user: UserModel) => any;

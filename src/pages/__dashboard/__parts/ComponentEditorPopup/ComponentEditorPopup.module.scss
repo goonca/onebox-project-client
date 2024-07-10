@@ -1,0 +1,73 @@
+@import '~/src/shared/style/variables.scss';
+
+.component-editor-popup {
+  position: fixed;
+  bottom: -350px;
+  height: 350px;
+  right: 0;
+  left: 0px;
+  background-color: #f8f8fb;
+  background: linear-gradient(#f8f8fb 70%, darken(#f8f8fb, 5) 90%);
+  z-index: 200;
+  box-shadow: $shadow-up;
+  transition: bottom 0.3s;
+
+  &.maximized {
+    .header {
+      h1 {
+        margin-left: 60px;
+      }
+    }
+    .content {
+      margin-left: 60px;
+    }
+  }
+
+  &.open {
+    bottom: 0;
+  }
+
+  .header {
+    display: flex;
+    height: 50px;
+    //background-color: #efefef;
+    color: #666666;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid darken(#c3c6cc, 10);
+    border-bottom: 1px solid#d7d6d6;
+    background: linear-gradient(#efefef, darken(#efefef, 10));
+
+    h1 {
+      font-weight: initial;
+      margin: 0;
+      font-size: large;
+      font-family: $family-sans;
+      margin-left: 250px;
+      transition: margin-left 0.3s;
+    }
+
+    button {
+      position: absolute;
+      right: $space-3;
+      min-width: unset;
+      width: 35px;
+      font-size: 20px;
+      color: #666666;
+    }
+  }
+
+  .content {
+    padding-top: 15px;
+    margin-left: 250px;
+    transition: margin-left 0.3s;
+    display: flex;
+    justify-content: center;
+    > div {
+      max-width: 1280px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

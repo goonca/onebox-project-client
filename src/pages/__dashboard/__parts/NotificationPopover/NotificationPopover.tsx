@@ -35,7 +35,6 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = (
       () => {
         listNotificationByTo(currentUser?.id, 4, 0).then(
           (res: OBResponseType) => {
-            console.log('listNotifications', res);
             setNotifications(res.data);
           }
         );
@@ -86,7 +85,7 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = (
           <div className={style['body']}>
             {notifications &&
               notifications.map(notification => (
-                <div className={style['tile']}>
+                <div className={style['tile']} key={notification.id}>
                   <Avatar user={notification.fromUser ?? {}} />
                   <div>
                     <p

@@ -12,9 +12,10 @@ import {
 } from '@mui/material';
 import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { IdType, useServices } from 'shared/hooks/useServices';
+import { useServices } from 'shared/hooks/useServices';
 import { getEmptyNews } from 'shared/utils/newsUtils';
 import {
+  IdType,
   NewsModel,
   NewsStatistics,
   StatisticsModel,

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { EditorContext } from 'shared/context/EditorContext';
+import { ComponentEditorPopup } from '../ComponentEditorPopup/ComponentEditorPopup';
 
 import { Header } from '../Header/Header';
 import { Menu } from '../Menu/Menu';
@@ -42,6 +43,7 @@ const LayoutContainer = () => {
             </div>
           </div>
         </div>
+        <ComponentEditorPopup title="test" />
       </EditorContext.Provider>
     </>
   );
