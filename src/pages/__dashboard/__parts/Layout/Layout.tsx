@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { EditorContext } from 'shared/context/EditorContext';
-import { ComponentEditorPopup } from '../ComponentEditorPopup/ComponentEditorPopup';
+import { PageContext } from 'shared/context/PageContext';
+import { EventType, useEvent } from 'shared/hooks/useEvent';
+import { ModelObject } from 'shared/types/api-type';
+import { ComponentEditorPopover } from '../ComponentEditorPopover/ComponentEditorPopover';
 
 import { Header } from '../Header/Header';
 import { Menu } from '../Menu/Menu';
@@ -18,14 +20,25 @@ export const Layout = () => {
 //Split this was an workaround to not violate react hooks policies.
 // it is impossible to declare [opened, setOpened] before the Navigate() up there
 const LayoutContainer = () => {
-  const [opened, setOpened] = useState<boolean>(true);
+  const [menuOpen, setMenuOpened] = useState<boolean>(true);
+  const [editComponent, setEditComponent] = useState<{
+    model: ModelObject;
+    editor: ReactNode;
+  }>();
+  const { listen } = useEvent();
+
+  useEffect(() => {
+    listen(EventType.EDIT_COMPONENT, ({ detail }: any) =>
+      setEditComponent(detail)
+    );
+  }, []);
 
   return (
     <>
-      <EditorContext.Provider value={{ maximized: !opened }}>
+      <PageContext.Provider value={{ menuOpen: !menuOpen, editComponent }}>
         <div
           data-component="layout"
-          className={`${style['layout']} ${!opened && style['closed']}`}
+          className={`${style['layout']} ${!menuOpen && style['closed']}`}
           id="layoutWrapper"
         >
           <div className={style['left-side']}>
@@ -33,7 +46,7 @@ const LayoutContainer = () => {
             <Menu />
             <div
               className={style['changer']}
-              onClick={() => setOpened(!opened)}
+              onClick={() => setMenuOpened(!menuOpen)}
             ></div>
           </div>
           <div className={style['right-side']}>
@@ -43,8 +56,8 @@ const LayoutContainer = () => {
             </div>
           </div>
         </div>
-        <ComponentEditorPopup title="test" />
-      </EditorContext.Provider>
+        <ComponentEditorPopover title="test" />
+      </PageContext.Provider>
     </>
   );
 };

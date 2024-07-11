@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useServices } from 'shared/hooks/useServices';
 import { BlockModel, LayoutModel, SpaceModel } from 'shared/types/api-type';
 import style from './MySpacePage.module.scss';
@@ -13,10 +13,14 @@ import {
   updateLayoutOnSpace
 } from 'shared/utils/spaceEditorUtils';
 import { BlockActionTypeEnum } from './__parts/Block/Block';
+import { EventType, useEvent } from 'shared/hooks/useEvent';
+import { PageContext } from 'shared/context/PageContext';
 
 export const MySpacePage: React.FC = () => {
   const { listLayout } = useServices();
   const [mySpace, setMySpace] = useState<SpaceModel>({ layouts: [] });
+  const pageContext = useContext(PageContext);
+  const { trigger } = useEvent();
 
   const findMySpace = async () => {
     const response = await listLayout();
@@ -39,9 +43,14 @@ export const MySpacePage: React.FC = () => {
         (newLayout = moveBlockDown(layout, block)) &&
           setMySpace(updateLayoutOnSpace(mySpace, newLayout));
         break;
+
       case BlockActionTypeEnum.DELETE:
         (newLayout = deleteBlock(layout, block)) &&
           setMySpace(updateLayoutOnSpace(mySpace, newLayout));
+        break;
+
+      case BlockActionTypeEnum.EDIT:
+        trigger(EventType.EDIT_COMPONENT, { model: block, editor: <></> });
         break;
     }
   };

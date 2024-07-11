@@ -17,7 +17,6 @@ import style from './StartPage.module.scss';
 import { NewsDetailsPage } from '../NewsDetailsPage/NewsDetailsPage';
 import { NotificationPage } from '../NotificationPage/NotificationPage';
 import { MySpacePage } from '../MySpacePage/MySpacePage';
-import { ComponentEditorPopup } from '../__parts/ComponentEditorPopup/ComponentEditorPopup';
 
 export const StartPage: React.FC<PageProps> = (props: PageProps) => {
   const [currentUser, setCurrentUser] = useState<UserModel | undefined>(

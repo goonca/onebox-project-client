@@ -23,7 +23,7 @@ import { getEmptyNews } from 'shared/utils/newsUtils';
 import { FreeEditor } from './__parts/FreeEditor/FreeEditor';
 import { HeaderEditor } from './__parts/HeaderEditor/HeaderEditor';
 import { useComponent } from 'shared/hooks/useComponent';
-import { EditorContext } from 'shared/context/EditorContext';
+import { PageContext } from 'shared/context/PageContext';
 import { EditorReturn } from 'shared/types/EditorReturn';
 import React from 'react';
 import style from './ComposeNews.module.scss';
@@ -57,7 +57,7 @@ export const ComposeNews: React.FC<{
     initialNews ?? getEmptyNews(currentUser, id)
   );
 
-  const editorContext = useContext(EditorContext);
+  const pageContext = useContext(PageContext);
   const { saveNews, publishNews } = useServices();
 
   const { setLocalStorage, getLocalStorage, removeLocalStorage, initialise } =
@@ -235,8 +235,8 @@ export const ComposeNews: React.FC<{
   }, []);
 
   useEffect(() => {
-    setMaximized(editorContext.maximized);
-  }, [editorContext]);
+    setMaximized(pageContext.menuOpen);
+  }, [pageContext]);
 
   return (
     <>

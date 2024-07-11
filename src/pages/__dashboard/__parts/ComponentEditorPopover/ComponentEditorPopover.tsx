@@ -1,32 +1,45 @@
-import style from './ComponentEditorPopup.module.scss';
+import style from './ComponentEditorPopover.module.scss';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@mui/material';
-import React, { FC, ReactNode, useContext, useEffect, useState } from 'react';
-import { useEvent } from 'shared/hooks/useEvent';
-import { EditorContext } from 'shared/context/EditorContext';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { PageContext } from 'shared/context/PageContext';
+import { EventType, useEvent } from 'shared/hooks/useEvent';
+import { ModelObject } from 'shared/types/api-type';
 
-type ComponentEditorPopupProps = {
+type ComponentEditorPopoverProps = {
   title?: string;
   children?: ReactNode;
 };
 
-export const ComponentEditorPopup: React.FC<ComponentEditorPopupProps> = (
-  props?: ComponentEditorPopupProps
+export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
+  props?: ComponentEditorPopoverProps
 ) => {
   const [maximized, setMaximized] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(true);
-  const { trigger } = useEvent();
-  const editorContext = useContext(EditorContext);
+  const [open, setOpen] = useState<boolean>(false);
+  const pageContext = useContext(PageContext);
+  const { listen } = useEvent();
   //const [component, setComponent] = useState<ReactNode>();
 
   const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
+  const handleEditComponent = (editComponent?: {
+    model: ModelObject;
+    editor: ReactNode;
+  }) => {
+    console.log(editComponent);
+    setOpen(true);
+  };
+
   useEffect(() => {
-    setMaximized(editorContext.maximized);
-  }, [editorContext]);
+    setMaximized(pageContext.menuOpen);
+  }, [pageContext.menuOpen]);
+
+  useEffect(() => {
+    handleEditComponent(pageContext.editComponent);
+  }, [pageContext.editComponent]);
 
   return (
     <>

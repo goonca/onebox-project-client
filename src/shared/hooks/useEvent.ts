@@ -1,7 +1,8 @@
 export enum EventType {
   UPDATE_SNACKBAR = 'onebox.updateSnackBar',
   UPDATE_CURRENT_USER = 'onebox.updateCurrentUser',
-  ADD_BLOCK_TO_LAYOUT = 'onebox.addBlockToLayout'
+  ADD_BLOCK_TO_LAYOUT = 'onebox.addBlockToLayout',
+  EDIT_COMPONENT = 'onebox.editComponent'
 }
 
 export type EventProps = {
