@@ -1,6 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { useServices } from 'shared/hooks/useServices';
-import { BlockModel, LayoutModel, SpaceModel } from 'shared/types/api-type';
+import {
+  BlockModel,
+  FilterModel,
+  LayoutModel,
+  SpaceModel
+} from 'shared/types/api-type';
 import style from './MySpacePage.module.scss';
 import { SpaceEditor } from './__parts/SpaceEditor/SpaceEditor';
 import { LayoutTemplate } from './__parts/LayoutTemplate/LayoutTemplate';
@@ -8,19 +13,24 @@ import { throttle } from 'lodash';
 import {
   addBlockToLayout,
   deleteBlock,
+  findLayoutByBlock,
   moveBlockDown,
   moveBlockUp,
+  updateBlockOnLayout,
+  updateFilterOnBlock,
   updateLayoutOnSpace
 } from 'shared/utils/spaceEditorUtils';
 import { BlockActionTypeEnum } from './__parts/Block/Block';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
 import { PageContext } from 'shared/context/PageContext';
+import { BlockEditor } from './__parts/Block/BlockEditor';
 
 export const MySpacePage: React.FC = () => {
   const { listLayout } = useServices();
   const [mySpace, setMySpace] = useState<SpaceModel>({ layouts: [] });
+  const [editing, setEditing] = useState<boolean>(false);
   const pageContext = useContext(PageContext);
-  const { trigger } = useEvent();
+  const { trigger, listen } = useEvent();
 
   const findMySpace = async () => {
     const response = await listLayout();
@@ -50,7 +60,10 @@ export const MySpacePage: React.FC = () => {
         break;
 
       case BlockActionTypeEnum.EDIT:
-        trigger(EventType.EDIT_COMPONENT, { model: block, editor: <></> });
+        trigger(EventType.EDIT_COMPONENT, {
+          model: block,
+          editor: <BlockEditor block={block} />
+        });
         break;
     }
   };
@@ -65,8 +78,40 @@ export const MySpacePage: React.FC = () => {
     { leading: true, trailing: false }
   );
 
+  const handleUpdateFilterOnBlock = throttle(
+    (block: BlockModel, filter: FilterModel) => {
+      console.log(block, filter);
+      const newBlock = updateFilterOnBlock(block, filter);
+      const newLayout = updateBlockOnLayout(
+        findLayoutByBlock(mySpace, newBlock) as LayoutModel,
+        newBlock
+      );
+      const newSpace = updateLayoutOnSpace(mySpace, newLayout);
+      setMySpace(newSpace);
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
+
+  const addListeners = () => {
+    listen(EventType.UPDATE_FILTER_ON_BLOCK, ({ detail }: any) => {
+      console.log(EventType.UPDATE_FILTER_ON_BLOCK, detail);
+      handleUpdateFilterOnBlock(detail.block, detail.filter);
+    });
+
+    listen(EventType.UPDATE_BLOCK_ON_LAYOUT, ({ detail }: any) => {
+      console.log(EventType.UPDATE_BLOCK_ON_LAYOUT, detail);
+    });
+  };
+
+  useEffect(() => {
+    setEditing(!!pageContext.editComponent);
+    //console.log(pageContext.editComponent);
+  }, [pageContext.editComponent]);
+
   useEffect(() => {
     findMySpace();
+    addListeners();
   }, []);
 
   return (

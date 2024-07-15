@@ -251,6 +251,7 @@ export type NewsStatistics = {
 };
 
 export interface FilterModel extends ModelObject {
+  active?: number;
   blockId?: number;
   block?: BlockModel;
   attribute?: string;

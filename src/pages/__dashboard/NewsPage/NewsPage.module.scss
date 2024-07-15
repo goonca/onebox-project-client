@@ -31,6 +31,7 @@ $hovered-border: lighten(
     display: flex;
     gap: $space-2;
     margin-top: $space-5;
+    margin-bottom: 30px;
 
     .left-side {
       > .content {
@@ -55,8 +56,6 @@ $hovered-border: lighten(
 
     .right-side {
       width: 100%;
-
-      margin-bottom: $space-5;
 
       hr {
         border: 0;

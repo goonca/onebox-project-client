@@ -1,5 +1,6 @@
 import {
   BlockModel,
+  FilterModel,
   LayoutModel,
   ModelObject,
   SpaceModel
@@ -149,4 +150,54 @@ const compareId = <T extends ModelObject>(b1: T, b2: T) => {
     (b1.id !== undefined && b1.id == b2.id) ||
     (b1.tempId !== undefined && b1.tempId == b2.tempId)
   );
+};
+
+export const findLayoutByBlock = (space: SpaceModel, block: BlockModel) => {
+  return space.layouts?.find(layout =>
+    layout.blocks?.find(_block => compareId(block, _block))
+  );
+};
+
+export const updateBlockOnLayout = (
+  layout: LayoutModel,
+  block: BlockModel
+): LayoutModel => {
+  let updated = false;
+  layout.blocks = layout.blocks?.map(_block => {
+    if (!updated && compareId<BlockModel>(_block, block)) {
+      updated = true;
+      return block;
+    }
+    return _block;
+  });
+
+  !updated && layout.blocks?.push(block);
+  console.log('updateBlockOnLayout', layout);
+  return layout;
+};
+
+export const updateFilterOnBlock = (
+  block: BlockModel,
+  filter: FilterModel
+): BlockModel => {
+  let updated = false;
+  block.filters = block.filters?.map(_filter => {
+    if (!updated && compareId<FilterModel>(_filter, filter)) {
+      updated = true;
+      return filter;
+    }
+    return _filter;
+  });
+
+  !updated && block.filters?.push(filter);
+  console.log('updateFilterOnBlock', block);
+  return block;
+};
+
+export const createEmptyFilter = (): FilterModel => {
+  return {
+    tempId: Math.random().toString(36).substr(2),
+    condition: 'or',
+    active: 0
+  };
 };

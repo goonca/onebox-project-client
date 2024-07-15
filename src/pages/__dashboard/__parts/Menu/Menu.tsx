@@ -31,7 +31,7 @@ export const Menu = () => {
         <div className={style['top']}>
           <img
             src="/static/onebox-box-logo-light.svg"
-            height={20}
+            height={23}
             className={style['box']}
           />
           <img

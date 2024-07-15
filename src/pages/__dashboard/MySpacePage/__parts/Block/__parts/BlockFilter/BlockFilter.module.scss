@@ -1,0 +1,22 @@
+@import '~/src/shared/style/variables.scss';
+
+.block-filter {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  align-items: flex-end;
+
+  .form-label {
+    color: gray;
+    margin-bottom: 5px;
+  }
+
+  [class*='input'] {
+    font-size: 12px;
+    margin: 0;
+
+    [class*='MuiInputBase-root'] {
+      height: 35px;
+    }
+  }
+}

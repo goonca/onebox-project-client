@@ -18,6 +18,10 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
   const [maximized, setMaximized] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const pageContext = useContext(PageContext);
+  const [editComponent, setEditComponent] = useState<{
+    model: ModelObject;
+    editor: ReactNode;
+  }>();
   const { listen } = useEvent();
   //const [component, setComponent] = useState<ReactNode>();
 
@@ -30,7 +34,8 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
     editor: ReactNode;
   }) => {
     console.log(editComponent);
-    setOpen(true);
+    setEditComponent(editComponent);
+    editComponent && setOpen(true);
   };
 
   useEffect(() => {
@@ -40,6 +45,14 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
   useEffect(() => {
     handleEditComponent(pageContext.editComponent);
   }, [pageContext.editComponent]);
+
+  useEffect(() => {
+    handleEditComponent(pageContext.editComponent);
+  }, [pageContext.editComponent]);
+
+  useEffect(() => {
+    document.body.style.paddingBottom = open ? '350px' : '0';
+  }, [open]);
 
   return (
     <>
@@ -58,7 +71,7 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
           </Button>
         </div>
         <div className={style['content']}>
-          <div> {props?.children}</div>
+          <div> {editComponent?.editor}</div>
         </div>
       </div>
     </>

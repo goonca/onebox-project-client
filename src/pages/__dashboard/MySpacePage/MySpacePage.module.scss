@@ -2,4 +2,11 @@
 
 .myspace-page {
   display: initial;
+  padding-bottom: 350px;
+
+  &.editing {
+    [class*='editor'] {
+      margin-bottom: 380px;
+    }
+  }
 }
