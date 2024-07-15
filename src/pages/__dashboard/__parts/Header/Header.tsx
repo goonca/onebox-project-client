@@ -11,7 +11,7 @@ import style from './Header.module.scss';
 
 export const Header = () => {
   const currentUser = useContext(UserContext);
-  const notificationIconRef = useRef<HTMLElement>(null);
+  const notificationIconRef = useRef(null);
   const [open, setOpen] = useState<boolean>(false);
   const [hasUnreadMessages, setHasUnreadMessages] = useState<boolean>(false);
   const { countUnreadByTo } = useServices();
@@ -42,7 +42,7 @@ export const Header = () => {
         <div className={style['logo']}>
           <img src="/static/onebox-complete-logo-dark.svg" height={18} />
         </div>
-        <div className={style['notification']}>
+        <div className={style['notification']} ref={notificationIconRef}>
           <Badge
             color="warning"
             variant={hasUnreadMessages ? 'dot' : 'standard'}
@@ -58,12 +58,14 @@ export const Header = () => {
           <Avatar user={currentUser ?? {}} />
         </div>
       </div>
-      <NotificationPopover
-        open={open}
-        hasUnreadMessages={hasUnreadMessages}
-        onclose={handlePopoverClose}
-        anchorEl={(notificationIconRef.current as HTMLElement) ?? <></>}
-      />
+      {notificationIconRef.current && (
+        <NotificationPopover
+          open={open}
+          hasUnreadMessages={hasUnreadMessages}
+          onclose={handlePopoverClose}
+          anchorEl={notificationIconRef.current}
+        />
+      )}
     </>
   );
 };

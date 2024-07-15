@@ -2,7 +2,8 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { PageContext } from 'shared/context/PageContext';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
-import { ModelObject } from 'shared/types/api-type';
+import { useServices } from 'shared/hooks/useServices';
+import { ModelObject, SectionModel } from 'shared/types/api-type';
 import { ComponentEditorPopover } from '../ComponentEditorPopover/ComponentEditorPopover';
 
 import { Header } from '../Header/Header';
@@ -21,13 +22,16 @@ export const Layout = () => {
 // it is impossible to declare [opened, setOpened] before the Navigate() up there
 const LayoutContainer = () => {
   const [menuOpen, setMenuOpened] = useState<boolean>(true);
+  const [sections, setSections] = useState<SectionModel[]>([]);
   const [editComponent, setEditComponent] = useState<{
     model: ModelObject;
     editor: ReactNode;
   }>();
   const { listen } = useEvent();
+  const { getSections } = useServices();
 
   useEffect(() => {
+    getSections().then(({ data }) => setSections(data));
     listen(EventType.EDIT_COMPONENT, ({ detail }: any) =>
       setEditComponent(detail)
     );
@@ -35,7 +39,9 @@ const LayoutContainer = () => {
 
   return (
     <>
-      <PageContext.Provider value={{ menuOpen: !menuOpen, editComponent }}>
+      <PageContext.Provider
+        value={{ menuOpen: !menuOpen, editComponent, sections }}
+      >
         <div
           data-component="layout"
           className={`${style['layout']} ${!menuOpen && style['closed']}`}

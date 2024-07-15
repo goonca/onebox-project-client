@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useServices } from 'shared/hooks/useServices';
 import {
   BlockModel,
@@ -28,6 +28,7 @@ import { BlockEditor } from './__parts/Block/BlockEditor';
 export const MySpacePage: React.FC = () => {
   const { listLayout } = useServices();
   const [mySpace, setMySpace] = useState<SpaceModel>({ layouts: [] });
+  const mySpaceRef = useRef<SpaceModel>();
   const [editing, setEditing] = useState<boolean>(false);
   const pageContext = useContext(PageContext);
   const { trigger, listen } = useEvent();
@@ -68,34 +69,45 @@ export const MySpacePage: React.FC = () => {
     }
   };
 
-  const handleAddComponent = throttle(
-    (layout: LayoutModel, position: { x: number; y: number }) => {
-      setMySpace(
-        updateLayoutOnSpace(mySpace, addBlockToLayout(layout, position))
-      );
-    },
-    1000,
-    { leading: true, trailing: false }
+  const handleAddComponent = useCallback(
+    throttle(
+      (layout: LayoutModel, position: { x: number; y: number }) => {
+        setMySpace(
+          updateLayoutOnSpace(mySpace, addBlockToLayout(layout, position))
+        );
+      },
+      1000,
+      { leading: true, trailing: false }
+    ),
+    []
   );
 
-  const handleUpdateFilterOnBlock = throttle(
+  const handleUpdateFilterOnBlock = useCallback(
     (block: BlockModel, filter: FilterModel) => {
-      console.log(block, filter);
       const newBlock = updateFilterOnBlock(block, filter);
       const newLayout = updateBlockOnLayout(
-        findLayoutByBlock(mySpace, newBlock) as LayoutModel,
+        findLayoutByBlock(mySpaceRef.current ?? mySpace, newBlock) ?? {},
         newBlock
       );
-      const newSpace = updateLayoutOnSpace(mySpace, newLayout);
+
+      const newSpace = updateLayoutOnSpace(
+        mySpaceRef.current ?? mySpace,
+        newLayout
+      );
+
+      trigger(EventType.EDIT_COMPONENT, {
+        model: block,
+        editor: <BlockEditor block={block} />
+      });
+
       setMySpace(newSpace);
     },
-    1000,
-    { leading: true, trailing: false }
+    []
   );
 
   const addListeners = () => {
     listen(EventType.UPDATE_FILTER_ON_BLOCK, ({ detail }: any) => {
-      console.log(EventType.UPDATE_FILTER_ON_BLOCK, detail);
+      //console.log(EventType.UPDATE_FILTER_ON_BLOCK, detail);
       handleUpdateFilterOnBlock(detail.block, detail.filter);
     });
 
@@ -113,6 +125,11 @@ export const MySpacePage: React.FC = () => {
     findMySpace();
     addListeners();
   }, []);
+
+  useEffect(() => {
+    //addListeners();
+    mySpaceRef.current = mySpace;
+  }, [mySpace]);
 
   return (
     <>

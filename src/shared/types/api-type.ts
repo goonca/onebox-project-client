@@ -59,7 +59,7 @@ export type IdType = string | number | undefined;
 
 export interface ModelObject {
   tempId?: IdType;
-  id?: number | string;
+  id?: IdType;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -252,7 +252,7 @@ export type NewsStatistics = {
 
 export interface FilterModel extends ModelObject {
   active?: number;
-  blockId?: number;
+  blockId?: IdType;
   block?: BlockModel;
   attribute?: string;
   condition?: string;

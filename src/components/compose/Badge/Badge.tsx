@@ -6,7 +6,7 @@ import style from './Badge.module.scss';
 
 export type BadgeProps = {
   section?: SectionModel;
-};
+} & React.HTMLAttributes<HTMLSpanElement>;
 
 export const Badge: React.FC<BadgeProps> = (props: BadgeProps) => {
   const [section, setSection] = useState(props.section);
@@ -33,7 +33,7 @@ export const Badge: React.FC<BadgeProps> = (props: BadgeProps) => {
         className={style['badge']}
         style={colors(section)}
       >
-        {section?.name ?? section?.key ?? defaultLabel}
+        <span {...props}>{section?.name ?? section?.key ?? defaultLabel}</span>
       </label>
     </>
   );

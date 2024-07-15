@@ -33,7 +33,6 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
     model: ModelObject;
     editor: ReactNode;
   }) => {
-    console.log(editComponent);
     setEditComponent(editComponent);
     editComponent && setOpen(true);
   };
@@ -41,10 +40,6 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
   useEffect(() => {
     setMaximized(pageContext.menuOpen);
   }, [pageContext.menuOpen]);
-
-  useEffect(() => {
-    handleEditComponent(pageContext.editComponent);
-  }, [pageContext.editComponent]);
 
   useEffect(() => {
     handleEditComponent(pageContext.editComponent);

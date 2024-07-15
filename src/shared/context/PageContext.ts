@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
-import { ModelObject } from 'shared/types/api-type';
+import { ModelObject, SectionModel } from 'shared/types/api-type';
 
 export type PageContextProps = {
   menuOpen: boolean;
+  sections: SectionModel[];
   editComponent?: {
     model: ModelObject;
     editor: ReactNode;
@@ -10,5 +11,6 @@ export type PageContextProps = {
 };
 
 export const PageContext = React.createContext<PageContextProps>({
-  menuOpen: true
+  menuOpen: true,
+  sections: []
 });

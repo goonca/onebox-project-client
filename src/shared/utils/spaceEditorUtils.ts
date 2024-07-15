@@ -1,6 +1,7 @@
 import {
   BlockModel,
   FilterModel,
+  IdType,
   LayoutModel,
   ModelObject,
   SpaceModel
@@ -153,9 +154,16 @@ const compareId = <T extends ModelObject>(b1: T, b2: T) => {
 };
 
 export const findLayoutByBlock = (space: SpaceModel, block: BlockModel) => {
-  return space.layouts?.find(layout =>
-    layout.blocks?.find(_block => compareId(block, _block))
+  //console.log('findLayoutByBlock', space, block);
+  const newLayout = space.layouts?.find(layout =>
+    compareId(
+      layout.blocks?.find(_block => compareId(block, _block)) ?? {},
+      block
+    )
   );
+
+  //console.log(newLayout);
+  return newLayout;
 };
 
 export const updateBlockOnLayout = (
@@ -172,7 +180,7 @@ export const updateBlockOnLayout = (
   });
 
   !updated && layout.blocks?.push(block);
-  console.log('updateBlockOnLayout', layout);
+  //console.log('updateBlockOnLayout', layout);
   return layout;
 };
 
@@ -190,13 +198,13 @@ export const updateFilterOnBlock = (
   });
 
   !updated && block.filters?.push(filter);
-  console.log('updateFilterOnBlock', block);
   return block;
 };
 
-export const createEmptyFilter = (): FilterModel => {
+export const createEmptyFilter = (block: BlockModel): FilterModel => {
   return {
     tempId: Math.random().toString(36).substr(2),
+    blockId: block.id ?? block.tempId,
     condition: 'or',
     active: 0
   };
