@@ -13,6 +13,7 @@ import { throttle } from 'lodash';
 import {
   addBlockToLayout,
   deleteBlock,
+  deleteFilterOnBlock,
   findLayoutByBlock,
   moveBlockDown,
   moveBlockUp,
@@ -73,7 +74,10 @@ export const MySpacePage: React.FC = () => {
     throttle(
       (layout: LayoutModel, position: { x: number; y: number }) => {
         setMySpace(
-          updateLayoutOnSpace(mySpace, addBlockToLayout(layout, position))
+          updateLayoutOnSpace(
+            mySpaceRef.current ?? mySpace,
+            addBlockToLayout(layout, position)
+          )
         );
       },
       1000,
@@ -83,8 +87,11 @@ export const MySpacePage: React.FC = () => {
   );
 
   const handleUpdateFilterOnBlock = useCallback(
-    (block: BlockModel, filter: FilterModel) => {
-      const newBlock = updateFilterOnBlock(block, filter);
+    (block: BlockModel, filter: FilterModel, remove?: boolean) => {
+      const newBlock = (remove ? deleteFilterOnBlock : updateFilterOnBlock)(
+        block,
+        filter
+      );
       const newLayout = updateBlockOnLayout(
         findLayoutByBlock(mySpaceRef.current ?? mySpace, newBlock) ?? {},
         newBlock
@@ -107,8 +114,12 @@ export const MySpacePage: React.FC = () => {
 
   const addListeners = () => {
     listen(EventType.UPDATE_FILTER_ON_BLOCK, ({ detail }: any) => {
-      //console.log(EventType.UPDATE_FILTER_ON_BLOCK, detail);
+      console.log('UPDATE_FILTER_ON_BLOCK');
       handleUpdateFilterOnBlock(detail.block, detail.filter);
+    });
+
+    listen(EventType.DELETE_FILTER_ON_BLOCK, ({ detail }: any) => {
+      handleUpdateFilterOnBlock(detail.block, detail.filter, true);
     });
 
     listen(EventType.UPDATE_BLOCK_ON_LAYOUT, ({ detail }: any) => {

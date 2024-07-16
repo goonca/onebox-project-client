@@ -30,6 +30,13 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     });
   };
 
+  const handleDeleteFilter = (filter: FilterModel) => {
+    trigger(EventType.DELETE_FILTER_ON_BLOCK, {
+      filter: filter,
+      block: props?.block
+    });
+  };
+
   return (
     <>
       <div className={style['block-editor']}>
@@ -43,6 +50,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                   filter={filter}
                   labeled={i == 0}
                   onChange={handleFilterChange}
+                  onDelete={handleDeleteFilter}
                 />
               );
             })}

@@ -33,9 +33,7 @@ export const Badge: React.FC<BadgeProps> = (props: BadgeProps) => {
         className={style['badge']}
         style={colors(section)}
       >
-        <span {...{ ...props, section: undefined }}>
-          {section?.name ?? section?.key ?? defaultLabel}
-        </span>
+        <span>{section?.name ?? section?.key ?? defaultLabel}</span>
       </label>
     </>
   );

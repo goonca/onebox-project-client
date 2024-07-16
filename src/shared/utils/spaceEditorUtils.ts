@@ -135,7 +135,7 @@ const sortedColumns = (layout: LayoutModel): LayoutModel => {
     })
     .map(blocks => {
       return blocks
-        ?.map((block, index) => ({ ...block }))
+        ?.map(block => ({ ...block }))
         .sort((a, b) => (a.positionY ?? 0) - (b.positionY ?? 0))
         .map((block, index) => ({ ...block, positionY: index }));
     })
@@ -189,6 +189,7 @@ export const updateFilterOnBlock = (
   filter: FilterModel
 ): BlockModel => {
   let updated = false;
+  block.filters = block.filters ?? [];
   block.filters = block.filters?.map(_filter => {
     if (!updated && compareId<FilterModel>(_filter, filter)) {
       updated = true;
@@ -198,6 +199,18 @@ export const updateFilterOnBlock = (
   });
 
   !updated && block.filters?.push(filter);
+  console.log('block', block);
+  return block;
+};
+
+export const deleteFilterOnBlock = (
+  block: BlockModel,
+  filter: FilterModel
+): BlockModel => {
+  block.filters = block.filters?.filter(_filter => {
+    return !compareId<FilterModel>(_filter, filter);
+  });
+
   return block;
 };
 

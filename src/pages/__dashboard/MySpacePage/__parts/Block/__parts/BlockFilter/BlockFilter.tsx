@@ -6,21 +6,21 @@ import {
   TextField,
   Checkbox,
   SelectChangeEvent,
-  debounce,
-  getListItemAvatarUtilityClass,
-  Box
+  Box,
+  IconButton
 } from '@mui/material';
-import { Badge } from 'components/compose/Badge';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { PageContext } from 'shared/context/PageContext';
 import { BlockModel, FilterModel, SectionModel } from 'shared/types/api-type';
 import style from './BlockFilter.module.scss';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type BlockFilterProps = {
   block: BlockModel;
   filter: FilterModel;
   labeled?: boolean;
   onChange: (filter: FilterModel) => void;
+  onDelete: (filter: FilterModel) => void;
 };
 
 type AttributeType = {
@@ -33,11 +33,11 @@ type AttributeType = {
 };
 
 export const BlockFilter: React.FC<BlockFilterProps> = (
-  props?: BlockFilterProps
+  props: BlockFilterProps
 ) => {
   const pageContext = useContext(PageContext);
   const [sections, setSections] = useState<SectionModel[]>([]);
-  const [filter, setFilter] = useState<FilterModel | undefined>(props?.filter);
+  const [filter, setFilter] = useState<FilterModel>(props.filter);
   const valueRef = useRef<HTMLInputElement>(null);
 
   const attributes: AttributeType[] = [
@@ -93,6 +93,10 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
     setSelectedAttribute(newAttribute);
   };
 
+  const handleDeleteFilter = () => {
+    props?.onDelete(filter);
+  };
+
   const handleChangeActive = (event: SelectChangeEvent) => {
     props?.onChange({ ...filter, active: filter?.active == 1 ? 0 : 1 });
   };
@@ -108,23 +112,6 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
   const handleChangeValue = (event: any) => {
     props?.onChange({ ...filter, value: event.target.value });
   };
-
-  /*useEffect(() => {
-    const newFilter: FilterModel = { ...filter, value: '' };
-    const hasOperator = !!selectedAttribute?.operators.find(
-      operator => filter?.operator == operator
-    );
-
-    console.log('selectedAttribute', selectedAttribute);
-
-    if (!hasOperator) {
-      console.log('resetOperator');
-      newFilter.operator = '';
-    }
-    console.log('to send **', newFilter);
-    props?.onChange(newFilter);
-    //console.log('hasOperator', hasOperator);
-  }, [props?.filter.attribute]);*/
 
   useEffect(() => {
     setSections(pageContext.sections);
@@ -195,14 +182,13 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
               )}
             </Select>
           </FormControl>
-          <FormControl sx={{ m: 1, width: 110 }} className="input" id="teste">
+          <FormControl sx={{ m: 1, width: 150 }} className="input" id="teste">
             <>
               {!!props?.labeled && (
                 <label className={style['form-label']}>Value</label>
               )}
-              {selectedAttribute && (
+              {selectedAttribute ? (
                 <Autocomplete
-                  sx={{ width: 150 }}
                   defaultValue={filter.value}
                   freeSolo={!!selectedAttribute.freeSolo}
                   autoHighlight
@@ -222,7 +208,7 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
                       size="small"
                       inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password' // disable autocomplete and autofill
+                        autoComplete: '0123456789' // disable autocomplete and autofill
                       }}
                     />
                   )}
@@ -248,9 +234,21 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
                     );
                   }}
                 />
+              ) : (
+                <TextField
+                  autoComplete="false"
+                  onChange={handleChangeValue}
+                  size="small"
+                  inputProps={{
+                    autoComplete: '0123456789' // disable autocomplete and autofill
+                  }}
+                />
               )}
             </>
           </FormControl>
+          <IconButton aria-label="delete" onClick={handleDeleteFilter}>
+            <DeleteIcon />
+          </IconButton>
         </div>
       )}
     </>
