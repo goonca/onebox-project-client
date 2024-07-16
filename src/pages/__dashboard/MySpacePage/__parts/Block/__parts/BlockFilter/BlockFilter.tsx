@@ -7,7 +7,8 @@ import {
   Checkbox,
   SelectChangeEvent,
   debounce,
-  getListItemAvatarUtilityClass
+  getListItemAvatarUtilityClass,
+  Box
 } from '@mui/material';
 import { Badge } from 'components/compose/Badge';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -26,28 +27,49 @@ type AttributeType = {
   name: string;
   type: string;
   operators: string[];
+  options?: any[];
+  labelKey?: string;
+  freeSolo?: boolean;
 };
 
 export const BlockFilter: React.FC<BlockFilterProps> = (
   props?: BlockFilterProps
 ) => {
-  const attributes: AttributeType[] = [
-    { name: 'title', type: 'string', operators: ['substring', 'startsWith'] },
-    {
-      name: 'headline',
-      type: 'string',
-      operators: ['substring', 'startsWith']
-    },
-    { name: 'section', type: 'section', operators: ['equals'] },
-    { name: 'context', type: 'context', operators: ['equals'] },
-    { name: 'author', type: 'author', operators: ['equals'] },
-    { name: 'label', type: 'string', operators: ['equals'] },
-    { name: 'metter', type: 'metter', operators: ['equals', 'gt', 'lt'] }
-  ];
-
   const pageContext = useContext(PageContext);
   const [sections, setSections] = useState<SectionModel[]>([]);
   const [filter, setFilter] = useState<FilterModel | undefined>(props?.filter);
+  const valueRef = useRef<HTMLInputElement>(null);
+
+  const attributes: AttributeType[] = [
+    {
+      name: 'title',
+      type: 'string',
+      operators: ['substring', 'startsWith'],
+      freeSolo: true
+    },
+    {
+      name: 'headline',
+      type: 'string',
+      operators: ['substring', 'startsWith'],
+      freeSolo: true
+    },
+    {
+      name: 'section',
+      type: 'section',
+      operators: ['equals'],
+      options: sections,
+      labelKey: 'key'
+    },
+    { name: 'context', type: 'context', operators: ['equals'] },
+    { name: 'author', type: 'author', operators: ['equals'] },
+    { name: 'label', type: 'string', operators: ['equals'] },
+    {
+      name: 'metter',
+      type: 'metter',
+      operators: ['equals', 'gt', 'lt'],
+      options: [1, 2, 3, 4, 5]
+    }
+  ];
 
   const [selectedAttribute, setSelectedAttribute] = useState<
     AttributeType | undefined
@@ -178,75 +200,55 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
               {!!props?.labeled && (
                 <label className={style['form-label']}>Value</label>
               )}
-              {(() => {
-                switch (selectedAttribute?.type) {
-                  case 'section':
+              {selectedAttribute && (
+                <Autocomplete
+                  sx={{ width: 150 }}
+                  defaultValue={filter.value}
+                  freeSolo={!!selectedAttribute.freeSolo}
+                  autoHighlight
+                  options={(selectedAttribute.options as any) ?? []}
+                  getOptionLabel={(obj: any) =>
+                    selectedAttribute.labelKey &&
+                    obj.hasOwnProperty(selectedAttribute.labelKey)
+                      ? obj[selectedAttribute.labelKey]
+                      : obj.toString()
+                  }
+                  renderInput={params => (
+                    <TextField
+                      autoComplete="false"
+                      ref={valueRef}
+                      {...params}
+                      onChange={handleChangeValue}
+                      size="small"
+                      inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password' // disable autocomplete and autofill
+                      }}
+                    />
+                  )}
+                  renderOption={(props, obj) => {
+                    //@ts-ignore
+                    const { key, ...optionProps } = props;
                     return (
-                      <Select
-                        onChange={handleChangeValue}
-                        renderValue={value => {
-                          console.log(value);
-                          return (
-                            <Badge
-                              style={{ fontSize: '8px', margin: '0 -15px' }}
-                              section={sections.find(
-                                section => section.id == value
-                              )}
-                            />
-                          );
+                      <Box
+                        key={key}
+                        component="li"
+                        sx={{
+                          '& > img': {
+                            mr: 2,
+                            flexShrink: 0
+                          }
                         }}
+                        {...optionProps}
                       >
-                        {sections.map(section => {
-                          return (
-                            <MenuItem value={section.id}>
-                              <Badge section={section} key={section.id} />
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
+                        {selectedAttribute.labelKey
+                          ? (obj as any)[selectedAttribute.labelKey]
+                          : obj}
+                      </Box>
                     );
-                  case 'metter':
-                    return (
-                      <input
-                        onChange={handleChangeValue}
-                        type="number"
-                        min={0}
-                        max={5}
-                        value={filter.value}
-                      />
-                    );
-                  case 'author':
-                    return (
-                      <Autocomplete
-                        freeSolo
-                        defaultValue={filter.value}
-                        options={['a', 'b'].map(option => option)}
-                        renderInput={params => (
-                          <TextField
-                            onChange={handleChangeValue}
-                            {...params}
-                            size="small"
-                          />
-                        )}
-                        renderOption={props => {
-                          return (
-                            <li key={(props as any).key}>
-                              {(props as any).key}
-                            </li>
-                          );
-                        }}
-                      />
-                    );
-                  default:
-                    return (
-                      <TextField
-                        onChange={handleChangeValue}
-                        variant="outlined"
-                        defaultValue={filter.value}
-                      />
-                    );
-                }
-              })()}
+                  }}
+                />
+              )}
             </>
           </FormControl>
         </div>
