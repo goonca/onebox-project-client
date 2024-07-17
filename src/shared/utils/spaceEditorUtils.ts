@@ -199,7 +199,6 @@ export const updateFilterOnBlock = (
   });
 
   !updated && block.filters?.push(filter);
-  console.log('block', block);
   return block;
 };
 

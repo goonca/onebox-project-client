@@ -118,7 +118,6 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
   }, [pageContext.sections]);
 
   useEffect(() => {
-    console.log('props?.filter', props?.filter);
     setFilter(props?.filter);
   }, [props?.filter]);
 

@@ -1,4 +1,39 @@
 @import '~/src/shared/style/variables.scss';
 
 .block-editor {
+  width: 100%;
+  max-width: 800px;
+  .tab-filters {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 0 20px;
+    width: 100%;
+
+    .container {
+      &:first-of-type {
+        width: 100%;
+        max-width: 550px;
+      }
+      .label {
+        margin-bottom: 10px;
+      }
+
+      .columns {
+        margin-bottom: 20px;
+      }
+
+      .max-length,
+      .columns {
+        input {
+          width: 70px;
+          padding-left: 10px;
+        }
+      }
+    }
+
+    .add-filter {
+      padding: 15px 0;
+    }
+  }
 }

@@ -19,10 +19,14 @@ export const useEvent = (): EventProps => {
       document.dispatchEvent(new CustomEvent(eventType, { detail: data }));
   };
   const listen = (eventType: EventType, callback: any) => {
+    //@ts-ignore
+    !window[eventType] && (window[eventType] = callback.bind());
     typeof window !== 'undefined' &&
-      document.removeEventListener(eventType, callback);
+      //@ts-ignore
+      document.removeEventListener(eventType, window[eventType]);
     typeof window !== 'undefined' &&
-      document.addEventListener(eventType, callback);
+      //@ts-ignore
+      document.addEventListener(eventType, window[eventType]);
   };
 
   return { trigger, listen };

@@ -15,6 +15,11 @@ export enum NotificationType {
   NEWS_SHARED = 'NEWS_SHARED'
 }
 
+export enum TextStyleEnum {
+  DEFAULT = 'DEFAULT',
+  LARGE = 'LARGE'
+}
+
 export enum ViewerSurceEnum {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED'
@@ -288,4 +293,17 @@ export interface LayoutModel extends ModelObject {
 
 export interface SpaceModel extends ModelObject {
   layouts?: LayoutModel[];
+}
+
+export interface DisplayMode extends ModelObject {
+  blockId: IdType;
+  block: BlockModel;
+  active: number;
+  position: number;
+  badgeType: string;
+  titleStyle: TextStyleEnum;
+  titleCrop: number;
+  headlineStyle: TextStyleEnum;
+  headlineCrop: number;
+  showAuthor: number;
 }

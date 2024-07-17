@@ -87,34 +87,65 @@ export const MySpacePage: React.FC = () => {
   );
 
   const handleUpdateFilterOnBlock = useCallback(
-    (block: BlockModel, filter: FilterModel, remove?: boolean) => {
-      const newBlock = (remove ? deleteFilterOnBlock : updateFilterOnBlock)(
-        block,
-        filter
-      );
-      const newLayout = updateBlockOnLayout(
-        findLayoutByBlock(mySpaceRef.current ?? mySpace, newBlock) ?? {},
-        newBlock
-      );
+    throttle(
+      (block: BlockModel, filter: FilterModel, remove?: boolean) => {
+        const newBlock = (remove ? deleteFilterOnBlock : updateFilterOnBlock)(
+          block,
+          filter
+        );
+        const newLayout = updateBlockOnLayout(
+          findLayoutByBlock(mySpaceRef.current ?? mySpace, newBlock) ?? {},
+          newBlock
+        );
 
-      const newSpace = updateLayoutOnSpace(
-        mySpaceRef.current ?? mySpace,
-        newLayout
-      );
+        const newSpace = updateLayoutOnSpace(
+          mySpaceRef.current ?? mySpace,
+          newLayout
+        );
 
-      trigger(EventType.EDIT_COMPONENT, {
-        model: block,
-        editor: <BlockEditor block={block} />
-      });
+        trigger(EventType.EDIT_COMPONENT, {
+          model: block,
+          editor: <BlockEditor block={block} />
+        });
 
-      setMySpace(newSpace);
-    },
+        console.log('handleUpdateFilterOnBlock');
+        setMySpace(newSpace);
+      },
+      50,
+      { leading: false, trailing: true }
+    ),
+    []
+  );
+
+  const handleUpdateBlockOnLayout = useCallback(
+    throttle(
+      (block: BlockModel) => {
+        const newLayout = updateBlockOnLayout(
+          findLayoutByBlock(mySpaceRef.current ?? mySpace, block) ?? {},
+          block
+        );
+
+        const newSpace = updateLayoutOnSpace(
+          mySpaceRef.current ?? mySpace,
+          newLayout
+        );
+
+        trigger(EventType.EDIT_COMPONENT, {
+          model: block,
+          editor: <BlockEditor block={block} />
+        });
+
+        console.log('handleUpdateBlockOnLayout', block);
+        setMySpace(newSpace);
+      },
+      50,
+      { leading: false, trailing: true }
+    ),
     []
   );
 
   const addListeners = () => {
     listen(EventType.UPDATE_FILTER_ON_BLOCK, ({ detail }: any) => {
-      console.log('UPDATE_FILTER_ON_BLOCK');
       handleUpdateFilterOnBlock(detail.block, detail.filter);
     });
 
@@ -123,7 +154,8 @@ export const MySpacePage: React.FC = () => {
     });
 
     listen(EventType.UPDATE_BLOCK_ON_LAYOUT, ({ detail }: any) => {
-      console.log(EventType.UPDATE_BLOCK_ON_LAYOUT, detail);
+      //console.log(EventType.UPDATE_BLOCK_ON_LAYOUT, detail);
+      handleUpdateBlockOnLayout(detail.block);
     });
   };
 
