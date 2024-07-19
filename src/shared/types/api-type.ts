@@ -16,13 +16,31 @@ export enum NotificationType {
 }
 
 export enum TextStyleEnum {
-  DEFAULT = 'DEFAULT',
-  LARGE = 'LARGE'
+  XXSMALL = 'xx-small',
+  XSMALL = 'x-small',
+  SMALL = 'small',
+  SMALLER = 'smaller',
+  MEDIUM = 'medium',
+  LARGE = 'large',
+  LARGER = 'larger',
+  XLARGE = 'x-large',
+  XXLARGE = 'xx-large'
+}
+
+export enum BadgeTypeEnum {
+  HIDDEN = 'HIDDEN',
+  BLOCK = 'BLOCK',
+  LINE = 'LINE'
 }
 
 export enum ViewerSurceEnum {
   DRAFT = 'DRAFT',
   PUBLISHED = 'PUBLISHED'
+}
+
+export enum NewsPresentationEnum {
+  VERTICAL = 'VERTICAL',
+  HORIZONTAL = 'HORIZONTAL'
 }
 
 export enum BlockTypeEnum {
@@ -269,7 +287,8 @@ export interface BlockModel extends ModelObject {
   title?: string;
   type?: string;
   size?: number;
-  display?: number;
+  presentation?: string;
+  displays?: DisplayModel[];
   columns?: number;
   positionX?: number;
   positionY?: number;
@@ -295,15 +314,16 @@ export interface SpaceModel extends ModelObject {
   layouts?: LayoutModel[];
 }
 
-export interface DisplayMode extends ModelObject {
-  blockId: IdType;
-  block: BlockModel;
-  active: number;
-  position: number;
-  badgeType: string;
-  titleStyle: TextStyleEnum;
-  titleCrop: number;
-  headlineStyle: TextStyleEnum;
-  headlineCrop: number;
-  showAuthor: number;
+export interface DisplayModel extends ModelObject {
+  blockId?: IdType;
+  block?: BlockModel;
+  active?: number;
+  position?: number;
+  badgeType?: BadgeTypeEnum;
+  titleStyle?: TextStyleEnum;
+  titleCrop?: number;
+  showHeadline?: number;
+  headlineStyle?: TextStyleEnum;
+  headlineCrop?: number;
+  showAuthor?: number;
 }

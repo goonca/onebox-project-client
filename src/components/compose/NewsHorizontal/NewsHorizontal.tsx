@@ -1,17 +1,31 @@
 import { Badge } from 'components/compose/Badge';
 import { Figure } from 'components/compose/Figure';
 import { NewsCoverType } from 'shared/types';
+import { BadgeTypeEnum, TextStyleEnum } from 'shared/types/api-type';
 
 import style from './NewsHorizontal.module.scss';
 
 const NewsHorizontal = (props: NewsCoverType) => {
-  const titleStyle =
-    props.news?.section && props.badgeType === 'titled'
+  let titleStyle: React.CSSProperties =
+    props.news?.section && props.customDisplay?.badgeType === BadgeTypeEnum.LINE
       ? {
           borderLeft: '5px solid ' + props.news?.section?.primaryColor,
           paddingLeft: '5px'
         }
       : {};
+
+  titleStyle = {
+    ...titleStyle,
+    ...(props.customDisplay?.titleStyle
+      ? { fontSize: props.customDisplay?.titleStyle }
+      : {})
+  };
+
+  const headlineStyle = {
+    ...(props.customDisplay?.headlineStyle
+      ? { fontSize: (TextStyleEnum as any)[props.customDisplay?.headlineStyle] }
+      : {})
+  };
 
   return (
     <>
@@ -27,10 +41,31 @@ const NewsHorizontal = (props: NewsCoverType) => {
         )}
         <div className={style['wrapper']}>
           <div className={style['content']}>
-            {props.news?.section && props.badgeType !== 'titled' && (
-              <Badge {...props.news?.section}></Badge>
+            {props.news?.section &&
+              props.customDisplay?.badgeType !== BadgeTypeEnum.LINE &&
+              props.customDisplay?.badgeType !== BadgeTypeEnum.HIDDEN && (
+                <Badge section={props.news?.section}></Badge>
+              )}
+            <h2 style={titleStyle}>
+              {props.news?.title?.substring(0, props.customDisplay?.titleCrop)}
+              {props.customDisplay?.titleCrop &&
+                props.news?.title?.length &&
+                props.news?.title?.length > props.customDisplay?.titleCrop &&
+                '...'}
+            </h2>
+            {!!props.customDisplay?.showHeadline && props.news?.headline && (
+              <h3 style={headlineStyle}>
+                {props.news?.headline?.substring(
+                  0,
+                  props.customDisplay?.headlineCrop
+                )}
+                {props.customDisplay?.headlineCrop &&
+                  props.news?.headline?.length &&
+                  props.news?.headline?.length >
+                    props.customDisplay?.headlineCrop &&
+                  '...'}
+              </h3>
             )}
-            <a style={titleStyle}>{props.news?.title}</a>
           </div>
         </div>
       </article>

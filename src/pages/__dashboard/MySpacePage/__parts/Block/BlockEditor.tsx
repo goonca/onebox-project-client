@@ -4,18 +4,33 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
+  SelectChangeEvent,
   Tab,
-  Tabs
+  Tabs,
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
-import { BlockModel, FilterModel } from 'shared/types/api-type';
-import { createEmptyFilter } from 'shared/utils/spaceEditorUtils';
+import {
+  BadgeTypeEnum,
+  BlockModel,
+  DisplayModel,
+  FilterModel,
+  TextStyleEnum
+} from 'shared/types/api-type';
+import {
+  createEmptyFilter,
+  updateDisplayOnBlock
+} from 'shared/utils/spaceEditorUtils';
 import style from './BlockEditor.module.scss';
 import { BlockFilter } from './__parts/BlockFilter/BlockFilter';
 
@@ -28,6 +43,20 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
 ) => {
   const { trigger } = useEvent();
   const [tabValue, setTabValue] = useState('1');
+  const [display, setDisplay] = useState<DisplayModel>();
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleChangeDisplay = (
+    event: React.MouseEvent<HTMLElement>,
+    newIndex: string
+  ) => {
+    //console.log(newIndex);
+    contentRef.current && (contentRef.current.style.transition = '');
+    contentRef.current && (contentRef.current.style.opacity = '0');
+    setDisplay(
+      props.block.displays?.find(d => d.position?.toString() == newIndex)
+    );
+  };
 
   const handleAddFilter = () => {
     trigger(EventType.UPDATE_FILTER_ON_BLOCK, {
@@ -66,9 +95,34 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     });
   };
 
+  const handleChangeProperty = (
+    event: React.SyntheticEvent,
+    property: string,
+    normalize?: (v: any) => any
+  ) => {
+    const target = event.target as any;
+    const value = target.type == 'checkbox' ? target.checked : target.value;
+    const newDisplay = {
+      ...display,
+      [property]: normalize ? normalize(value) : value
+    };
+
+    setDisplay(newDisplay);
+    const newBlock = updateDisplayOnBlock(props?.block, newDisplay);
+    trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
+      block: newBlock
+    });
+  };
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    contentRef.current && (contentRef.current.style.opacity = '1');
+    contentRef.current &&
+      (contentRef.current.style.transition = 'opacity 0.3s');
+  }, [display?.position]);
 
   return (
     <>
@@ -120,7 +174,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                     onChange={handleChangeColumns}
                     type="number"
                     min={1}
-                    max={10}
+                    max={999}
                     value={props.block.columns}
                   />
                 </div>
@@ -142,12 +196,170 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
             </div>
           </TabPanel>
           <TabPanel value="2">
-            <div>
+            <div className={style['tab-display']}>
               <div className={style['container']}>
-                <div className={style['label']}>
-                  <FormLabel>Custom Display</FormLabel>
+                <div className={style['position']}>
+                  <ToggleButtonGroup
+                    size="small"
+                    color="primary"
+                    value={display ? display.position : undefined}
+                    exclusive
+                    onChange={handleChangeDisplay}
+                  >
+                    {props.block.displays?.map(display => {
+                      const position = display.position ?? 0;
+                      return (
+                        <ToggleButton value={position}>
+                          {position + 1}º
+                        </ToggleButton>
+                      );
+                    })}
+                  </ToggleButtonGroup>
                 </div>
               </div>
+              {display && (
+                <div className={style['content']} ref={contentRef}>
+                  <div className={style['badge-type']}>
+                    <FormControl>
+                      <FormLabel>Badge type</FormLabel>
+                      <RadioGroup
+                        defaultValue="hidden"
+                        value={display.badgeType ?? ''}
+                        onChange={e => handleChangeProperty(e, 'badgeType')}
+                      >
+                        <FormControlLabel
+                          value={BadgeTypeEnum.HIDDEN}
+                          control={<Radio />}
+                          label="Hidden"
+                        />
+                        <FormControlLabel
+                          value={BadgeTypeEnum.BLOCK}
+                          control={<Radio />}
+                          label="Block"
+                        />
+                        <FormControlLabel
+                          value={BadgeTypeEnum.LINE}
+                          control={<Radio />}
+                          label="Line"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </div>
+                  <div className={style['title']}>
+                    <FormControl>
+                      <FormLabel>Title</FormLabel>
+                    </FormControl>
+                    <div className={style['wrapper']}>
+                      <div>
+                        <div>
+                          <label className={style['sub-label']}>Font</label>
+                        </div>
+                        <div className={style['font']}>
+                          <Select
+                            displayEmpty
+                            value={display.titleStyle}
+                            size="small"
+                            onChange={e =>
+                              handleChangeProperty(e as any, 'titleStyle')
+                            }
+                          >
+                            {Object.keys(TextStyleEnum).map(key => {
+                              return (
+                                <MenuItem value={key}>
+                                  <span
+                                    style={{
+                                      fontSize: (TextStyleEnum as any)[key]
+                                    }}
+                                  >
+                                    {(TextStyleEnum as any)[key]}
+                                  </span>
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                      </div>
+                      <div>
+                        <div>
+                          <label className={style['sub-label']}>Crop</label>
+                        </div>
+                        <div className={style['crop']}>
+                          <input
+                            onChange={e => handleChangeProperty(e, 'titleCrop')}
+                            type="number"
+                            min={1}
+                            max={999}
+                            value={display.titleCrop}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={style['headline']}>
+                    <FormControl>
+                      <FormLabel>
+                        <Checkbox
+                          size="small"
+                          checked={display.showHeadline == 1}
+                          value={display.showHeadline}
+                          onChange={e =>
+                            handleChangeProperty(e, 'showHeadline', v =>
+                              !!v ? 1 : 0
+                            )
+                          }
+                        />
+                        &nbsp;Show headline
+                      </FormLabel>
+                    </FormControl>
+                    <div className={style['wrapper']}>
+                      <div>
+                        <div>
+                          <label className={style['sub-label']}>Font</label>
+                        </div>
+                        <div className={style['font']}>
+                          <Select
+                            displayEmpty
+                            size="small"
+                            onChange={e =>
+                              handleChangeProperty(e as any, 'headlineStyle')
+                            }
+                          >
+                            {Object.keys(TextStyleEnum).map(key => {
+                              return (
+                                <MenuItem value={key}>
+                                  <span
+                                    style={{
+                                      fontSize: (TextStyleEnum as any)[key]
+                                    }}
+                                  >
+                                    {(TextStyleEnum as any)[key]}
+                                  </span>
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </div>
+                      </div>
+                      <div>
+                        <div>
+                          <label className={style['sub-label']}>Crop</label>
+                        </div>
+                        <div className={style['crop']}>
+                          <input
+                            onChange={e =>
+                              handleChangeProperty(e, 'headlineCrop')
+                            }
+                            type="number"
+                            min={1}
+                            max={999}
+                            value={display.headlineCrop}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </TabPanel>
         </TabContext>

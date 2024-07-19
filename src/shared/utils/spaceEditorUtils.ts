@@ -1,5 +1,6 @@
 import {
   BlockModel,
+  DisplayModel,
   FilterModel,
   IdType,
   LayoutModel,
@@ -213,6 +214,23 @@ export const deleteFilterOnBlock = (
   return block;
 };
 
+export const updateDisplayOnBlock = (
+  block: BlockModel,
+  display: DisplayModel
+): BlockModel => {
+  let updated = false;
+  block.displays = block.displays ?? [];
+  block.displays = block.displays?.map(_display => {
+    if (!updated && compareId<DisplayModel>(_display, display)) {
+      updated = true;
+      return display;
+    }
+    return _display;
+  });
+
+  !updated && block.displays?.push(display);
+  return block;
+};
 export const createEmptyFilter = (block: BlockModel): FilterModel => {
   return {
     tempId: Math.random().toString(36).substr(2),

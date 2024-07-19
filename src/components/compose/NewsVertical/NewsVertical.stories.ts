@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { mock_figure } from 'shared/mocks/mocks';
+import { BadgeTypeEnum, TextStyleEnum } from 'shared/types/api-type';
 
 import NewsVertical from './NewsVertical';
 
@@ -14,11 +15,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     news: { title: { name: 'Title' } },
-    badgeType: {
-      name: 'Badge type',
-      control: 'select',
-      options: ['default', 'titled']
-    },
+
     showDivider: { name: 'Show divider', control: 'boolean' }
   }
 } satisfies Meta<typeof NewsVertical>;
@@ -31,10 +28,15 @@ export const Default: Story = {
   args: {
     news: {
       title: 'Lorem ipsum dolor sit amet, consetur adipiscing elit',
+      headline: 'Lorem ipsum dolor sit amet, consetur adipiscing elit',
       cover: '1719234881163',
       section: {
         primaryColor: '#C34040',
         name: 'Esporte'
+      },
+      customDisplay: {
+        badgeType: BadgeTypeEnum.BLOCK,
+        titleStyle: TextStyleEnum.LARGE
       }
     },
     width: '250px'

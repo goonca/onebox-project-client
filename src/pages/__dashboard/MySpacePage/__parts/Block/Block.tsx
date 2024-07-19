@@ -10,7 +10,11 @@ import NewsHorizontal from 'components/compose/NewsHorizontal/NewsHorizontal';
 import NewsVertical from 'components/compose/NewsVertical/NewsVertical';
 import { useContext, useEffect, useState } from 'react';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
-import { BlockModel, BlockTypeEnum } from 'shared/types/api-type';
+import {
+  BlockModel,
+  BlockTypeEnum,
+  NewsPresentationEnum
+} from 'shared/types/api-type';
 import style from './Block.module.scss';
 
 type BlockProps = {
@@ -27,6 +31,7 @@ export enum BlockActionTypeEnum {
 
 export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
   const spaceEditorContext = useContext(SpaceEditorContext);
+  const [block, setBlock] = useState<BlockModel>();
   const [editMode, setEditMode] = useState<boolean>(
     spaceEditorContext.editMode ?? false
   );
@@ -39,6 +44,10 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
     () => setEditMode(spaceEditorContext.editMode ?? false),
     [spaceEditorContext.editMode]
   );
+
+  useEffect(() => {
+    setBlock(props?.block);
+  }, [props]);
 
   return (
     <>
@@ -70,27 +79,36 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
             </Tooltip>
           </div>
         </div>
-        <div
-          className={style['wrapper']}
-          style={{
-            opacity: (spaceEditorContext.contrast ?? 50) / 100,
-            gridTemplateColumns: `repeat(${props?.block.columns}, minmax(0, 1fr))`
-          }}
-        >
-          {props?.block.type == BlockTypeEnum.NEWS && !!props?.block.news ? (
-            props?.block.news.map(n => (
-              <div className={style['content']} key={n.id}>
-                {props?.block.display == 0 ? (
-                  <NewsVertical news={n} />
-                ) : (
-                  <NewsHorizontal news={n} />
-                )}
-              </div>
-            ))
-          ) : (
-            <div className={style['empty-block']}>empty block</div>
-          )}
-        </div>
+        {block && (
+          <div
+            className={style['wrapper']}
+            style={{
+              opacity: (spaceEditorContext.contrast ?? 50) / 100,
+              gridTemplateColumns: `repeat(${block.columns}, minmax(0, 1fr))`
+            }}
+          >
+            {block.type == BlockTypeEnum.NEWS && !!block.news ? (
+              block.news.map((n, i) => (
+                <div className={style['content']} key={`${n.id}`}>
+                  <>
+                    {block.presentation == NewsPresentationEnum.VERTICAL ? (
+                      <NewsVertical
+                        news={n}
+                        customDisplay={block.displays?.find(
+                          d => d.position == i
+                        )}
+                      />
+                    ) : (
+                      <NewsHorizontal news={n} />
+                    )}
+                  </>
+                </div>
+              ))
+            ) : (
+              <div className={style['empty-block']}>empty block</div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

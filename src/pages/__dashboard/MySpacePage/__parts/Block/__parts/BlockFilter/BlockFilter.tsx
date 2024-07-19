@@ -60,7 +60,7 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
       options: sections,
       labelKey: 'key'
     },
-    { name: 'context', type: 'context', operators: ['equals'] },
+    //{ name: 'context', type: 'context', operators: ['equals'] },
     { name: 'author', type: 'author', operators: ['equals'] },
     { name: 'label', type: 'string', operators: ['equals'] },
     {

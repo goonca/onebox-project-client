@@ -3,6 +3,13 @@
 .block-editor {
   width: 100%;
   max-width: 800px;
+
+  input[type='number'] {
+    background-color: rgba(0, 0, 0, 0);
+    width: 60px;
+    padding-left: 10px;
+  }
+
   .tab-filters {
     display: flex;
     flex-direction: row;
@@ -34,6 +41,66 @@
 
     .add-filter {
       padding: 15px 0;
+    }
+  }
+
+  .tab-display {
+    [class*='MuiToggleButtonGroup-grouped'] {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      gap: 50px;
+      padding-left: 0;
+
+      .badge-type {
+        [class*='MuiFormControlLabel-root'] {
+          font-size: 14px;
+        }
+
+        [class*='MuiFormLabel-root'] {
+          margin-bottom: 10px;
+        }
+
+        [class*='MuiButtonBase-root'] {
+          padding: 3px;
+        }
+
+        [class*='MuiFormControlLabel-label'] {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .title,
+    .headline {
+      [class*='MuiFormLabel-root'] {
+        margin-bottom: 10px;
+      }
+
+      [class*='MuiInputBase-root'] {
+        height: 35px;
+        min-width: 120px;
+        font-size: small;
+      }
+
+      [class*='MuiButtonBase-root'] {
+        padding: 0;
+      }
+
+      .sub-label {
+        font-size: 14px;
+        color: gray;
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
     }
   }
 }

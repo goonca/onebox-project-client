@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { mock_figure } from 'shared/mocks/mocks';
+import { BadgeTypeEnum, TextStyleEnum } from 'shared/types/api-type';
 
 import NewsHorizontal from './NewsHorizontal';
 
@@ -14,11 +15,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     news: { title: { name: 'Title' } },
-    badgeType: {
-      name: 'Badge type',
-      control: 'select',
-      options: ['default', 'titled']
-    },
+
     showDivider: { name: 'Show divider', control: 'boolean' }
   }
 } satisfies Meta<typeof NewsHorizontal>;
@@ -38,7 +35,11 @@ export const Default: Story = {
         name: 'Esporte'
       }
     },
-    width: '500px'
+    width: '500px',
+    customDisplay: {
+      badgeType: BadgeTypeEnum.BLOCK,
+      titleStyle: TextStyleEnum.LARGE
+    }
   }
 };
 
