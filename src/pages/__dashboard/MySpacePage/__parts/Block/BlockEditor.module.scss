@@ -50,6 +50,10 @@
       margin-bottom: 10px;
     }
 
+    [class*='MuiButtonBase-root'] {
+      height: 32px;
+    }
+
     .content {
       display: flex;
       flex-direction: row;

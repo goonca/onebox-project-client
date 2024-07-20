@@ -29,6 +29,7 @@ import {
 } from 'shared/types/api-type';
 import {
   createEmptyFilter,
+  defaultDisplay,
   updateDisplayOnBlock
 } from 'shared/utils/spaceEditorUtils';
 import style from './BlockEditor.module.scss';
@@ -44,6 +45,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
   const { trigger } = useEvent();
   const [tabValue, setTabValue] = useState('1');
   const [display, setDisplay] = useState<DisplayModel>();
+  const [block, setBlock] = useState<BlockModel>({});
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleChangeDisplay = (
@@ -58,24 +60,24 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     );
   };
 
-  const handleAddFilter = () => {
+  const handleAddDisplay = () => {
     trigger(EventType.UPDATE_FILTER_ON_BLOCK, {
-      filter: createEmptyFilter(props?.block),
-      block: props?.block
+      filter: createEmptyFilter(block),
+      block: block
     });
   };
 
   const handleFilterChange = (filter: FilterModel) => {
     trigger(EventType.UPDATE_FILTER_ON_BLOCK, {
       filter: filter,
-      block: props?.block
+      block: block
     });
   };
 
   const handleFilterDelete = (filter: FilterModel) => {
     trigger(EventType.DELETE_FILTER_ON_BLOCK, {
       filter: filter,
-      block: props?.block
+      block: block
     });
   };
 
@@ -83,7 +85,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     const columns = (event.target as HTMLInputElement).value;
     console.log(columns);
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
-      block: { ...props?.block, columns }
+      block: { ...block, columns }
     });
   };
 
@@ -91,7 +93,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     const size = (event.target as HTMLInputElement).value;
     console.log(size);
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
-      block: { ...props?.block, size }
+      block: { ...block, size }
     });
   };
 
@@ -108,7 +110,16 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     };
 
     setDisplay(newDisplay);
-    const newBlock = updateDisplayOnBlock(props?.block, newDisplay);
+    const newBlock = updateDisplayOnBlock(block, newDisplay);
+    trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
+      block: newBlock
+    });
+  };
+
+  const handleAddFilter = () => {
+    const newDisplay = defaultDisplay(block);
+    console.log('handleAddFilter', newDisplay);
+    const newBlock = updateDisplayOnBlock(block, newDisplay);
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
       block: newBlock
     });
@@ -124,246 +135,266 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
       (contentRef.current.style.transition = 'opacity 0.3s');
   }, [display?.position]);
 
+  useEffect(() => {
+    setBlock(props.block);
+    setDisplay(undefined);
+    setTabValue('1');
+  }, [props.block.id]);
+
   return (
     <>
-      <div className={style['block-editor']}>
-        <TabContext value={tabValue}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleTabChange}>
-              <Tab label="Filters" value="1" />
-              <Tab label="Custom display" value="2" />
-            </TabList>
-          </Box>
+      {block && (
+        <div className={style['block-editor']}>
+          <TabContext value={tabValue}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleTabChange}>
+                <Tab label="Filters" value="1" />
+                <Tab label="Custom display" value="2" />
+              </TabList>
+            </Box>
 
-          <TabPanel value="1">
-            <div className={style['tab-filters']}>
-              <div className={style['container']}>
-                {props.block && (
-                  <>
-                    {props?.block?.filters?.map((filter, i) => {
-                      return (
-                        <BlockFilter
-                          key={`${filter.id}-${filter.tempId}`}
-                          block={props.block}
-                          filter={filter}
-                          labeled={i == 0}
-                          onChange={handleFilterChange}
-                          onDelete={handleFilterDelete}
-                        />
-                      );
-                    })}
-                    <div className={style['add-filter']}>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={handleAddFilter}
-                      >
-                        <FontAwesomeIcon icon={faPlus} />
-                        &nbsp;add filter
-                      </Button>
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className={style['container']}>
-                <div className={style['label']}>
-                  <FormLabel>Columns</FormLabel>
+            <TabPanel value="1">
+              <div className={style['tab-filters']}>
+                <div className={style['container']}>
+                  {block && (
+                    <>
+                      {block?.filters?.map((filter, i) => {
+                        return (
+                          <BlockFilter
+                            key={`${filter.id}-${filter.tempId}`}
+                            block={block}
+                            filter={filter}
+                            labeled={i == 0}
+                            onChange={handleFilterChange}
+                            onDelete={handleFilterDelete}
+                          />
+                        );
+                      })}
+                      <div className={style['add-filter']}>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={handleAddFilter}
+                        >
+                          <FontAwesomeIcon icon={faPlus} />
+                          &nbsp;add filter
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
-                <div className={style['columns']}>
-                  <input
-                    onChange={handleChangeColumns}
-                    type="number"
-                    min={1}
-                    max={999}
-                    value={props.block.columns}
-                  />
-                </div>
-                <div className={style['label']}>
-                  <FormLabel>Max length</FormLabel>
-                </div>
-                <div className={style['max-length']}>
-                  <FormControl>
+                <div className={style['container']}>
+                  <div className={style['label']}>
+                    <FormLabel>Columns</FormLabel>
+                  </div>
+                  <div className={style['columns']}>
                     <input
-                      onChange={handleChangeLength}
+                      onChange={handleChangeColumns}
                       type="number"
                       min={1}
-                      max={10}
-                      value={props.block.size}
+                      max={999}
+                      value={block.columns}
                     />
-                  </FormControl>
-                </div>
-              </div>
-            </div>
-          </TabPanel>
-          <TabPanel value="2">
-            <div className={style['tab-display']}>
-              <div className={style['container']}>
-                <div className={style['position']}>
-                  <ToggleButtonGroup
-                    size="small"
-                    color="primary"
-                    value={display ? display.position : undefined}
-                    exclusive
-                    onChange={handleChangeDisplay}
-                  >
-                    {props.block.displays?.map(display => {
-                      const position = display.position ?? 0;
-                      return (
-                        <ToggleButton value={position}>
-                          {position + 1}º
-                        </ToggleButton>
-                      );
-                    })}
-                  </ToggleButtonGroup>
-                </div>
-              </div>
-              {display && (
-                <div className={style['content']} ref={contentRef}>
-                  <div className={style['badge-type']}>
+                  </div>
+                  <div className={style['label']}>
+                    <FormLabel>Max length</FormLabel>
+                  </div>
+                  <div className={style['max-length']}>
                     <FormControl>
-                      <FormLabel>Badge type</FormLabel>
-                      <RadioGroup
-                        defaultValue="hidden"
-                        value={display.badgeType ?? ''}
-                        onChange={e => handleChangeProperty(e, 'badgeType')}
-                      >
-                        <FormControlLabel
-                          value={BadgeTypeEnum.HIDDEN}
-                          control={<Radio />}
-                          label="Hidden"
-                        />
-                        <FormControlLabel
-                          value={BadgeTypeEnum.BLOCK}
-                          control={<Radio />}
-                          label="Block"
-                        />
-                        <FormControlLabel
-                          value={BadgeTypeEnum.LINE}
-                          control={<Radio />}
-                          label="Line"
-                        />
-                      </RadioGroup>
+                      <input
+                        onChange={handleChangeLength}
+                        type="number"
+                        min={1}
+                        max={10}
+                        value={block.size}
+                      />
                     </FormControl>
                   </div>
-                  <div className={style['title']}>
-                    <FormControl>
-                      <FormLabel>Title</FormLabel>
-                    </FormControl>
-                    <div className={style['wrapper']}>
-                      <div>
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel value="2">
+              <div className={style['tab-display']}>
+                <div className={style['container']}>
+                  <div className={style['position']}>
+                    <ToggleButtonGroup
+                      size="small"
+                      color="primary"
+                      value={display ? display.position : undefined}
+                      exclusive
+                      onChange={handleChangeDisplay}
+                    >
+                      {block.displays
+                        ?.sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
+                        .map(display => {
+                          const position = display.position ?? 0;
+                          return (
+                            <ToggleButton value={position}>
+                              {position + 1}º
+                            </ToggleButton>
+                          );
+                        })}
+                    </ToggleButtonGroup>
+                    &nbsp;
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={handleAddDisplay}
+                    >
+                      <FontAwesomeIcon icon={faPlus} />
+                    </Button>
+                  </div>
+                </div>
+                {display && (
+                  <div className={style['content']} ref={contentRef}>
+                    <div className={style['badge-type']}>
+                      <FormControl>
+                        <FormLabel>Badge type</FormLabel>
+                        <RadioGroup
+                          defaultValue="hidden"
+                          value={display.badgeType ?? ''}
+                          onChange={e => handleChangeProperty(e, 'badgeType')}
+                        >
+                          <FormControlLabel
+                            value={BadgeTypeEnum.HIDDEN}
+                            control={<Radio />}
+                            label="Hidden"
+                          />
+                          <FormControlLabel
+                            value={BadgeTypeEnum.BLOCK}
+                            control={<Radio />}
+                            label="Block"
+                          />
+                          <FormControlLabel
+                            value={BadgeTypeEnum.LINE}
+                            control={<Radio />}
+                            label="Line"
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </div>
+                    <div className={style['title']}>
+                      <FormControl>
+                        <FormLabel>Title</FormLabel>
+                      </FormControl>
+                      <div className={style['wrapper']}>
                         <div>
-                          <label className={style['sub-label']}>Font</label>
+                          <div>
+                            <label className={style['sub-label']}>Font</label>
+                          </div>
+                          <div className={style['font']}>
+                            <Select
+                              displayEmpty
+                              value={display.titleStyle}
+                              size="small"
+                              onChange={e =>
+                                handleChangeProperty(e as any, 'titleStyle')
+                              }
+                            >
+                              {Object.keys(TextStyleEnum).map(key => {
+                                return (
+                                  <MenuItem value={key}>
+                                    <span
+                                      style={{
+                                        fontSize: (TextStyleEnum as any)[key]
+                                      }}
+                                    >
+                                      {(TextStyleEnum as any)[key]}
+                                    </span>
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </div>
                         </div>
-                        <div className={style['font']}>
-                          <Select
-                            displayEmpty
-                            value={display.titleStyle}
-                            size="small"
-                            onChange={e =>
-                              handleChangeProperty(e as any, 'titleStyle')
-                            }
-                          >
-                            {Object.keys(TextStyleEnum).map(key => {
-                              return (
-                                <MenuItem value={key}>
-                                  <span
-                                    style={{
-                                      fontSize: (TextStyleEnum as any)[key]
-                                    }}
-                                  >
-                                    {(TextStyleEnum as any)[key]}
-                                  </span>
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
+                        <div>
+                          <div>
+                            <label className={style['sub-label']}>Crop</label>
+                          </div>
+                          <div className={style['crop']}>
+                            <input
+                              onChange={e =>
+                                handleChangeProperty(e, 'titleCrop')
+                              }
+                              type="number"
+                              min={1}
+                              max={999}
+                              value={display.titleCrop}
+                            />
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <div>
-                          <label className={style['sub-label']}>Crop</label>
-                        </div>
-                        <div className={style['crop']}>
-                          <input
-                            onChange={e => handleChangeProperty(e, 'titleCrop')}
-                            type="number"
-                            min={1}
-                            max={999}
-                            value={display.titleCrop}
+                    </div>
+                    <div className={style['headline']}>
+                      <FormControl>
+                        <FormLabel>
+                          <Checkbox
+                            size="small"
+                            checked={display.showHeadline == 1}
+                            value={display.showHeadline}
+                            onChange={e =>
+                              handleChangeProperty(e, 'showHeadline', v =>
+                                !!v ? 1 : 0
+                              )
+                            }
                           />
+                          &nbsp;Show headline
+                        </FormLabel>
+                      </FormControl>
+                      <div className={style['wrapper']}>
+                        <div>
+                          <div>
+                            <label className={style['sub-label']}>Font</label>
+                          </div>
+                          <div className={style['font']}>
+                            <Select
+                              displayEmpty
+                              size="small"
+                              onChange={e =>
+                                handleChangeProperty(e as any, 'headlineStyle')
+                              }
+                            >
+                              {Object.keys(TextStyleEnum).map(key => {
+                                return (
+                                  <MenuItem value={key}>
+                                    <span
+                                      style={{
+                                        fontSize: (TextStyleEnum as any)[key]
+                                      }}
+                                    >
+                                      {(TextStyleEnum as any)[key]}
+                                    </span>
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <label className={style['sub-label']}>Crop</label>
+                          </div>
+                          <div className={style['crop']}>
+                            <input
+                              onChange={e =>
+                                handleChangeProperty(e, 'headlineCrop')
+                              }
+                              type="number"
+                              min={1}
+                              max={999}
+                              value={display.headlineCrop}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className={style['headline']}>
-                    <FormControl>
-                      <FormLabel>
-                        <Checkbox
-                          size="small"
-                          checked={display.showHeadline == 1}
-                          value={display.showHeadline}
-                          onChange={e =>
-                            handleChangeProperty(e, 'showHeadline', v =>
-                              !!v ? 1 : 0
-                            )
-                          }
-                        />
-                        &nbsp;Show headline
-                      </FormLabel>
-                    </FormControl>
-                    <div className={style['wrapper']}>
-                      <div>
-                        <div>
-                          <label className={style['sub-label']}>Font</label>
-                        </div>
-                        <div className={style['font']}>
-                          <Select
-                            displayEmpty
-                            size="small"
-                            onChange={e =>
-                              handleChangeProperty(e as any, 'headlineStyle')
-                            }
-                          >
-                            {Object.keys(TextStyleEnum).map(key => {
-                              return (
-                                <MenuItem value={key}>
-                                  <span
-                                    style={{
-                                      fontSize: (TextStyleEnum as any)[key]
-                                    }}
-                                  >
-                                    {(TextStyleEnum as any)[key]}
-                                  </span>
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </div>
-                      </div>
-                      <div>
-                        <div>
-                          <label className={style['sub-label']}>Crop</label>
-                        </div>
-                        <div className={style['crop']}>
-                          <input
-                            onChange={e =>
-                              handleChangeProperty(e, 'headlineCrop')
-                            }
-                            type="number"
-                            min={1}
-                            max={999}
-                            value={display.headlineCrop}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </TabPanel>
-        </TabContext>
-      </div>
+                )}
+              </div>
+            </TabPanel>
+          </TabContext>
+        </div>
+      )}
     </>
   );
 };

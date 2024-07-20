@@ -1,11 +1,13 @@
 import {
+  BadgeTypeEnum,
   BlockModel,
   DisplayModel,
   FilterModel,
   IdType,
   LayoutModel,
   ModelObject,
-  SpaceModel
+  SpaceModel,
+  TextStyleEnum
 } from 'shared/types/api-type';
 
 export const addBlockToLayout = (
@@ -239,3 +241,12 @@ export const createEmptyFilter = (block: BlockModel): FilterModel => {
     active: 0
   };
 };
+
+export const defaultDisplay = (block?: BlockModel) => ({
+  tempId: Math.random().toString(36).substr(2),
+  blockId: block ? block.id : undefined,
+  block: block,
+  active: 0,
+  position: block ? (block.displays ?? []).length : 0,
+  badgeType: BadgeTypeEnum.HIDDEN
+});
