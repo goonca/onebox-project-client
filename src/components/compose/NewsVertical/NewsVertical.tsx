@@ -28,6 +28,14 @@ const NewsVertical = (props: NewsCoverType) => {
       : {})
   };
 
+  const titleCrop = !!props.customDisplay?.titleCrop
+    ? props.customDisplay?.titleCrop
+    : 9999;
+
+  const headlineCrop = !!props.customDisplay?.headlineCrop
+    ? props.customDisplay?.headlineCrop
+    : 9999;
+
   return (
     <>
       <article
@@ -41,22 +49,18 @@ const NewsVertical = (props: NewsCoverType) => {
           <Figure $key={props.news?.cover} width={100}></Figure>
         )}
         <h2 style={titleStyle}>
-          {props.news?.title?.substring(0, props.customDisplay?.titleCrop)}
+          {props.news?.title?.substring(0, titleCrop)}
           {props.customDisplay?.titleCrop &&
             props.news?.title?.length &&
-            props.news?.title?.length > props.customDisplay?.titleCrop &&
+            props.news?.title?.length > titleCrop &&
             '...'}
         </h2>
         {!!props.customDisplay?.showHeadline && props.news?.headline && (
           <h3 style={headlineStyle}>
-            {props.news?.headline?.substring(
-              0,
-              props.customDisplay?.headlineCrop
-            )}
+            {props.news?.headline?.substring(0, headlineCrop)}
             {props.customDisplay?.headlineCrop &&
               props.news?.headline?.length &&
-              props.news?.headline?.length >
-                props.customDisplay?.headlineCrop &&
+              props.news?.headline?.length > headlineCrop &&
               '...'}
           </h3>
         )}

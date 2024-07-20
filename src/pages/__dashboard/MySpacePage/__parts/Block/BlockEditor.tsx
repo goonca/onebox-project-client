@@ -60,7 +60,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     );
   };
 
-  const handleAddDisplay = () => {
+  const handleAddFilter = () => {
     trigger(EventType.UPDATE_FILTER_ON_BLOCK, {
       filter: createEmptyFilter(block),
       block: block
@@ -116,9 +116,9 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     });
   };
 
-  const handleAddFilter = () => {
+  const handleAddDisplay = () => {
     const newDisplay = defaultDisplay(block);
-    console.log('handleAddFilter', newDisplay);
+    console.log('handleAddDisplay', newDisplay);
     const newBlock = updateDisplayOnBlock(block, newDisplay);
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
       block: newBlock
@@ -291,6 +291,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                                 handleChangeProperty(e as any, 'titleStyle')
                               }
                             >
+                              <MenuItem value={undefined}>...</MenuItem>
                               {Object.keys(TextStyleEnum).map(key => {
                                 return (
                                   <MenuItem value={key}>
@@ -319,7 +320,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                               type="number"
                               min={1}
                               max={999}
-                              value={display.titleCrop}
+                              value={display.titleCrop ?? ''}
                             />
                           </div>
                         </div>
@@ -354,6 +355,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                                 handleChangeProperty(e as any, 'headlineStyle')
                               }
                             >
+                              <MenuItem value={undefined}>...</MenuItem>
                               {Object.keys(TextStyleEnum).map(key => {
                                 return (
                                   <MenuItem value={key}>
@@ -382,7 +384,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                               type="number"
                               min={1}
                               max={999}
-                              value={display.headlineCrop}
+                              value={display.headlineCrop ?? ''}
                             />
                           </div>
                         </div>
