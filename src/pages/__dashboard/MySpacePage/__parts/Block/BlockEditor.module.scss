@@ -50,6 +50,8 @@
   }
 
   .tab-display {
+    padding-left: 10px;
+
     [class*='MuiToggleButtonGroup-grouped'] {
       width: 50px;
       margin-bottom: 10px;
@@ -64,6 +66,7 @@
       flex-direction: row;
       gap: 50px;
       padding-left: 0;
+      padding-left: 30px;
 
       .badge-type {
         [class*='MuiFormControlLabel-root'] {
@@ -82,6 +85,12 @@
           font-size: 14px;
         }
       }
+    }
+
+    .delete-button {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
     }
 
     .title,

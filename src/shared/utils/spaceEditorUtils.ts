@@ -238,6 +238,8 @@ export const createEmptyFilter = (block: BlockModel): FilterModel => {
     tempId: Math.random().toString(36).substr(2),
     blockId: block.id ?? block.tempId,
     condition: 'or',
+    attribute: 'title',
+    operator: 'startsWith',
     active: 0
   };
 };

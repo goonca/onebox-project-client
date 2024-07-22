@@ -418,12 +418,14 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                         </div>
                       </div>
                     </div>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={handleDisplayDelete}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <div className={style['delete-button']}>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={handleDisplayDelete}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
                   </div>
                 )}
               </div>
