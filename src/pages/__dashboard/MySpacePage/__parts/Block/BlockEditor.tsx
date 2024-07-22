@@ -86,13 +86,17 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
 
   const handleDisplayDelete = () => {
     if (!display) return;
-    const newDisplays = block.displays?.filter(_display => {
-      return !!!compareId<DisplayModel>(_display, display);
-    });
+    const newDisplays = block.displays
+      ?.filter(_display => {
+        return !!!compareId<DisplayModel>(_display, display);
+      })
+      .map((_display, position) => ({ ..._display, position }));
 
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
       block: { ...block, displays: newDisplays }
     });
+
+    setDisplay((newDisplays ?? [])[0]);
   };
 
   const handleChangeBlockProperty = (
