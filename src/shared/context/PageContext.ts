@@ -3,6 +3,7 @@ import { ModelObject, SectionModel } from 'shared/types/api-type';
 
 export type PageContextProps = {
   menuOpen: boolean;
+  popoverOpen: boolean;
   sections: SectionModel[];
   editComponent?: {
     model: ModelObject;
@@ -12,5 +13,6 @@ export type PageContextProps = {
 
 export const PageContext = React.createContext<PageContextProps>({
   menuOpen: true,
+  popoverOpen: false,
   sections: []
 });

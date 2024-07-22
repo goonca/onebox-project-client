@@ -21,7 +21,8 @@ export const Layout = () => {
 //Split this was an workaround to not violate react hooks policies.
 // it is impossible to declare [opened, setOpened] before the Navigate() up there
 const LayoutContainer = () => {
-  const [menuOpen, setMenuOpened] = useState<boolean>(true);
+  const [menuOpen, setMenuOpen] = useState<boolean>(true);
+  const [editPopoverOpen, setEditPopoverOpen] = useState<boolean>(false);
   const [sections, setSections] = useState<SectionModel[]>([]);
   const [editComponent, setEditComponent] = useState<{
     model: ModelObject;
@@ -35,12 +36,21 @@ const LayoutContainer = () => {
     listen(EventType.EDIT_COMPONENT, ({ detail }: any) =>
       setEditComponent(detail)
     );
+    listen(EventType.OPEN_EDIT_POPOVER, ({ detail }: any) => {
+      console.log('OPEN_EDIT_POPOVER', detail);
+      setEditPopoverOpen(detail);
+    });
   }, []);
 
   return (
     <>
       <PageContext.Provider
-        value={{ menuOpen: !menuOpen, editComponent, sections }}
+        value={{
+          menuOpen: !menuOpen,
+          editComponent,
+          sections,
+          popoverOpen: editPopoverOpen
+        }}
       >
         <div
           data-component="layout"
@@ -52,7 +62,7 @@ const LayoutContainer = () => {
             <Menu />
             <div
               className={style['changer']}
-              onClick={() => setMenuOpened(!menuOpen)}
+              onClick={() => setMenuOpen(!menuOpen)}
             ></div>
           </div>
           <div className={style['right-side']}>

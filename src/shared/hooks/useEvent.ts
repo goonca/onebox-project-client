@@ -5,7 +5,8 @@ export enum EventType {
   ADD_BLOCK_TO_LAYOUT = 'onebox.addBlockToLayout',
   UPDATE_BLOCK_ON_LAYOUT = 'onebox.updateBlockOnLayout',
   UPDATE_FILTER_ON_BLOCK = 'onebox.updateFilterOnBlock',
-  DELETE_FILTER_ON_BLOCK = 'onebox.deleteFilterOnBlock'
+  DELETE_FILTER_ON_BLOCK = 'onebox.deleteFilterOnBlock',
+  OPEN_EDIT_POPOVER = 'onebox.openEditPopover'
 }
 
 export type EventProps = {

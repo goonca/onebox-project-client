@@ -22,7 +22,7 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
     model: ModelObject;
     editor: ReactNode;
   }>();
-  const { listen } = useEvent();
+  const { trigger } = useEvent();
   //const [component, setComponent] = useState<ReactNode>();
 
   const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -34,7 +34,11 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
     editor: ReactNode;
   }) => {
     setEditComponent(editComponent);
-    editComponent && setOpen(true);
+    editComponent && trigger(EventType.OPEN_EDIT_POPOVER, true);
+  };
+
+  const handleClosePopover = () => {
+    trigger(EventType.OPEN_EDIT_POPOVER, false);
   };
 
   useEffect(() => {
@@ -46,8 +50,9 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
   }, [pageContext.editComponent]);
 
   useEffect(() => {
-    document.body.style.paddingBottom = open ? '350px' : '0';
-  }, [open]);
+    document.body.style.paddingBottom = pageContext.popoverOpen ? '350px' : '0';
+    setOpen(pageContext.popoverOpen);
+  }, [pageContext.popoverOpen]);
 
   return (
     <>
@@ -61,7 +66,7 @@ export const ComponentEditorPopover: React.FC<ComponentEditorPopoverProps> = (
       >
         <div className={style['header']}>
           <h1>{props?.title}</h1>
-          <Button onClick={() => setOpen(false)}>
+          <Button onClick={() => handleClosePopover()}>
             <FontAwesomeIcon icon={faXmark} />
           </Button>
         </div>

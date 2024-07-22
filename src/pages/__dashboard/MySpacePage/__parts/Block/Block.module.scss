@@ -71,7 +71,8 @@ $transition-delay: 0s;
       opacity: 0.2;
     }*/
 
-    &:hover {
+    &.hoverable:hover,
+    &.selected {
       border: 2px solid $border-color;
 
       .header {

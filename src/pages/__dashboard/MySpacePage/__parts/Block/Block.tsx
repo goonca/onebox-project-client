@@ -9,12 +9,14 @@ import { Button, Tooltip } from '@mui/material';
 import NewsHorizontal from 'components/compose/NewsHorizontal/NewsHorizontal';
 import NewsVertical from 'components/compose/NewsVertical/NewsVertical';
 import { useContext, useEffect, useState } from 'react';
+import { PageContext } from 'shared/context/PageContext';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
 import {
   BlockModel,
   BlockTypeEnum,
   NewsPresentationEnum
 } from 'shared/types/api-type';
+import { compareId } from 'shared/utils/spaceEditorUtils';
 import style from './Block.module.scss';
 
 type BlockProps = {
@@ -31,6 +33,7 @@ export enum BlockActionTypeEnum {
 
 export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
   const spaceEditorContext = useContext(SpaceEditorContext);
+  const pageContext = useContext(PageContext);
   const [block, setBlock] = useState<BlockModel>();
   const [editMode, setEditMode] = useState<boolean>(
     spaceEditorContext.editMode ?? false
@@ -47,11 +50,20 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
 
   useEffect(() => {
     setBlock(props?.block);
-  }, [props]);
+    console.log('pageContext.editComponent', pageContext.editComponent);
+  }, [props, pageContext.editComponent]);
 
   return (
     <>
-      <div className={`${style['block']} ${editMode && style['edit-mode']}`}>
+      <div
+        className={`${style['block']} ${
+          compareId(pageContext.editComponent?.model ?? {}, block ?? {}) &&
+          pageContext.popoverOpen &&
+          style['selected']
+        } ${editMode && style['edit-mode']}  ${
+          !pageContext.popoverOpen && style['hoverable']
+        }`}
+      >
         <div className={style['header']}>
           <div>
             <Tooltip title="Properties" arrow>

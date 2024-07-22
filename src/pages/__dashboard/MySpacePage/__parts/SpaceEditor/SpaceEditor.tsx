@@ -26,7 +26,7 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
   const [editMode, setEditMode] = useState<boolean>(true);
   const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [contrast, setContrast] = useState<number>(
-    (getLocalStorage() ?? 50) as number
+    (getLocalStorage() ?? 100) as number
   );
 
   const ValueLabelComponent = (props: SliderValueLabelProps) => {
