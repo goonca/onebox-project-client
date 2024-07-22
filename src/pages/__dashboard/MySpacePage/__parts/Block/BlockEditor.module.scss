@@ -4,6 +4,11 @@
   width: 100%;
   max-width: 800px;
 
+  a {
+    font-size: small;
+    text-decoration: none;
+  }
+
   input[type='number'] {
     background-color: rgba(0, 0, 0, 0);
     width: 60px;
@@ -39,8 +44,8 @@
       }
     }
 
-    .add-filter {
-      padding: 15px 0;
+    .filters-list {
+      margin-bottom: 15px;
     }
   }
 
@@ -50,7 +55,7 @@
       margin-bottom: 10px;
     }
 
-    [class*='MuiButtonBase-root'] {
+    [class*='MuiButtonBase-root']:not([class*='MuiCheckbox-root']) {
       height: 32px;
     }
 

@@ -149,7 +149,7 @@ const sortedColumns = (layout: LayoutModel): LayoutModel => {
   return layout;
 };
 
-const compareId = <T extends ModelObject>(b1: T, b2: T) => {
+export const compareId = <T extends ModelObject>(b1: T, b2: T) => {
   return (
     (b1.id !== undefined && b1.id == b2.id) ||
     (b1.tempId !== undefined && b1.tempId == b2.tempId)

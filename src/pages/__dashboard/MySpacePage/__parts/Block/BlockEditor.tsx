@@ -8,6 +8,8 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  IconButton,
+  Link,
   MenuItem,
   Radio,
   RadioGroup,
@@ -28,12 +30,14 @@ import {
   TextStyleEnum
 } from 'shared/types/api-type';
 import {
+  compareId,
   createEmptyFilter,
   defaultDisplay,
   updateDisplayOnBlock
 } from 'shared/utils/spaceEditorUtils';
 import style from './BlockEditor.module.scss';
 import { BlockFilter } from './__parts/BlockFilter/BlockFilter';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type BlockEditorProps = {
   block: BlockModel;
@@ -52,7 +56,6 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     event: React.MouseEvent<HTMLElement>,
     newIndex: string
   ) => {
-    //console.log(newIndex);
     contentRef.current && (contentRef.current.style.transition = '');
     contentRef.current && (contentRef.current.style.opacity = '0');
     setDisplay(
@@ -81,23 +84,28 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
     });
   };
 
-  const handleChangeColumns = (event: React.SyntheticEvent) => {
-    const columns = (event.target as HTMLInputElement).value;
-    console.log(columns);
+  const handleDisplayDelete = () => {
+    if (!display) return;
+    const newDisplays = block.displays?.filter(_display => {
+      return !!!compareId<DisplayModel>(_display, display);
+    });
+
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
-      block: { ...block, columns }
+      block: { ...block, displays: newDisplays }
     });
   };
 
-  const handleChangeLength = (event: React.SyntheticEvent) => {
-    const size = (event.target as HTMLInputElement).value;
-    console.log(size);
+  const handleChangeBlockProperty = (
+    event: React.SyntheticEvent,
+    property: string
+  ) => {
+    const value = (event.target as HTMLInputElement).value;
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
-      block: { ...block, size }
+      block: { ...block, [property]: value }
     });
   };
 
-  const handleChangeProperty = (
+  const handleChangeDisplayProperty = (
     event: React.SyntheticEvent,
     property: string,
     normalize?: (v: any) => any
@@ -118,11 +126,11 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
 
   const handleAddDisplay = () => {
     const newDisplay = defaultDisplay(block);
-    console.log('handleAddDisplay', newDisplay);
     const newBlock = updateDisplayOnBlock(block, newDisplay);
     trigger(EventType.UPDATE_BLOCK_ON_LAYOUT, {
       block: newBlock
     });
+    setDisplay(newDisplay);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -136,10 +144,13 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
   }, [display?.position]);
 
   useEffect(() => {
-    setBlock(props.block);
-    setDisplay(undefined);
+    setDisplay((props.block.displays ?? [])[0]);
     setTabValue('1');
   }, [props.block.id]);
+
+  useEffect(() => {
+    setBlock(props.block);
+  }, [props.block]);
 
   return (
     <>
@@ -158,27 +169,24 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                 <div className={style['container']}>
                   {block && (
                     <>
-                      {block?.filters?.map((filter, i) => {
-                        return (
-                          <BlockFilter
-                            key={`${filter.id}-${filter.tempId}`}
-                            block={block}
-                            filter={filter}
-                            labeled={i == 0}
-                            onChange={handleFilterChange}
-                            onDelete={handleFilterDelete}
-                          />
-                        );
-                      })}
+                      {!!block?.filters?.length && (
+                        <div className={style['filters-list']}>
+                          {block?.filters?.map((filter, i) => {
+                            return (
+                              <BlockFilter
+                                key={`${filter.id}-${filter.tempId}`}
+                                block={block}
+                                filter={filter}
+                                labeled={i == 0}
+                                onChange={handleFilterChange}
+                                onDelete={handleFilterDelete}
+                              />
+                            );
+                          })}
+                        </div>
+                      )}
                       <div className={style['add-filter']}>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={handleAddFilter}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                          &nbsp;add filter
-                        </Button>
+                        <Link onClick={handleAddFilter}>&nbsp;add filter</Link>
                       </div>
                     </>
                   )}
@@ -189,11 +197,11 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                   </div>
                   <div className={style['columns']}>
                     <input
-                      onChange={handleChangeColumns}
+                      onChange={e => handleChangeBlockProperty(e, 'columns')}
                       type="number"
                       min={1}
                       max={999}
-                      value={block.columns}
+                      defaultValue={block.columns ?? ''}
                     />
                   </div>
                   <div className={style['label']}>
@@ -202,11 +210,11 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                   <div className={style['max-length']}>
                     <FormControl>
                       <input
-                        onChange={handleChangeLength}
+                        onChange={e => handleChangeBlockProperty(e, 'size')}
                         type="number"
                         min={1}
                         max={10}
-                        value={block.size}
+                        defaultValue={block.size ?? ''}
                       />
                     </FormControl>
                   </div>
@@ -236,160 +244,182 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                         })}
                     </ToggleButtonGroup>
                     &nbsp;
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={handleAddDisplay}
-                    >
-                      <FontAwesomeIcon icon={faPlus} />
-                    </Button>
+                    <Link onClick={handleAddDisplay}>&nbsp; add display</Link>
                   </div>
                 </div>
                 {display && (
-                  <div className={style['content']} ref={contentRef}>
-                    <div className={style['badge-type']}>
-                      <FormControl>
-                        <FormLabel>Badge type</FormLabel>
-                        <RadioGroup
-                          defaultValue="hidden"
-                          value={display.badgeType ?? ''}
-                          onChange={e => handleChangeProperty(e, 'badgeType')}
-                        >
-                          <FormControlLabel
-                            value={BadgeTypeEnum.HIDDEN}
-                            control={<Radio />}
-                            label="Hidden"
-                          />
-                          <FormControlLabel
-                            value={BadgeTypeEnum.BLOCK}
-                            control={<Radio />}
-                            label="Block"
-                          />
-                          <FormControlLabel
-                            value={BadgeTypeEnum.LINE}
-                            control={<Radio />}
-                            label="Line"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </div>
-                    <div className={style['title']}>
-                      <FormControl>
-                        <FormLabel>Title</FormLabel>
-                      </FormControl>
-                      <div className={style['wrapper']}>
-                        <div>
-                          <div>
-                            <label className={style['sub-label']}>Font</label>
-                          </div>
-                          <div className={style['font']}>
-                            <Select
-                              displayEmpty
-                              value={display.titleStyle}
-                              size="small"
-                              onChange={e =>
-                                handleChangeProperty(e as any, 'titleStyle')
-                              }
-                            >
-                              <MenuItem value={undefined}>...</MenuItem>
-                              {Object.keys(TextStyleEnum).map(key => {
-                                return (
-                                  <MenuItem value={key}>
-                                    <span
-                                      style={{
-                                        fontSize: (TextStyleEnum as any)[key]
-                                      }}
-                                    >
-                                      {(TextStyleEnum as any)[key]}
-                                    </span>
-                                  </MenuItem>
-                                );
-                              })}
-                            </Select>
-                          </div>
-                        </div>
-                        <div>
-                          <div>
-                            <label className={style['sub-label']}>Crop</label>
-                          </div>
-                          <div className={style['crop']}>
-                            <input
-                              onChange={e =>
-                                handleChangeProperty(e, 'titleCrop')
-                              }
-                              type="number"
-                              min={1}
-                              max={999}
-                              value={display.titleCrop ?? ''}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={style['headline']}>
-                      <FormControl>
-                        <FormLabel>
-                          <Checkbox
-                            size="small"
-                            checked={display.showHeadline == 1}
-                            value={display.showHeadline}
+                  <div ref={contentRef}>
+                    <div
+                      key={`${display.id}-${display.tempId}`}
+                      className={style['content']}
+                    >
+                      <div className={style['badge-type']}>
+                        <FormControl>
+                          <FormLabel>Badge type</FormLabel>
+                          <RadioGroup
+                            defaultValue="hidden"
+                            value={display.badgeType ?? ''}
                             onChange={e =>
-                              handleChangeProperty(e, 'showHeadline', v =>
-                                !!v ? 1 : 0
-                              )
+                              handleChangeDisplayProperty(e, 'badgeType')
                             }
-                          />
-                          &nbsp;Show headline
-                        </FormLabel>
-                      </FormControl>
-                      <div className={style['wrapper']}>
-                        <div>
+                          >
+                            <FormControlLabel
+                              value={BadgeTypeEnum.HIDDEN}
+                              control={<Radio />}
+                              label="Hidden"
+                            />
+                            <FormControlLabel
+                              value={BadgeTypeEnum.BLOCK}
+                              control={<Radio />}
+                              label="Block"
+                            />
+                            <FormControlLabel
+                              value={BadgeTypeEnum.LINE}
+                              control={<Radio />}
+                              label="Line"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                      <div className={style['title']}>
+                        <FormControl>
+                          <FormLabel>Title</FormLabel>
+                        </FormControl>
+                        <div className={style['wrapper']}>
                           <div>
-                            <label className={style['sub-label']}>Font</label>
-                          </div>
-                          <div className={style['font']}>
-                            <Select
-                              displayEmpty
-                              size="small"
-                              onChange={e =>
-                                handleChangeProperty(e as any, 'headlineStyle')
-                              }
-                            >
-                              <MenuItem value={undefined}>...</MenuItem>
-                              {Object.keys(TextStyleEnum).map(key => {
-                                return (
-                                  <MenuItem value={key}>
-                                    <span
-                                      style={{
-                                        fontSize: (TextStyleEnum as any)[key]
-                                      }}
+                            <div>
+                              <label className={style['sub-label']}>Font</label>
+                            </div>
+                            <div className={style['font']}>
+                              <Select
+                                displayEmpty
+                                defaultValue={display.titleStyle}
+                                size="small"
+                                onChange={e =>
+                                  handleChangeDisplayProperty(
+                                    e as any,
+                                    'titleStyle'
+                                  )
+                                }
+                              >
+                                <MenuItem value={undefined}>...</MenuItem>
+                                {Object.keys(TextStyleEnum).map(key => {
+                                  return (
+                                    <MenuItem
+                                      value={key}
+                                      selected={display.titleStyle == key}
                                     >
-                                      {(TextStyleEnum as any)[key]}
-                                    </span>
-                                  </MenuItem>
-                                );
-                              })}
-                            </Select>
+                                      <span
+                                        style={{
+                                          fontSize: (TextStyleEnum as any)[key]
+                                        }}
+                                      >
+                                        {(TextStyleEnum as any)[key]}
+                                      </span>
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </div>
+                          </div>
+                          <div>
+                            <div>
+                              <label className={style['sub-label']}>Crop</label>
+                            </div>
+                            <div className={style['crop']}>
+                              <input
+                                onChange={e =>
+                                  handleChangeDisplayProperty(e, 'titleCrop')
+                                }
+                                type="number"
+                                min={1}
+                                max={999}
+                                value={display.titleCrop ?? ''}
+                              />
+                            </div>
                           </div>
                         </div>
-                        <div>
-                          <div>
-                            <label className={style['sub-label']}>Crop</label>
-                          </div>
-                          <div className={style['crop']}>
-                            <input
+                      </div>
+                      <div className={style['headline']}>
+                        <FormControl>
+                          <FormLabel>
+                            <Checkbox
+                              size="small"
+                              checked={display.showHeadline == 1}
+                              value={display.showHeadline}
                               onChange={e =>
-                                handleChangeProperty(e, 'headlineCrop')
+                                handleChangeDisplayProperty(
+                                  e,
+                                  'showHeadline',
+                                  v => (!!v ? 1 : 0)
+                                )
                               }
-                              type="number"
-                              min={1}
-                              max={999}
-                              value={display.headlineCrop ?? ''}
                             />
+                            &nbsp;Show headline
+                          </FormLabel>
+                        </FormControl>
+                        <div className={style['wrapper']}>
+                          <div>
+                            <div>
+                              <label className={style['sub-label']}>Font</label>
+                            </div>
+                            <div className={style['font']}>
+                              <Select
+                                displayEmpty
+                                defaultValue={display.headlineStyle}
+                                size="small"
+                                onChange={e =>
+                                  handleChangeDisplayProperty(
+                                    e as any,
+                                    'headlineStyle'
+                                  )
+                                }
+                              >
+                                <MenuItem value={undefined}>...</MenuItem>
+                                {Object.keys(TextStyleEnum).map(key => {
+                                  return (
+                                    <MenuItem
+                                      value={key}
+                                      selected={display.headlineStyle == key}
+                                    >
+                                      <span
+                                        style={{
+                                          fontSize: (TextStyleEnum as any)[key]
+                                        }}
+                                      >
+                                        {(TextStyleEnum as any)[key]}
+                                      </span>
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </div>
+                          </div>
+                          <div>
+                            <div>
+                              <label className={style['sub-label']}>Crop</label>
+                            </div>
+                            <div className={style['crop']}>
+                              <input
+                                onChange={e =>
+                                  handleChangeDisplayProperty(e, 'headlineCrop')
+                                }
+                                type="number"
+                                min={1}
+                                max={999}
+                                value={display.headlineCrop ?? ''}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={handleDisplayDelete}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </div>
                 )}
               </div>
