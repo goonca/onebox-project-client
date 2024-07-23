@@ -9,6 +9,7 @@ export type PageContextProps = {
     model: ModelObject;
     editor: ReactNode;
   };
+  labels?: { label: string }[];
 };
 
 export const PageContext = React.createContext<PageContextProps>({

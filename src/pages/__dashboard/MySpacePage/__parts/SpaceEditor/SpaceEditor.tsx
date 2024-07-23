@@ -5,7 +5,7 @@ import {
   Switch,
   Tooltip
 } from '@mui/material';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { SpaceModel } from 'shared/types/api-type';
@@ -23,8 +23,8 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
   const { setLocalStorage, getLocalStorage } = useLocalStorage<number>(
     'spaceEditorContrast'
   );
+
   const [editMode, setEditMode] = useState<boolean>(true);
-  const [overlayOpen, setOverlayOpen] = useState<boolean>(false);
   const [contrast, setContrast] = useState<number>(
     (getLocalStorage() ?? 100) as number
   );
@@ -79,9 +79,7 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
               />
             </div>
           </div>
-          <div
-            className={`${style['overlay']} ${overlayOpen && style['visible']}`}
-          ></div>
+          <div className={style['overlay']}></div>
           <div className={style['content']}>{props?.children}</div>
         </div>
         <AddComponentDialog open={true} />

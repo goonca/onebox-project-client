@@ -37,6 +37,7 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
 ) => {
   const pageContext = useContext(PageContext);
   const [sections, setSections] = useState<SectionModel[]>([]);
+  const [labels, setLabels] = useState<{ label: string }[]>([]);
   const [filter, setFilter] = useState<FilterModel>(props.filter);
   const valueRef = useRef<HTMLInputElement>(null);
 
@@ -62,7 +63,12 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
     },
     //{ name: 'context', type: 'context', operators: ['equals'] },
     { name: 'author', type: 'author', operators: ['equals'] },
-    { name: 'label', type: 'string', operators: ['equals'] },
+    {
+      name: 'label',
+      type: 'string',
+      operators: ['equals', 'substring'],
+      options: labels.map(obj => obj.label)
+    },
     {
       name: 'metter',
       type: 'metter',
@@ -116,6 +122,10 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
   useEffect(() => {
     setSections(pageContext.sections);
   }, [pageContext.sections]);
+
+  useEffect(() => {
+    setLabels(pageContext.labels ?? []);
+  }, [pageContext.labels]);
 
   useEffect(() => {
     setFilter(props?.filter);
@@ -235,11 +245,14 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
                 />
               ) : (
                 <TextField
-                  autoComplete="false"
+                  autoComplete="off"
                   onChange={handleChangeValue}
                   size="small"
                   inputProps={{
-                    autoComplete: '0123456789' // disable autocomplete and autofill
+                    autocomplete: 'new-password',
+                    form: {
+                      autocomplete: 'off'
+                    }
                   }}
                 />
               )}

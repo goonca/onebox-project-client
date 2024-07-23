@@ -30,6 +30,7 @@ export type ServicesType = {
   getLocationNearby: (location: LocationModel) => any;
   getCitiesByName: (name: string) => any;
   listWriters: () => any;
+  listLabels: () => any;
   saveUser: (user: UserModel, feedback?: boolean) => any;
   listUsersByNameOrUsername: (nameOrUsername: string) => any;
   updateUser: (user: UserModel, token?: string, hideFeedback?: boolean) => any;
@@ -169,6 +170,10 @@ export const useServices = (): ServicesType => {
     return await get(uri.USER + '/writers');
   };
 
+  const listLabels = async () => {
+    return await get(uri.NEWS + '/labels');
+  };
+
   const listUsersByNameOrUsername = async (nameOrUsername: string) => {
     return await get(`${uri.USER}?nameOrUsername=${nameOrUsername}`);
   };
@@ -293,6 +298,7 @@ export const useServices = (): ServicesType => {
     authenticate,
     saveUser,
     listWriters,
+    listLabels,
     listUsersByNameOrUsername,
     logoff,
     saveNews,

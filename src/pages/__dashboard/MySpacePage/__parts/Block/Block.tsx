@@ -43,6 +43,10 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
     props?.onAction(props.block, actionType);
   };
 
+  const handleHeaderClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   useEffect(
     () => setEditMode(spaceEditorContext.editMode ?? false),
     [spaceEditorContext.editMode]
@@ -50,7 +54,6 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
 
   useEffect(() => {
     setBlock(props?.block);
-    console.log('pageContext.editComponent', pageContext.editComponent);
   }, [props, pageContext.editComponent]);
 
   return (
@@ -64,7 +67,11 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
           !pageContext.popoverOpen && style['hoverable']
         }`}
       >
-        <div className={style['header']}>
+        <div
+          className={style['header']}
+          onMouseDown={handleHeaderClick}
+          onClick={handleHeaderClick}
+        >
           <div>
             <Tooltip title="Properties" arrow>
               <Button onClick={() => handleAction(BlockActionTypeEnum.EDIT)}>

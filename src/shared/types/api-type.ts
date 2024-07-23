@@ -16,15 +16,15 @@ export enum NotificationType {
 }
 
 export enum TextStyleEnum {
-  XXSMALL = 'xx-small',
-  XSMALL = 'x-small',
-  SMALL = 'small',
-  SMALLER = 'smaller',
   MEDIUM = 'medium',
   LARGE = 'large',
   LARGER = 'larger',
+  SMALL = 'small',
+  SMALLER = 'smaller',
   XLARGE = 'x-large',
-  XXLARGE = 'xx-large'
+  XSMALL = 'x-small',
+  XXLARGE = 'xx-large',
+  XXSMALL = 'xx-small'
 }
 
 export enum BadgeTypeEnum {
@@ -130,6 +130,8 @@ export interface NewsModel extends ModelObject {
   context?: NewsContext;
   sectionId?: IdType;
   section?: SectionModel;
+  label?: string;
+  metter?: number;
   sharedById?: IdType;
   holderUserId?: IdType;
   holderUser?: UserModel;

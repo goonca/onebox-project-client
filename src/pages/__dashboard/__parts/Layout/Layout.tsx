@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { PageContext } from 'shared/context/PageContext';
 import { EventType, useEvent } from 'shared/hooks/useEvent';
-import { useServices } from 'shared/hooks/useServices';
+import { OBResponseType, useServices } from 'shared/hooks/useServices';
 import { ModelObject, SectionModel } from 'shared/types/api-type';
 import { ComponentEditorPopover } from '../ComponentEditorPopover/ComponentEditorPopover';
 
@@ -24,21 +24,26 @@ const LayoutContainer = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(true);
   const [editPopoverOpen, setEditPopoverOpen] = useState<boolean>(false);
   const [sections, setSections] = useState<SectionModel[]>([]);
+  const [labels, setLabels] = useState<{ label: string }[]>();
   const [editComponent, setEditComponent] = useState<{
     model: ModelObject;
     editor: ReactNode;
   }>();
   const { listen } = useEvent();
-  const { getSections } = useServices();
+  const { getSections, listLabels } = useServices();
 
   useEffect(() => {
     getSections().then(({ data }) => setSections(data));
     listen(EventType.EDIT_COMPONENT, ({ detail }: any) =>
       setEditComponent(detail)
     );
+
     listen(EventType.OPEN_EDIT_POPOVER, ({ detail }: any) => {
-      console.log('OPEN_EDIT_POPOVER', detail);
       setEditPopoverOpen(detail);
+    });
+
+    listLabels().then(({ data }: OBResponseType) => {
+      setLabels(data);
     });
   }, []);
 
@@ -49,7 +54,8 @@ const LayoutContainer = () => {
           menuOpen: !menuOpen,
           editComponent,
           sections,
-          popoverOpen: editPopoverOpen
+          popoverOpen: editPopoverOpen,
+          labels
         }}
       >
         <div

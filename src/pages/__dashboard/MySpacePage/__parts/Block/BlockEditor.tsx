@@ -241,7 +241,10 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                         .map(display => {
                           const position = display.position ?? 0;
                           return (
-                            <ToggleButton value={position}>
+                            <ToggleButton
+                              value={position}
+                              key={`${display.position}-${display.id}`}
+                            >
                               {position + 1}º
                             </ToggleButton>
                           );
@@ -311,6 +314,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                                   return (
                                     <MenuItem
                                       value={key}
+                                      key={key}
                                       selected={display.titleStyle == key}
                                     >
                                       <span
@@ -384,6 +388,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                                   return (
                                     <MenuItem
                                       value={key}
+                                      key={key}
                                       selected={display.headlineStyle == key}
                                     >
                                       <span
