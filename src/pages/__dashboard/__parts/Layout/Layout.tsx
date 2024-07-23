@@ -29,7 +29,7 @@ const LayoutContainer = () => {
     model: ModelObject;
     editor: ReactNode;
   }>();
-  const { listen } = useEvent();
+  const { listen, trigger } = useEvent();
   const { getSections, listLabels } = useServices();
 
   useEffect(() => {
@@ -60,6 +60,7 @@ const LayoutContainer = () => {
       >
         <div
           data-component="layout"
+          onMouseDown={() => trigger(EventType.OPEN_EDIT_POPOVER, false)}
           className={`${style['layout']} ${!menuOpen && style['closed']}`}
           id="layoutWrapper"
         >
