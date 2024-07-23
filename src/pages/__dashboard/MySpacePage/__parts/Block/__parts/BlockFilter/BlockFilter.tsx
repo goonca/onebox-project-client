@@ -210,14 +210,17 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
                   }
                   renderInput={params => (
                     <TextField
-                      autoComplete="false"
+                      autoComplete="off"
                       ref={valueRef}
                       {...params}
                       onChange={handleChangeValue}
                       size="small"
                       inputProps={{
                         ...params.inputProps,
-                        autoComplete: '0123456789' // disable autocomplete and autofill
+                        autocomplete: 'new-password',
+                        form: {
+                          autocomplete: 'off'
+                        }
                       }}
                     />
                   )}

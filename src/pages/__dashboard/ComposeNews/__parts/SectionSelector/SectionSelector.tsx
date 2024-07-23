@@ -17,6 +17,7 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
 ) => {
   const [news, setNews] = useState<NewsModel>(props.news);
   const [sections, setSections] = useState<SectionModel[]>();
+  const allSections = useRef<SectionModel[]>();
   const searchRef = useRef<HTMLInputElement>();
   const { getSections } = useServices();
 
@@ -28,8 +29,8 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
     props.onChange && props.onChange(section);
   };
 
-  const getFilteredSections = (_sections?: SectionModel[]) => {
-    return (_sections ?? sections)?.filter(section =>
+  const getFilteredSections = () => {
+    return allSections.current?.filter(section =>
       !searchRef.current?.value
         ? true
         : section.key
@@ -44,7 +45,8 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
 
   useEffect(() => {
     getSections().then((response: OBResponseType) => {
-      setSections(getFilteredSections(response.data));
+      allSections.current = response.data;
+      setSections(getFilteredSections());
     });
   }, []);
 

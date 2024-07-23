@@ -33,6 +33,7 @@ import {
 } from './__parts/ContextSelector/ContextSelector';
 import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
 import { ConfirmDialog } from '../__parts/ConfirmDialog/ConfirmDialog';
+import { LabelSelector } from './__parts/LabelSelector/LabelSelector';
 
 export const ComposeNews: React.FC<{
   id?: number;
@@ -81,13 +82,13 @@ export const ComposeNews: React.FC<{
     }
   }, []);
 
-  const updateHeader = (header?: NewsModel) => {
+  const handleUpdateHeader = (header?: NewsModel) => {
     const _news = {
       ...news,
       ...header
     };
     setNews(_news);
-    saveDraft(_news);
+    //saveDraft(_news);
   };
 
   const createNews = useCallback((news: NewsModel) => {
@@ -126,7 +127,7 @@ export const ComposeNews: React.FC<{
     const _news = { ...news, components: [...(orderedComp ?? [])] };
     _news.cover = (components?.find(c => !!c.isCover) || {}).key;
     setNews(_news);
-    saveDraft(_news);
+    //saveDraft(_news);
   };
 
   const normalizeComponents = (comps?: ComponentModel[]) => {
@@ -209,6 +210,10 @@ export const ComposeNews: React.FC<{
     setNews({ ...news, section, sectionId: section.id });
   };
 
+  const handleChangeLabel = (label: { label: string }) => {
+    setNews({ ...news, label: label.label });
+  };
+
   const handlePublishClick = () => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
     draft && setHasUnsavedChanges(true);
@@ -237,6 +242,10 @@ export const ComposeNews: React.FC<{
   useEffect(() => {
     setMaximized(pageContext.menuOpen);
   }, [pageContext]);
+
+  useEffect(() => {
+    saveDraft(news);
+  }, [news]);
 
   return (
     <>
@@ -300,13 +309,16 @@ export const ComposeNews: React.FC<{
         <div className={style['wrapper']}>
           <div className={style['left-side']}>
             <div className={style['content']}>
-              <HeaderEditor updateHeader={updateHeader} news={news} />
+              <HeaderEditor updateHeader={handleUpdateHeader} news={news} />
             </div>
             <div className={style['content']}>
               <ContextSelector news={news} onChange={handleChangeRegion} />
             </div>
             <div className={style['content']}>
               <SectionSelector news={news} onChange={handleChangeSection} />
+            </div>
+            <div className={style['content']}>
+              <LabelSelector news={news} onChange={handleChangeLabel} />
             </div>
           </div>
           <div

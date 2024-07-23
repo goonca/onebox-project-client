@@ -1,0 +1,21 @@
+@import '~/src/shared/style/variables.scss';
+
+.label-selector {
+  @include dashboard-section-header;
+  padding: $space-3;
+
+  .header {
+    margin-bottom: $space-3;
+
+    a {
+      font-size: small;
+    }
+
+    h2 {
+      //font-size: large;
+      margin-bottom: 0;
+    }
+  }
+  .wrapper {
+  }
+}
