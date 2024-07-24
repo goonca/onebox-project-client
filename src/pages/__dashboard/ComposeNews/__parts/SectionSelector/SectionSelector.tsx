@@ -58,7 +58,7 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
             <h2>Section</h2>
           </div>
         </div>
-        <div>
+        {/*<div>
           <OutlinedInput
             inputRef={searchRef}
             size="small"
@@ -70,7 +70,7 @@ export const SectionSelector: React.FC<SectionSelectorProps> = (
               </>
             }
           />
-        </div>
+          </div>*/}
         <div className={style['wrapper']}>
           {sections &&
             sections.map(section => (

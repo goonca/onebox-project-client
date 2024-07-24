@@ -46,6 +46,10 @@ a {
   min-width: 250px;
 }
 
+.MuiAutocomplete-popper {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
 .MuiLink-root {
   &.MuiLink-underlineHover {
     color: $dark-blue;

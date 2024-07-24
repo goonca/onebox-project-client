@@ -34,6 +34,7 @@ import {
 import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
 import { ConfirmDialog } from '../__parts/ConfirmDialog/ConfirmDialog';
 import { LabelSelector } from './__parts/LabelSelector/LabelSelector';
+import { MetterSelector } from './__parts/MetterSelector/MetterSelector';
 
 export const ComposeNews: React.FC<{
   id?: number;
@@ -214,6 +215,10 @@ export const ComposeNews: React.FC<{
     setNews({ ...news, label: label.label });
   };
 
+  const handleChangeMetter = (metter: number) => {
+    setNews({ ...news, metter });
+  };
+
   const handlePublishClick = () => {
     const draft: NewsModel = getLocalStorage() as NewsModel;
     draft && setHasUnsavedChanges(true);
@@ -319,6 +324,9 @@ export const ComposeNews: React.FC<{
             </div>
             <div className={style['content']}>
               <LabelSelector news={news} onChange={handleChangeLabel} />
+            </div>
+            <div className={style['content']}>
+              <MetterSelector news={news} onChange={handleChangeMetter} />
             </div>
           </div>
           <div
