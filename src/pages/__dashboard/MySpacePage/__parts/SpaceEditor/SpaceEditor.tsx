@@ -82,7 +82,6 @@ export const SpaceEditor: React.FC<SpaceEditorProps> = (
           <div className={style['overlay']}></div>
           <div className={style['content']}>{props?.children}</div>
         </div>
-        <AddComponentDialog open={true} />
       </SpaceEditorContext.Provider>
     </>
   );

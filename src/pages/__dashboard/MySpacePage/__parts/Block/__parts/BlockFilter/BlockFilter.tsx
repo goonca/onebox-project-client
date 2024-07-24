@@ -11,7 +11,12 @@ import {
 } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { PageContext } from 'shared/context/PageContext';
-import { BlockModel, FilterModel, SectionModel } from 'shared/types/api-type';
+import {
+  BlockModel,
+  FilterModel,
+  SectionModel,
+  UserModel
+} from 'shared/types/api-type';
 import style from './BlockFilter.module.scss';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -39,6 +44,7 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
   const [sections, setSections] = useState<SectionModel[]>([]);
   const [labels, setLabels] = useState<{ label: string }[]>([]);
   const [filter, setFilter] = useState<FilterModel>(props.filter);
+  const [writers, setWriters] = useState<UserModel[]>([]);
   const valueRef = useRef<HTMLInputElement>(null);
 
   const attributes: AttributeType[] = [
@@ -62,7 +68,12 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
       labelKey: 'key'
     },
     //{ name: 'context', type: 'context', operators: ['equals'] },
-    { name: 'author', type: 'author', operators: ['equals'] },
+    {
+      name: 'author',
+      type: 'author',
+      operators: ['equals'],
+      options: writers.map(writer => writer.username)
+    },
     {
       name: 'label',
       type: 'string',
@@ -126,6 +137,10 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
   useEffect(() => {
     setLabels(pageContext.labels ?? []);
   }, [pageContext.labels]);
+
+  useEffect(() => {
+    setWriters(pageContext.writers ?? []);
+  }, [pageContext.writers]);
 
   useEffect(() => {
     setFilter(props?.filter);

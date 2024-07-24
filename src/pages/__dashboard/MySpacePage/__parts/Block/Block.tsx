@@ -118,7 +118,12 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
                         )}
                       />
                     ) : (
-                      <NewsHorizontal news={n} />
+                      <NewsHorizontal
+                        news={n}
+                        customDisplay={block.displays?.find(
+                          d => d.position == i
+                        )}
+                      />
                     )}
                   </>
                 </div>

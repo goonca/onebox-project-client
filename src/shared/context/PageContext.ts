@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { ModelObject, SectionModel } from 'shared/types/api-type';
+import { ModelObject, SectionModel, UserModel } from 'shared/types/api-type';
 
 export type PageContextProps = {
   menuOpen: boolean;
@@ -10,10 +10,12 @@ export type PageContextProps = {
     editor: ReactNode;
   };
   labels?: { label: string }[];
+  writers?: UserModel[];
 };
 
 export const PageContext = React.createContext<PageContextProps>({
   menuOpen: true,
   popoverOpen: false,
-  sections: []
+  sections: [],
+  writers: []
 });

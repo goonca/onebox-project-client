@@ -6,11 +6,11 @@ import {
   DialogActions,
   Button
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
 import style from './AddComponentDialog.module.scss';
 
-type AddComponentDialogProps = { open: boolean };
+type AddComponentDialogProps = { open: boolean; children?: ReactNode };
 
 export const AddComponentDialog: React.FC<AddComponentDialogProps> = (
   props?: AddComponentDialogProps
@@ -36,13 +36,13 @@ export const AddComponentDialog: React.FC<AddComponentDialogProps> = (
         <Dialog
           fullScreen={isMobile()}
           className={style['confirm-dialog']}
-          open={!!open && false}
+          open={!!open}
           onClose={handleCancel}
         >
           <DialogTitle>Add Component</DialogTitle>
           <DialogContent>
             <DialogContentText minWidth={500} minHeight={40}>
-              block :: Text
+              {props?.children}
             </DialogContentText>
           </DialogContent>
           <DialogActions className={style['dialog-actions']}>

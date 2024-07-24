@@ -17,7 +17,7 @@ const NewsHorizontal = (props: NewsCoverType) => {
   titleStyle = {
     ...titleStyle,
     ...(props.customDisplay?.titleStyle
-      ? { fontSize: props.customDisplay?.titleStyle }
+      ? { fontSize: (TextStyleEnum as any)[props.customDisplay?.titleStyle] }
       : {})
   };
 

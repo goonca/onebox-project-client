@@ -13,7 +13,13 @@ import {
   Switch
 } from '@mui/material';
 import { NewsHeader } from 'components/compose/NewsHeader';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import {
+  ComponentType,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { UserContext } from 'shared/context/UserContext';
 import { useLocalStorage } from 'shared/hooks/useLocalStorage';
 import { useServices } from 'shared/hooks/useServices';
@@ -35,6 +41,8 @@ import { SectionSelector } from './__parts/SectionSelector/SectionSelector';
 import { ConfirmDialog } from '../__parts/ConfirmDialog/ConfirmDialog';
 import { LabelSelector } from './__parts/LabelSelector/LabelSelector';
 import { MetterSelector } from './__parts/MetterSelector/MetterSelector';
+import { AddComponentDialog } from '../MySpacePage/__parts/AddComponentDialog/AddComponentDialog';
+import { ComponentsEditor } from './__parts/ComponentsEditor/ComponentsEditor';
 
 export const ComposeNews: React.FC<{
   id?: number;
@@ -230,6 +238,9 @@ export const ComposeNews: React.FC<{
         setShowConfirmDialog(false);
         updateNews();
       });
+  };
+  const handleAddComponent = (type: any) => {
+    console.log(type);
   };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -436,6 +447,11 @@ export const ComposeNews: React.FC<{
         onCornfirm={handleConfirmPublish}
         onCancel={() => setShowConfirmDialog(false)}
       />
+      <AddComponentDialog open={true}>
+        <ComponentsEditor
+          onAddComponent={handleAddComponent}
+        ></ComponentsEditor>
+      </AddComponentDialog>
     </>
   );
 };
