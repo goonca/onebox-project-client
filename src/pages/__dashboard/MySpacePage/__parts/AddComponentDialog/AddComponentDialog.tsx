@@ -10,7 +10,10 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useMediaQuery } from 'shared/hooks/useMediaQuery';
 import style from './AddComponentDialog.module.scss';
 
-type AddComponentDialogProps = { open: boolean; children?: ReactNode };
+type AddComponentDialogProps = {
+  open: boolean;
+  children?: ReactNode;
+};
 
 export const AddComponentDialog: React.FC<AddComponentDialogProps> = (
   props?: AddComponentDialogProps

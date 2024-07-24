@@ -239,9 +239,6 @@ export const ComposeNews: React.FC<{
         updateNews();
       });
   };
-  const handleAddComponent = (type: any) => {
-    console.log(type);
-  };
 
   const closeEditor = (e: React.MouseEvent<HTMLDivElement>) => {
     setEditingComponent(undefined);
@@ -447,11 +444,6 @@ export const ComposeNews: React.FC<{
         onCornfirm={handleConfirmPublish}
         onCancel={() => setShowConfirmDialog(false)}
       />
-      <AddComponentDialog open={true}>
-        <ComponentsEditor
-          onAddComponent={handleAddComponent}
-        ></ComponentsEditor>
-      </AddComponentDialog>
     </>
   );
 };

@@ -6,6 +6,7 @@ import style from './SpaceAddComponent.module.scss';
 
 type SpaceAddComponentProps = {
   onClick?: (param?: any) => any;
+  editMode?: boolean;
 };
 
 export const SpaceAddComponent: React.FC<SpaceAddComponentProps> = (
