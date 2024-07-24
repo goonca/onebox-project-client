@@ -3,7 +3,7 @@ import { Frame } from 'components/compose/Frame/Frame';
 import { AddComponentDialog } from 'pages/__dashboard/MySpacePage/__parts/AddComponentDialog/AddComponentDialog';
 import { SpaceAddComponent } from 'pages/__dashboard/MySpacePage/__parts/SpaceAddComponent/SpaceAddComponent';
 import { ConfirmDialog } from 'pages/__dashboard/__parts/ConfirmDialog/ConfirmDialog';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useComponent } from 'shared/hooks/useComponent';
 import { ComponentModel, ComponentType } from 'shared/types/api-type';
 
@@ -30,6 +30,7 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
   const [addDialogOpened, setAddDialogOpened] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(!!props.editMode);
   const [deletingComponent, setDeletingComponent] = useState<ComponentModel>();
+  const addComponentPosition = useRef<number>();
   const { getComponentByType } = useComponent();
   const __debouce = useCallback(
     debounce(() => {
@@ -43,7 +44,9 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     props.onComponentsOpen && props.onComponentsOpen(opened);
   };
 
-  const onAddComponent = (position: number, type: ComponentType) => {
+  const addComponent = (type: ComponentType) => {
+    console.log(type);
+    const position = addComponentPosition.current ?? 0;
     components?.splice(position, 0, {
       type,
       position,
@@ -52,13 +55,13 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
     console.log(components);
 
     props.onChange && props.onChange(components);
-  };
-
-  const addComponent = (type: ComponentType) => {
+    setAddDialogOpened(false);
     // onAddComponent(props?.position, type);
   };
 
   const handleAddComponent = (position: number) => {
+    console.log('handleAddComponent', position);
+    addComponentPosition.current = position;
     setAddDialogOpened(true);
   };
 
@@ -150,12 +153,12 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
       <div className={style['free-editor']}>
         <div className={style['wrapper']}>
           {editMode && (
-            <AddComponent
-              onOpen={onOpen}
-              position={0}
-              onAddComponent={onAddComponent}
-              showTooltip={components?.length == 0}
-            />
+            <>
+              <SpaceAddComponent
+                editMode={editMode}
+                onClick={() => handleAddComponent(0)}
+              />
+            </>
           )}
           {components?.map((comp, index) => {
             const node = getComponentByType(comp.type);
@@ -192,15 +195,9 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
 
                 {editMode && (
                   <>
-                    <AddComponent
-                      onOpen={onOpen}
-                      position={index + 1}
-                      onAddComponent={onAddComponent}
-                    />
-                    ddd
                     <SpaceAddComponent
-                      editMode={true}
-                      onClick={() => handleAddComponent(0)}
+                      editMode={editMode}
+                      onClick={() => handleAddComponent(index + 1)}
                     />
                   </>
                 )}
@@ -221,7 +218,10 @@ export const FreeEditor: React.FC<ComponentEditProps> = (
         onCornfirm={confirmDelete}
         onCancel={onCancel}
       />
-      <AddComponentDialog open={addDialogOpened}>
+      <AddComponentDialog
+        open={addDialogOpened}
+        onCancel={() => setAddDialogOpened(false)}
+      >
         <ComponentsEditor onAddComponent={addComponent}></ComponentsEditor>
       </AddComponentDialog>
     </>

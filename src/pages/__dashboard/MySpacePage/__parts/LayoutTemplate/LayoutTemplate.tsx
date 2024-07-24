@@ -23,6 +23,9 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
 ) => {
   const [layout, setlayout] = useState<LayoutModel>();
   const spaceEditorContext = useContext(SpaceEditorContext);
+  const [editMode, setEditMode] = useState<boolean>(
+    spaceEditorContext.editMode ?? false
+  );
 
   const handleAddComponent = (x: number, y: number) => {
     layout && props.onAddComponent(layout, { x, y });
@@ -39,6 +42,11 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
     setlayout({ ...props.layout });
   }, [props.layout]);
 
+  useEffect(
+    () => setEditMode(spaceEditorContext.editMode ?? false),
+    [spaceEditorContext.editMode]
+  );
+
   return (
     <>
       <div
@@ -49,7 +57,10 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
         {layout?.columns?.split(',').map((columnWidth, x) => {
           return (
             <div style={{ width: `${columnWidth}%` }} key={x}>
-              <SpaceAddComponent onClick={() => handleAddComponent(x, 0)} />
+              <SpaceAddComponent
+                editMode={editMode}
+                onClick={() => handleAddComponent(x, 0)}
+              />
               {layout?.blocks
                 ?.filter(l => l.positionX == x)
                 .map((block, y) => {
@@ -57,6 +68,7 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
                     <div key={block.id + '-' + block.tempId}>
                       <Block block={block} onAction={handleOnAction} />
                       <SpaceAddComponent
+                        editMode={editMode}
                         onClick={() => handleAddComponent(x, y + 1)}
                       />
                     </div>

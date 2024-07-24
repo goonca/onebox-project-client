@@ -1,6 +1,8 @@
 @import '~/src/shared/style/variables.scss';
 
-.components-erditor {
+.components-editor {
+  min-height: 170px;
+
   .wrapper {
     gap: $space-4;
     display: flex;
@@ -32,6 +34,7 @@
       margin-top: $space-2;
       height: calc(100% - 10px);
       cursor: pointer;
+      box-sizing: border-box;
 
       &:hover {
         border: 1px solid $blue;

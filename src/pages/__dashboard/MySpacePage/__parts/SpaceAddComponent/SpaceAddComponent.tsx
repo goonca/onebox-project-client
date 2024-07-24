@@ -12,15 +12,9 @@ type SpaceAddComponentProps = {
 export const SpaceAddComponent: React.FC<SpaceAddComponentProps> = (
   props?: SpaceAddComponentProps
 ) => {
-  const spaceEditorContext = useContext(SpaceEditorContext);
-  const [editMode, setEditMode] = useState<boolean>(
-    spaceEditorContext.editMode ?? false
-  );
+  const [editMode, setEditMode] = useState<boolean>(props?.editMode ?? false);
 
-  useEffect(
-    () => setEditMode(spaceEditorContext.editMode ?? false),
-    [spaceEditorContext.editMode]
-  );
+  useEffect(() => setEditMode(props?.editMode ?? false), [props?.editMode]);
 
   return (
     <>

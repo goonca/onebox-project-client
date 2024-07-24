@@ -11,7 +11,7 @@ export const ComponentsEditor: React.FC<ComponentsEditorProps> = (
 ) => {
   return (
     <>
-      <div className={style['components-erditor']}>
+      <div className={style['components-editor']}>
         <div className={style['wrapper']}>
           <div>
             <label>picture</label>
