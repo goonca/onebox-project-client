@@ -232,9 +232,9 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
                       size="small"
                       inputProps={{
                         ...params.inputProps,
-                        autocomplete: 'new-password',
+                        autoComplete: 'new-password',
                         form: {
-                          autocomplete: 'off'
+                          autoComplete: 'off'
                         }
                       }}
                     />
@@ -267,9 +267,9 @@ export const BlockFilter: React.FC<BlockFilterProps> = (
                   onChange={handleChangeValue}
                   size="small"
                   inputProps={{
-                    autocomplete: 'new-password',
+                    autoComplete: 'new-password',
                     form: {
-                      autocomplete: 'off'
+                      autoComplete: 'off'
                     }
                   }}
                 />

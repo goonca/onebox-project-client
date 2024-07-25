@@ -204,7 +204,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                       onChange={e => handleChangeBlockProperty(e, 'columns')}
                       type="number"
                       min={1}
-                      max={999}
+                      max={10}
                       defaultValue={block.columns ?? ''}
                     />
                   </div>

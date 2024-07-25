@@ -1,4 +1,8 @@
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
+import { PageContext } from 'shared/context/PageContext';
 import { SpaceEditorContext } from 'shared/context/SpaceEditorContext';
 import { BlockModel, LayoutModel } from 'shared/types/api-type';
 import { Block, BlockActionTypeEnum } from '../Block/Block';
@@ -21,7 +25,8 @@ type TemplateProps = {
 export const LayoutTemplate: React.FC<TemplateProps> = (
   props: TemplateProps
 ) => {
-  const [layout, setlayout] = useState<LayoutModel>();
+  const pageContext = useContext(PageContext);
+  const [layout, setLayout] = useState<LayoutModel>();
   const spaceEditorContext = useContext(SpaceEditorContext);
   const [editMode, setEditMode] = useState<boolean>(
     spaceEditorContext.editMode ?? false
@@ -38,14 +43,45 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
     layout && props.onBlockAction(layout, block, actionType);
   };
 
+  const handleLeftArrowClick = (columnIndex: number) => {
+    console.log(columnIndex);
+    const newColumns = layout?.columns?.split(',').map((column, index) => {
+      return index == columnIndex - 1
+        ? parseInt(column) - 5
+        : index == columnIndex
+        ? parseInt(column) + 5
+        : column;
+    });
+    const isValid = !!!newColumns?.find(c => parseInt(c as string) < 20);
+    isValid && setLayout({ ...layout, columns: newColumns?.join(',') });
+  };
+
+  const handleRightArrowClick = (columnIndex: number) => {
+    const newColumns = layout?.columns?.split(',').map((column, index) => {
+      return index == columnIndex - 1
+        ? parseInt(column) + 5
+        : index == columnIndex
+        ? parseInt(column) - 5
+        : column;
+    });
+
+    const isValid = !!!newColumns?.find(c => parseInt(c as string) < 20);
+    isValid && setLayout({ ...layout, columns: newColumns?.join(',') });
+    //console.log(newColumns, isValid);
+  };
+
   useEffect(() => {
-    setlayout({ ...props.layout });
+    setLayout({ ...props.layout });
   }, [props.layout]);
 
   useEffect(
     () => setEditMode(spaceEditorContext.editMode ?? false),
     [spaceEditorContext.editMode]
   );
+
+  useEffect(() => {
+    setLayout({ ...props.layout });
+  }, [props, pageContext.editComponent]);
 
   return (
     <>
@@ -56,7 +92,32 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
       >
         {layout?.columns?.split(',').map((columnWidth, x) => {
           return (
-            <div style={{ width: `${columnWidth}%` }} key={x}>
+            <div
+              className={style['column']}
+              style={{ width: `${columnWidth}%` }}
+              key={x}
+            >
+              <div className={style['column-controller']}>
+                {x > 0 && (
+                  <>
+                    <Button>
+                      <FontAwesomeIcon
+                        icon={faArrowLeft}
+                        onClick={() => handleLeftArrowClick(x)}
+                      />
+                    </Button>
+                    <hr />
+                    <Button>
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        onClick={() => handleRightArrowClick(x)}
+                      />
+                    </Button>
+                  </>
+                )}
+                <span>{columnWidth}%</span>
+              </div>
+
               <SpaceAddComponent
                 editMode={editMode}
                 onClick={() => handleAddComponent(x, 0)}
@@ -65,7 +126,9 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
                 ?.filter(l => l.positionX == x)
                 .map((block, y) => {
                   return (
-                    <div key={block.id + '-' + block.tempId}>
+                    <div
+                      key={block.id + '-' + block.tempId + '-' + block.columns}
+                    >
                       <Block block={block} onAction={handleOnAction} />
                       <SpaceAddComponent
                         editMode={editMode}

@@ -59,6 +59,7 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
   return (
     <>
       <div
+        key={`${block?.id}-${block?.columns}`}
         className={`${style['block']} ${
           compareId(pageContext.editComponent?.model ?? {}, block ?? {}) &&
           pageContext.popoverOpen &&
@@ -100,6 +101,7 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
         </div>
         {block && (
           <div
+            key={`${block.id}-${block.columns}`}
             className={style['wrapper']}
             style={{
               opacity: (spaceEditorContext.contrast ?? 50) / 100,

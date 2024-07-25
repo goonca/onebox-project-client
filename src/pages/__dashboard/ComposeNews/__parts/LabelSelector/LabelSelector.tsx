@@ -57,9 +57,9 @@ export const LabelSelector: React.FC<LabelSelectorProps> = (
                   size="small"
                   inputProps={{
                     ...params.inputProps,
-                    autocomplete: 'new-password',
+                    autoComplete: 'new-password',
                     form: {
-                      autocomplete: 'off'
+                      autoComplete: 'off'
                     }
                   }}
                 />

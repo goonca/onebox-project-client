@@ -13,13 +13,15 @@ export const Quote: React.FC<ComponentModel> = (props: ComponentModel) => {
           paddingBottom: (props.paddingBottom ?? 0) * 5 + 'px'
         }}
       >
-        <blockquote
-          className={style['quote']}
-          data-component="quote"
-          dangerouslySetInnerHTML={{
-            __html: props.longFormattedText ?? defaultText
-          }}
-        ></blockquote>
+        <div className={style['quote']} data-component="quote">
+          <hr />
+          <blockquote
+            dangerouslySetInnerHTML={{
+              __html: props.longFormattedText ?? defaultText
+            }}
+          ></blockquote>
+          <hr />
+        </div>
       </div>
     </>
   );
