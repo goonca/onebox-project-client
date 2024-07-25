@@ -5,6 +5,7 @@
   flex-direction: row;
   position: relative;
   border-bottom: 1px solid white;
+  height: 100%;
 
   [data-component='figure'] {
     max-width: 30%;
@@ -16,6 +17,8 @@
 
   img {
     border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
   }
 
   .wrapper {

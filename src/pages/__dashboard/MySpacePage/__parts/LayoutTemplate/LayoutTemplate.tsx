@@ -44,7 +44,6 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
   };
 
   const handleLeftArrowClick = (columnIndex: number) => {
-    console.log(columnIndex);
     const newColumns = layout?.columns?.split(',').map((column, index) => {
       return index == columnIndex - 1
         ? parseInt(column) - 5
@@ -67,7 +66,6 @@ export const LayoutTemplate: React.FC<TemplateProps> = (
 
     const isValid = !!!newColumns?.find(c => parseInt(c as string) < 20);
     isValid && setLayout({ ...layout, columns: newColumns?.join(',') });
-    //console.log(newColumns, isValid);
   };
 
   useEffect(() => {
