@@ -4,6 +4,17 @@
   width: 100%;
   max-width: 800px;
 
+  [class*='MuiTabPanel-root'] {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 185px;
+  }
+
+  [class*='MuiFormControlLabel-label'] {
+    font-size: 14px;
+    height: 25px;
+  }
+
   a {
     font-size: small;
     text-decoration: none;
@@ -18,7 +29,7 @@
   .tab-filters {
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 0;
     padding: 0 20px;
     width: 100%;
 
@@ -27,6 +38,24 @@
         width: 100%;
         max-width: 550px;
       }
+
+      &.others {
+        height: fit-content;
+        position: sticky;
+        top: 0;
+
+        [class*='MuiFormLabel-root'] {
+          margin-bottom: 10px;
+        }
+
+        .numbers {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          margin-top: 10px;
+        }
+      }
+
       .label {
         margin-bottom: 10px;
       }
@@ -69,20 +98,12 @@
       padding-left: 30px;
 
       .badge-type {
-        [class*='MuiFormControlLabel-root'] {
-          font-size: 14px;
-        }
-
         [class*='MuiFormLabel-root'] {
           margin-bottom: 10px;
         }
 
         [class*='MuiButtonBase-root'] {
           padding: 3px;
-        }
-
-        [class*='MuiFormControlLabel-label'] {
-          font-size: 14px;
         }
       }
     }

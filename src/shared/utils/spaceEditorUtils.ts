@@ -21,6 +21,8 @@ export const addBlockToLayout = (
   allColumns &&
     allColumns[position.x]?.splice(position.y, 0, {
       tempId: Math.random().toString(36).substr(2),
+      columns: 1,
+      size: 1,
       positionX: position.x,
       positionY: position.y
     });
@@ -250,5 +252,5 @@ export const defaultDisplay = (block?: BlockModel) => ({
   block: block,
   active: 0,
   position: block ? (block.displays ?? []).length : 0,
-  badgeType: BadgeTypeEnum.HIDDEN
+  badgeType: BadgeTypeEnum.BLOCK
 });

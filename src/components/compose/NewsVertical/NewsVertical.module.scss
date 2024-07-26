@@ -7,7 +7,7 @@ $border-color: rgba(255, 255, 255, 1);
   flex-direction: column;
   position: relative;
   padding-bottom: $space-2;
-  border-bottom: 1px solid white;
+  //border-bottom: 1px solid white;
 
   &.divided {
     border-bottom-color: lighten($light-gray, 30%);

@@ -27,6 +27,7 @@ import {
   BlockModel,
   DisplayModel,
   FilterModel,
+  NewsPresentationEnum,
   TextStyleEnum
 } from 'shared/types/api-type';
 import {
@@ -195,32 +196,70 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                     </>
                   )}
                 </div>
-                <div className={style['container']}>
-                  <div className={style['label']}>
-                    <FormLabel>Columns</FormLabel>
-                  </div>
-                  <div className={style['columns']}>
-                    <input
-                      onChange={e => handleChangeBlockProperty(e, 'columns')}
-                      type="number"
-                      min={1}
-                      max={10}
-                      defaultValue={block.columns ?? ''}
-                    />
-                  </div>
-                  <div className={style['label']}>
-                    <FormLabel>Max length</FormLabel>
-                  </div>
-                  <div className={style['max-length']}>
+                <div className={`${style['container']} ${style['others']}`}>
+                  <div>
                     <FormControl>
-                      <input
-                        onChange={e => handleChangeBlockProperty(e, 'size')}
-                        type="number"
-                        min={1}
-                        max={10}
-                        defaultValue={block.size ?? ''}
-                      />
+                      <FormLabel>Cover style</FormLabel>
+                      <RadioGroup
+                        defaultValue={NewsPresentationEnum.VERTICAL}
+                        value={block.presentation ?? ''}
+                        onChange={e =>
+                          handleChangeBlockProperty(e, 'presentation')
+                        }
+                      >
+                        <FormControlLabel
+                          checked={
+                            block.presentation == NewsPresentationEnum.VERTICAL
+                          }
+                          value={NewsPresentationEnum.VERTICAL}
+                          control={<Radio />}
+                          label="Vertical"
+                        />
+                        <FormControlLabel
+                          checked={
+                            block.presentation ==
+                            NewsPresentationEnum.HORIZONTAL
+                          }
+                          value={NewsPresentationEnum.HORIZONTAL}
+                          control={<Radio />}
+                          label="Horizontal"
+                        />
+                      </RadioGroup>
                     </FormControl>
+                  </div>
+                  <div className={style['numbers']}>
+                    <div>
+                      <div className={style['label']}>
+                        <FormLabel>Columns</FormLabel>
+                      </div>
+                      <div className={style['columns']}>
+                        <input
+                          onChange={e =>
+                            handleChangeBlockProperty(e, 'columns')
+                          }
+                          type="number"
+                          min={1}
+                          max={10}
+                          value={block.columns ?? ''}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className={style['label']}>
+                        <FormLabel>Max length</FormLabel>
+                      </div>
+                      <div className={style['max-length']}>
+                        <FormControl>
+                          <input
+                            onChange={e => handleChangeBlockProperty(e, 'size')}
+                            type="number"
+                            min={1}
+                            max={10}
+                            value={block.size ?? ''}
+                          />
+                        </FormControl>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -264,7 +303,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                         <FormControl>
                           <FormLabel>Badge type</FormLabel>
                           <RadioGroup
-                            defaultValue="hidden"
+                            defaultValue={BadgeTypeEnum.BLOCK}
                             value={display.badgeType ?? ''}
                             onChange={e =>
                               handleChangeDisplayProperty(e, 'badgeType')
