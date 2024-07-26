@@ -131,6 +131,34 @@ hr[data-combo-divisor] {
 }
 
 //************ Utilities **********//
+
 .text-capitalize {
   text-transform: capitalize;
+}
+
+//************ COLOR PICKER **********//
+[class*='ColorPicker-makeStyles-container'] {
+  label {
+    color: #666666 !important;
+  }
+  [class*='muicc-colorbox-controls'] {
+    height: 0px;
+  }
+  [class*='ColorPicker-makeStyles-colorinputRaw'] {
+    [label='HEX'] {
+      pointer-events: none;
+
+      &::before {
+        border-bottom: unset;
+      }
+      * {
+        color: gray !important;
+      }
+    }
+    [label] {
+      &::before {
+        border-bottom-color: black;
+      }
+    }
+  }
 }

@@ -27,6 +27,12 @@ export enum TextStyleEnum {
   XXSMALL = 'xx-small'
 }
 
+export enum CoverTypeEnum {
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE'
+}
+
 export enum BadgeTypeEnum {
   HIDDEN = 'HIDDEN',
   BLOCK = 'BLOCK',
@@ -290,6 +296,7 @@ export interface BlockModel extends ModelObject {
   type?: string;
   size?: number;
   presentation?: string;
+  coverType?: CoverTypeEnum;
   displays?: DisplayModel[];
   columns?: number;
   positionX?: number;
@@ -300,6 +307,8 @@ export interface BlockModel extends ModelObject {
   layoutId?: IdType;
   layout?: LayoutModel;
   news?: NewsModel[];
+  backgroundColor?: string;
+  borderColor?: string;
 }
 
 export interface LayoutModel extends ModelObject {

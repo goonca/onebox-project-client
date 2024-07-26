@@ -17,6 +17,7 @@ import {
   SelectChangeEvent,
   Tab,
   Tabs,
+  TextField,
   ToggleButton,
   ToggleButtonGroup
 } from '@mui/material';
@@ -39,6 +40,7 @@ import {
 import style from './BlockEditor.module.scss';
 import { BlockFilter } from './__parts/BlockFilter/BlockFilter';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ColorPicker } from 'mui-color';
 
 type BlockEditorProps = {
   block: BlockModel;
@@ -166,6 +168,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
               <TabList onChange={handleTabChange}>
                 <Tab label="Filters" value="1" />
                 <Tab label="Custom display" value="2" />
+                <Tab label="Style" value="3" />
               </TabList>
             </Box>
 
@@ -197,69 +200,32 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                   )}
                 </div>
                 <div className={`${style['container']} ${style['others']}`}>
-                  <div>
-                    <FormControl>
-                      <FormLabel>Cover style</FormLabel>
-                      <RadioGroup
-                        defaultValue={NewsPresentationEnum.VERTICAL}
-                        value={block.presentation ?? ''}
-                        onChange={e =>
-                          handleChangeBlockProperty(e, 'presentation')
-                        }
-                      >
-                        <FormControlLabel
-                          checked={
-                            block.presentation == NewsPresentationEnum.VERTICAL
-                          }
-                          value={NewsPresentationEnum.VERTICAL}
-                          control={<Radio />}
-                          label="Vertical"
-                        />
-                        <FormControlLabel
-                          checked={
-                            block.presentation ==
-                            NewsPresentationEnum.HORIZONTAL
-                          }
-                          value={NewsPresentationEnum.HORIZONTAL}
-                          control={<Radio />}
-                          label="Horizontal"
-                        />
-                      </RadioGroup>
-                    </FormControl>
+                  <div className={style['label']}>
+                    <FormLabel>Columns</FormLabel>
                   </div>
-                  <div className={style['numbers']}>
-                    <div>
-                      <div className={style['label']}>
-                        <FormLabel>Columns</FormLabel>
-                      </div>
-                      <div className={style['columns']}>
-                        <input
-                          onChange={e =>
-                            handleChangeBlockProperty(e, 'columns')
-                          }
-                          type="number"
-                          min={1}
-                          max={10}
-                          value={block.columns ?? ''}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className={style['label']}>
-                        <FormLabel>Max length</FormLabel>
-                      </div>
-                      <div className={style['max-length']}>
-                        <FormControl>
-                          <input
-                            onChange={e => handleChangeBlockProperty(e, 'size')}
-                            type="number"
-                            min={1}
-                            max={10}
-                            value={block.size ?? ''}
-                          />
-                        </FormControl>
-                      </div>
-                    </div>
+                  <div className={style['columns']}>
+                    <input
+                      onChange={e => handleChangeBlockProperty(e, 'columns')}
+                      type="number"
+                      min={1}
+                      max={10}
+                      value={block.columns ?? ''}
+                    />
+                  </div>
+
+                  <div className={style['label']}>
+                    <FormLabel>Max length</FormLabel>
+                  </div>
+                  <div className={style['max-length']}>
+                    <FormControl>
+                      <input
+                        onChange={e => handleChangeBlockProperty(e, 'size')}
+                        type="number"
+                        min={1}
+                        max={10}
+                        value={block.size ?? ''}
+                      />
+                    </FormControl>
                   </div>
                 </div>
               </div>
@@ -472,6 +438,84 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                     </div>
                   </div>
                 )}
+              </div>
+            </TabPanel>
+            <TabPanel value="3">
+              <div className={style['tab-style']}>
+                <div className={style['content']}>
+                  <FormControl>
+                    <FormLabel>Cover style</FormLabel>
+                    <RadioGroup
+                      defaultValue={NewsPresentationEnum.VERTICAL}
+                      value={block.presentation ?? ''}
+                      onChange={e =>
+                        handleChangeBlockProperty(e, 'presentation')
+                      }
+                    >
+                      <FormControlLabel
+                        checked={
+                          block.presentation == NewsPresentationEnum.VERTICAL
+                        }
+                        value={NewsPresentationEnum.VERTICAL}
+                        control={<Radio />}
+                        label="Vertical"
+                      />
+                      <FormControlLabel
+                        checked={
+                          block.presentation == NewsPresentationEnum.HORIZONTAL
+                        }
+                        value={NewsPresentationEnum.HORIZONTAL}
+                        control={<Radio />}
+                        label="Horizontal"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Background color</FormLabel>
+                    <ColorPicker
+                      value={
+                        !!block.backgroundColor
+                          ? '#' + block.backgroundColor
+                          : undefined
+                      }
+                      onChange={color =>
+                        handleChangeBlockProperty(
+                          {
+                            target: { value: (color as any).hex } as any
+                          } as any,
+                          'backgroundColor'
+                        )
+                      }
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Border color</FormLabel>
+                    <ColorPicker
+                      hideTextfield={true}
+                      value={'#' + block.borderColor}
+                      onChange={color =>
+                        handleChangeBlockProperty(
+                          {
+                            target: {
+                              value: (color as any).hex as any
+                            } as any
+                          } as any,
+                          'borderColor'
+                        )
+                      }
+                    />
+                    <TextField
+                      autoComplete="off"
+                      size="small"
+                      inputProps={{
+                        autoComplete: 'new-password',
+                        form: {
+                          autoComplete: 'off'
+                        }
+                      }}
+                    />
+                  </FormControl>
+                </div>
               </div>
             </TabPanel>
           </TabContext>
