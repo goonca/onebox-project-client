@@ -85,7 +85,7 @@ const LayoutContainer = () => {
             </div>
           </div>
         </div>
-        <ComponentEditorPopover title="test" />
+        <ComponentEditorPopover title="Block properties" />
       </PageContext.Provider>
     </>
   );
