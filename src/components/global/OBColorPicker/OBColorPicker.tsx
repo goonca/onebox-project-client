@@ -28,6 +28,11 @@ export const OBColorPicker: React.FC<OBColorPickerProps> = (
     setColor(props.value ? '#' + props.value : undefined);
   }, [props.value]);
 
+  useEffect(() => {
+    //@ts-ignore
+    props.onChange && props.onChange({ target: { value } });
+  }, [value]);
+
   return (
     <>
       <div className={style['color-picker']}>
