@@ -40,7 +40,9 @@ import {
 import style from './BlockEditor.module.scss';
 import { BlockFilter } from './__parts/BlockFilter/BlockFilter';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ColorPicker } from 'mui-color';
+import { ColorPicker, ColorValue } from 'mui-color';
+import { debounce } from 'lodash';
+import { OBColorPicker } from 'components/global/OBColorPicker/OBColorPicker';
 
 type BlockEditorProps = {
   block: BlockModel;
@@ -111,6 +113,11 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
       block: { ...block, [property]: value }
     });
   };
+
+  const debounce_handleChangeBlockProperty = debounce(
+    handleChangeBlockProperty,
+    250
+  );
 
   const handleChangeDisplayProperty = (
     event: React.SyntheticEvent,
@@ -472,47 +479,20 @@ export const BlockEditor: React.FC<BlockEditorProps> = (
                   </FormControl>
                   <FormControl>
                     <FormLabel>Background color</FormLabel>
-                    <ColorPicker
-                      value={
-                        !!block.backgroundColor
-                          ? '#' + block.backgroundColor
-                          : undefined
-                      }
-                      onChange={color =>
-                        handleChangeBlockProperty(
-                          {
-                            target: { value: (color as any).hex } as any
-                          } as any,
-                          'backgroundColor'
-                        )
+                    <OBColorPicker
+                      value={block.backgroundColor}
+                      onChange={e =>
+                        handleChangeBlockProperty(e, 'backgroundColor')
                       }
                     />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Border color</FormLabel>
-                    <ColorPicker
-                      hideTextfield={true}
-                      value={'#' + block.borderColor}
-                      onChange={color =>
-                        handleChangeBlockProperty(
-                          {
-                            target: {
-                              value: (color as any).hex as any
-                            } as any
-                          } as any,
-                          'borderColor'
-                        )
+                    <OBColorPicker
+                      value={block.borderColor}
+                      onChange={e =>
+                        handleChangeBlockProperty(e, 'borderColor')
                       }
-                    />
-                    <TextField
-                      autoComplete="off"
-                      size="small"
-                      inputProps={{
-                        autoComplete: 'new-password',
-                        form: {
-                          autoComplete: 'off'
-                        }
-                      }}
                     />
                   </FormControl>
                 </div>
