@@ -47,6 +47,14 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
     e.stopPropagation();
   };
 
+  const backgroundColor: any = block?.backgroundColor
+    ? { backgroundColor: '#' + block?.backgroundColor }
+    : {};
+
+  const border: any = block?.borderColor
+    ? { border: '1px solid #' + block?.borderColor }
+    : {};
+
   useEffect(
     () => setEditMode(spaceEditorContext.editMode ?? false),
     [spaceEditorContext.editMode]
@@ -104,6 +112,8 @@ export const Block: React.FC<BlockProps> = (props?: BlockProps) => {
             key={`${block.id}-${block.columns}`}
             className={style['wrapper']}
             style={{
+              ...backgroundColor,
+              ...border,
               opacity: (spaceEditorContext.contrast ?? 50) / 100,
               gridTemplateColumns: `repeat(${block.columns}, minmax(0, 1fr))`
             }}

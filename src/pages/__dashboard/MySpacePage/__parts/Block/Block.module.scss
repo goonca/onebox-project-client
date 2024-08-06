@@ -13,6 +13,8 @@ $transition-delay: 0s;
     display: grid;
     gap: 10px;
     justify-content: center;
+    padding: 5px;
+    border-radius: 8px;
 
     .empty-block {
       color: gray;
@@ -65,7 +67,6 @@ $transition-delay: 0s;
     border-radius: 3px;
     transition-delay: $transition-delay;
     background-color: white;
-    padding: 5px;
 
     /*.wrapper {
       opacity: 0.2;
